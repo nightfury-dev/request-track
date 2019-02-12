@@ -1,0 +1,1 @@
+folder này để lưu file chứa các xử lý mà được nhiều chức năng sử dụng

@@ -1,0 +1,1 @@
+folder này chứa các entity hay là các object model - nó là object thể hiện của các table trong database
