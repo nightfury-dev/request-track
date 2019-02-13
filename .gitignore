@@ -47,3 +47,6 @@ hs_err_pid*
 /ftrr/nbdist/
 /ftrr/.nb-gradle/
 /ftrr/build/
+
+### ReactJS ###
+/ftrr/src/app/node_modules/
