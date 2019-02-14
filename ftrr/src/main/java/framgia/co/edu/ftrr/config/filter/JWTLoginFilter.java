@@ -17,25 +17,23 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
-        super(new AntPathRequestMatcher(url));
-        setAuthenticationManager(authManager);
-    }
+	public JWTLoginFilter(String url, AuthenticationManager authManager) {
+		super(new AntPathRequestMatcher(url));
+		setAuthenticationManager(authManager);
+	}
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        AccountCredentials credentials = new AccountCredentials(request.getParameter("username"), request.getParameter("password"));
-        return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        credentials.getUsername(),
-                        credentials.getPassword(),
-                        Collections.emptyList()
-                )
-        );
-    }
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException, IOException, ServletException {
+		AccountCredentials credentials = new AccountCredentials(request.getParameter("username"),
+				request.getParameter("password"));
+		return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
+				credentials.getUsername(), credentials.getPassword(), Collections.emptyList()));
+	}
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        TokenAuthenticationUtil.addAuthentication(response, authResult.getName(), authResult);
-    }
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authResult) throws IOException, ServletException {
+		TokenAuthenticationUtil.addAuthentication(response, authResult.getName(), authResult);
+	}
 }

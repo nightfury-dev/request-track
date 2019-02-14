@@ -4,10 +4,17 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.netty.util.internal.StringUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import framgia.co.edu.ftrr.dto.request.UserDTO;
+import framgia.co.edu.ftrr.repository.UserRepository;
+import framgia.co.edu.ftrr.service.UserService;
+import framgia.co.edu.ftrr.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +33,7 @@ public class TokenAuthenticationUtil {
 	static final String HEADER_STRING = "Authorization";
 
 	static final String AUTHORITIES_KEY = "Authorities";
-
+	
 	public static void addAuthentication(HttpServletResponse res, String username, Authentication authentication) {
 		// List authority of authentication
 		String authorities = authentication.getAuthorities().stream()
@@ -47,7 +54,6 @@ public class TokenAuthenticationUtil {
 		// parse the token.
 		Claims claims = Jwts.parser().setSigningKey(SECRET)
 				.parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody();
-
 		// get username
 		String user = claims.getSubject();
 		// get authorities
