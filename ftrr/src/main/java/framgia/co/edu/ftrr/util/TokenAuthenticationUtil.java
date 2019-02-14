@@ -38,8 +38,7 @@ public class TokenAuthenticationUtil {
 		String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
 				.getSubject();
 		return StringUtil.isNullOrEmpty(user)
-				? new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList())
-				: null;
+				? null : new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
 
 	}
 }
