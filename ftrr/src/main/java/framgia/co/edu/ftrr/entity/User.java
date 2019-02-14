@@ -16,6 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class User implements java.io.Serializable {
 
 	private Integer id;
+	private String email;
 	private String code;
 	private String name;
 	private String phone;
@@ -34,7 +35,7 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(String code, String name, String phone, String gender, String role, Date createdAt, Date updatedAt,
+	public User(String email, String code, String name, String phone, String gender, String role, Date createdAt, Date updatedAt,
 			String encryptedPassword, String resetPasswordToken, Date resetPasswordSentAt, Date rememberCreatedAt,
 			String confirmationToken, Date confirmationAt, Date confirmationSentAt) {
 		this.code = code;
@@ -62,6 +63,14 @@ public class User implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Column(name = "email", length = 225)
+	public String getEmail(){
+		return this.email;
+	}
+	public void setEmail(String email) {
+		this.email= email;
 	}
 
 	@Column(name = "code", length = 45)

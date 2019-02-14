@@ -25,6 +25,7 @@ hs_err_pid*
 /ftrr/target/
 !.mvn/wrapper/maven-wrapper.jar
 /ftrr/src/main/resources/application.properties
+/ftrr/bin/
 
 ### STS ###
 /ftrr/.apt_generated
