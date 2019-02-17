@@ -1,28 +1,40 @@
 package framgia.co.edu.ftrr.util;
 
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Component
+@PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class ExcelUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ExcelUtils.class);
 
-    private static File convertMultipartFileToFile(MultipartFile multipartFile, String uploadRootPath) {
+    @Value("${error.division.blank}")
+    private String divisionBlankError;
+    @Value("${error.language.blank}")
+    private String languageBlankError;
+    @Value("${error.quantity.numeric}")
+    private String quantityNumericError;
+    @Value("${error.deadline.date_format}")
+    private String deadlineFormatError;
+
+    private File convertMultipartFileToFile(MultipartFile multipartFile, String uploadRootPath) {
         try {
             File uploadRootDir = new File(uploadRootPath);
 
@@ -41,7 +53,7 @@ public class ExcelUtils {
         }
     }
 
-    public static List<RequestDTO> listRequestFromExcel(MultipartFile multipartFile, String uploadRootPath) {
+    public List<RequestDTO> listRequestFromExcel(MultipartFile multipartFile, String uploadRootPath) {
         try {
             List<RequestDTO> requests = new ArrayList<>();
             Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
@@ -58,7 +70,7 @@ public class ExcelUtils {
         }
     }
 
-    private static RequestDTO mapRowExcelToRequest(Row row) {
+    private RequestDTO mapRowExcelToRequest(Row row) {
         try {
             RequestDTO request = new RequestDTO();
             request.setDivision(row.getCell(0).getStringCellValue());
@@ -74,30 +86,42 @@ public class ExcelUtils {
         }
     }
 
-    public static Map<Integer, List<String>> checkImportRequestTrainees(MultipartFile multipartFile, String uploadRootPath) {
-        Map<Integer, List<String>> mapError = new HashMap<>();
+    public JSONObject checkImportRequestTrainees(MultipartFile multipartFile, String uploadRootPath) {
+        JSONObject results = new JSONObject();
+        Map<Integer, JSONObject> mapError = new HashMap<>();
+        int rowNum = 0; // Row number without title's sheet
         try {
             Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
 
-            int rowNum = 0;
             iterator.next(); // Ignore title of file Excel
             while (iterator.hasNext()) {
-                List<String> errors = checkRowRequestTrainees(iterator.next());
+                JSONObject errors = checkRowRequestTrainees(iterator.next());
                 if (!errors.isEmpty()) {
-                    mapError.put(rowNum, errors);
+                    JSONObject cols = new JSONObject(); // All error in row across each column
+                    cols.put("cols", errors);
+                    mapError.put(rowNum, cols);
                 }
                 rowNum++;
             }
 
-            return mapError;
+            JSONObject rows = new JSONObject();// All error in sheet across each row
+            // If file import hasn't errors
+            if (mapError.isEmpty())
+                return null;
+
+            rows.put("rows", mapError);
+            results.put("errors", rows);
+            return results;
         } catch (Exception e) {
             logger.error("Error in checkImportRequestTrainees: " + e.getMessage());
-            mapError.put(0, Arrays.asList("Exception: " + e.getMessage()));
-            return mapError;
+            Map<Integer, String> mapException = new HashMap<>();
+            mapException.put(rowNum, e.getMessage());
+            results.put("exception", mapException);
+            return results;
         }
     }
 
-    private static Iterator<Row> getRows(MultipartFile multipartFile, String uploadRootPath) {
+    private Iterator<Row> getRows(MultipartFile multipartFile, String uploadRootPath) {
         FileInputStream fis = null;
         Workbook workbook = null;
         try {
@@ -118,34 +142,36 @@ public class ExcelUtils {
         }
     }
 
-    private static List<String> checkRowRequestTrainees(Row row) {
+    private JSONObject checkRowRequestTrainees(Row row) {
+        JSONObject errors = new JSONObject();
+        int cell = 0;
         try {
-            List<String> errors = new ArrayList<>();
-
             // Check field division
-            if (!isNotNull(row, 0))
-                errors.add("Field division must not blank");
+            if (!isNotNull(row, cell++))
+                errors.put(cell - 1, divisionBlankError);
 
             // Check field language
-            if (!isNotNull(row, 1))
-                errors.add("Field language must not blank");
+            if (!isNotNull(row, cell++))
+                errors.put(cell - 1, languageBlankError);
 
             // Check field quantity
-            if (!isNumeric(row, 2))
-                errors.add("Field quantity must be numeric");
+            if (!isNumeric(row, cell++))
+                errors.put(cell - 1, quantityNumericError);
 
             // Check field deadline
-            if (!isValidDate(row, 3))
-                errors.add("Field deadline must be date with format: yyyy-MM-dd");
+            if (!isValidDate(row, cell++))
+                errors.put(cell - 1, deadlineFormatError);
 
             return errors;
         } catch (Exception e) {
-            logger.error("Error in checkRowRequestTrainees: " + e.getMessage());
-            return Arrays.asList("Exception: " + e.getMessage());
+            logger.error("Error in checkRowRequestTrainees at row " +  row.getRowNum() +
+                    ", cell " + cell + ": " + e.getMessage());
+            errors.put(cell, "Exception: " + e.getMessage());
+            return errors;
         }
     }
 
-    private static boolean isNotNull(Row row, int cell) {
+    private boolean isNotNull(Row row, int cell) {
         try {
             row.getCell(cell).getStringCellValue();
             return true;
@@ -154,7 +180,7 @@ public class ExcelUtils {
         }
     }
 
-    private static boolean isValidDate(Row row, int cell) {
+    private boolean isValidDate(Row row, int cell) {
         try {
             row.getCell(cell).getDateCellValue();
             return true;
@@ -163,7 +189,7 @@ public class ExcelUtils {
         }
     }
 
-    private static boolean isNumeric(Row row, int cell) {
+    private boolean isNumeric(Row row, int cell) {
         try {
             row.getCell(cell).getNumericCellValue();
             return true;
