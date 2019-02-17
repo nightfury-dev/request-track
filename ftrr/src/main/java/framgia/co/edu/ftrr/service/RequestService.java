@@ -8,6 +8,7 @@ import java.util.List;
 @Service
 public interface RequestService {
 
-    List<RequestDTO> insertListRequest(List<RequestDTO> requestDTOs) throws Exception;
+    List<RequestDTO> insertListRequest(List<RequestDTO> requestDTOs);
+    List<RequestDTO> findByDivision(String division);
 
 }

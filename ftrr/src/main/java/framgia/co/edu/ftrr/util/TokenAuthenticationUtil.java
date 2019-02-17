@@ -1,17 +1,20 @@
 package framgia.co.edu.ftrr.util;
 
-import java.util.Collections;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.netty.util.internal.StringUtil;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TokenAuthenticationUtil {
 	static final long EXPIRATIONTIME = 864_000_000; // 10 days
@@ -22,8 +25,15 @@ public class TokenAuthenticationUtil {
 
 	static final String HEADER_STRING = "Authorization";
 
-	public static void addAuthentication(HttpServletResponse res, String username) {
+	static final String AUTHORITIES_KEY = "Authorities";
+
+	public static void addAuthentication(HttpServletResponse res, String username, Authentication authentication) {
+		// List authority of authentication
+		String authorities = authentication.getAuthorities().stream()
+									.map(GrantedAuthority::getAuthority)
+									.collect(Collectors.joining(","));
 		String JWT = Jwts.builder().setSubject(username)
+				.claim(AUTHORITIES_KEY, authorities)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
@@ -35,10 +45,16 @@ public class TokenAuthenticationUtil {
 			return null;
 		}
 		// parse the token.
-		String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
-				.getSubject();
+		Claims claims = Jwts.parser().setSigningKey(SECRET)
+				.parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody();
+
+		// get username
+		String user = claims.getSubject();
+		// get authorities
+		List<GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+				.map(auth -> new SimpleGrantedAuthority(auth)).collect(Collectors.toList());
 		return StringUtil.isNullOrEmpty(user)
-				? null : new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+				? null : new UsernamePasswordAuthenticationToken(user, null, authorities);
 
 	}
 }

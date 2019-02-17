@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.util;
 
+import framgia.co.edu.ftrr.common.Division;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import framgia.co.edu.ftrr.entity.User;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ public class UserUtils {
         try {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(user, userDTO);
+            userDTO.setDivision(getDivision(user.getDivision()));
             return userDTO;
         } catch (Exception e) {
             logger.error("Error in userToUserDTO: " + e.getMessage());
@@ -38,6 +40,7 @@ public class UserUtils {
         try {
             User user = new User();
             BeanUtils.copyProperties(userDTO, user);
+            user.setDivision(userDTO.getDivision().getValue());
             return user;
         } catch (Exception e) {
             logger.error("Error in userDTOToUser: " + e.getMessage());
@@ -51,6 +54,19 @@ public class UserUtils {
         } catch (Exception e) {
             logger.error("Error in listUserDTOToListUser: " + e.getMessage());
             return Collections.emptyList();
+        }
+    }
+
+    private static Division getDivision(String source) {
+        try {
+            for (Division division: Division.values()) {
+                if (division.getValue().equals(source))
+                    return division;
+            }
+            return null;
+        } catch (Exception e) {
+            logger.error("Error in getDivision: " + e.getMessage());
+            return null;
         }
     }
 

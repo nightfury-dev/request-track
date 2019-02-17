@@ -5,9 +5,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -23,6 +20,7 @@ public class User implements java.io.Serializable {
 	private String email;
 	private String code;
 	private String name;
+	private String division;
 	private String phone;
 	private String gender;
 	private String role;
@@ -39,11 +37,13 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(String email, String code, String name, String phone, String gender, String role, Timestamp createdAt, Timestamp updatedAt,
+	public User(String email, String code, String name, String division, String phone, String gender, String role, Timestamp createdAt, Timestamp updatedAt,
 			String encryptedPassword, String resetPasswordToken, Timestamp resetPasswordSentAt, Timestamp rememberCreatedAt,
 			String confirmationToken, Timestamp confirmationAt, Timestamp confirmationSentAt) {
+		this.email = email;
 		this.code = code;
 		this.name = name;
+		this.division = division;
 		this.phone = phone;
 		this.gender = gender;
 		this.role = role;
@@ -93,6 +93,15 @@ public class User implements java.io.Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Column(name = "division", length = 45)
+	public String getDivision() {
+		return this.division;
+	}
+
+	public void setDivision(String division) {
+		this.division = division;
 	}
 
 	@Column(name = "phone", length = 45)

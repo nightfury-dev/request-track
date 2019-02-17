@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.util;
 
+import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -77,7 +78,7 @@ public class ExcelUtils {
             request.setLanguage(row.getCell(1).getStringCellValue());
             request.setQuantity((int) row.getCell(2).getNumericCellValue());
             request.setDeadline(row.getCell(3).getDateCellValue());
-            request.setStatus((byte) 0);
+            request.setStatus(RequestStatus.IN_PROGRESS);
 
             return request;
         } catch (Exception e) {

@@ -1,25 +1,42 @@
 package framgia.co.edu.ftrr.controller;
 
+import framgia.co.edu.ftrr.common.Roles;
+import framgia.co.edu.ftrr.dto.request.UserDTO;
 import framgia.co.edu.ftrr.service.RequestService;
+import framgia.co.edu.ftrr.service.UserService;
 import framgia.co.edu.ftrr.util.ExcelUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController("/requests")
+@RestController()
+@RequestMapping("/requests")
 public class RequestController {
 
     @Autowired
     private RequestService requestService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private ExcelUtils excelUtils;
+
+    @GetMapping
+    public ResponseEntity showRequests(Authentication authentication) {
+        UserDTO userDTO = userService.findByEmail(authentication.getName());
+        boolean isManager = userDTO.getRole().equals(Roles.M.getValue()) || userDTO.getRole().equals(Roles.SM.getValue());
+
+        // Is manager div
+        if (isManager)
+            return ResponseEntity.status(HttpStatus.OK).body(requestService.findByDivision(userDTO.getDivision().getValue()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND);
+    }
 
     @PostMapping("/import")
     public ResponseEntity importRequestTrainees(@RequestParam("multipartFile") MultipartFile multipartFile,

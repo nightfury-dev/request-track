@@ -1,7 +1,6 @@
 package framgia.co.edu.ftrr.entity;
 // Generated Feb 12, 2019 2:57:27 PM by Hibernate Tools 5.1.10.Final
 
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -30,7 +29,7 @@ public class Request implements java.io.Serializable {
 	private Integer quantity;
 	private Date deadline;
 	private String language;
-	private Byte status;
+	private String status;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 	private List<TraineeForRequest> traineeForRequests;
@@ -39,7 +38,7 @@ public class Request implements java.io.Serializable {
 	}
 
 	public Request(User createdBy, User updatedBy, String division, Integer quantity, Date deadline,
-			String language, Byte status, Timestamp createdAt, Timestamp updatedAt,
+			String language, String status, Timestamp createdAt, Timestamp updatedAt,
 				   List<TraineeForRequest> traineeForRequests) {
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
@@ -124,11 +123,11 @@ public class Request implements java.io.Serializable {
 	}
 
 	@Column(name = "status")
-	public Byte getStatus() {
+	public String getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Byte status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -143,7 +142,7 @@ public class Request implements java.io.Serializable {
 	}
 
 	@Column(name = "updated_at", length = 19)
-	@UpdateTimestamp
+	@LastModifiedDate
 	public Timestamp getUpdatedAt() {
 		return this.updatedAt;
 	}

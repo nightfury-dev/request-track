@@ -1,13 +1,13 @@
 package framgia.co.edu.ftrr.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.entity.TraineeForRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +24,9 @@ public class RequestDTO {
     private Integer quantity;
     private Date deadline;
     private String language;
-    private Byte status;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private RequestStatus status;
+    private String createdAt;
+    private String  updatedAt;
     @JsonIgnore
     private List<TraineeForRequest> traineeForRequests;
 

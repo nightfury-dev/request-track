@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.util;
 
+import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.entity.Request;
 import org.slf4j.Logger;
@@ -18,6 +19,9 @@ public class RequestUtils {
         try {
             RequestDTO requestDTO = new RequestDTO();
             BeanUtils.copyProperties(request, requestDTO);
+            requestDTO.setStatus(getRequestStatus(request.getStatus()));
+            requestDTO.setCreatedAt(DatetimeUtils.timestampToString(request.getCreatedAt()));
+            requestDTO.setUpdatedAt(DatetimeUtils.timestampToString(request.getUpdatedAt()));
             return requestDTO;
         } catch (Exception e) {
             logger.error("Error in requestToRequestDTO: " + e.getMessage());
@@ -38,6 +42,9 @@ public class RequestUtils {
         try {
             Request request = new Request();
             BeanUtils.copyProperties(requestDTO, request);
+            request.setStatus(requestDTO.getStatus().getValue());
+            request.setCreatedAt(DatetimeUtils.stringToTimestamp(requestDTO.getCreatedAt()));
+            request.setCreatedAt(DatetimeUtils.stringToTimestamp(requestDTO.getUpdatedAt()));
             return request;
         } catch (Exception e) {
             logger.error("Error in requestDTOToRequest: " + e.getMessage());
@@ -51,6 +58,19 @@ public class RequestUtils {
         } catch (Exception e) {
             logger.error("Error in listRequestDTOToListRequest: " + e.getMessage());
             return Collections.emptyList();
+        }
+    }
+
+    private static RequestStatus getRequestStatus(String source) {
+        try {
+            for (RequestStatus requestStatus: RequestStatus.values()) {
+                if (requestStatus.getValue().equals(source))
+                    return requestStatus;
+            }
+            return null;
+        } catch (Exception e) {
+            logger.error("Error in getRequestStatus: " + e.getMessage());
+            return null;
         }
     }
 

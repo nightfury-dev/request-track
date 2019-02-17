@@ -3,8 +3,10 @@ package framgia.co.edu.ftrr.config;
 import framgia.co.edu.ftrr.config.filter.JWTAuthenticationFilter;
 import framgia.co.edu.ftrr.config.filter.JWTLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,15 +19,19 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	DataSource dataSource;
+	private DataSource dataSource;
+
+	@Value("${auth.request}")
+	private String authRequest;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers("/").permitAll()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers("/requests**").hasAnyRole("M,SM,HR,EC")
+				.antMatchers("/requests**").hasAnyAuthority(authRequest)
 				.anyRequest().authenticated().and()
 				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
@@ -35,8 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select email,encrypted_password, enabled from users where email=?")
-				.authoritiesByUsernameQuery("select email, role from users where email=?")
+				.usersByUsernameQuery("select email,encrypted_password,enabled from users where email=?")
+				.authoritiesByUsernameQuery("select email,role from users where email=?")
 				.passwordEncoder(passwordEncoder());
 	}
 

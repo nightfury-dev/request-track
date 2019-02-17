@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.dto.request;
 
+import framgia.co.edu.ftrr.common.Division;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class UserDTO {
     private String email;
     private String code;
     private String name;
+    private Division division;
     private String phone;
     private String gender;
     private String role;

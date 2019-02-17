@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,4 +49,13 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
+    @Override
+    public List<RequestDTO> findByDivision(String division) {
+        try {
+            return RequestUtils.listRequestToListRequestDTO(requestRepository.findByDivision(division));
+        } catch (Exception e) {
+            logger.error("Error in findByDivision: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
 }
