@@ -2,10 +2,22 @@ package framgia.co.edu.ftrr.common;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum RequestStatus {
+public enum  RequestStatus {
+    // Request just created
+    WAITING("Waiting"),
+    // Request confirmed between division and education
+    CONFIRMED("Confirmed"),
 
-	WAITING("Waiting"), CONFIRMED("Confirmed"), IN_PROGRESS("In progress"), INTERVIEW("Interview"), DONE("Done"),
-	PENDING("Pending"), REJECT("Reject");
+    // Scheduling for interview
+    IN_PROGRESS("In progress"),
+    // Interviewing
+    INTERVIEW("Interview"),
+    // Finished interview
+    DONE("Done"),
+    // Education doesn't has trainees or division has no need
+    PENDING("Pending"),
+    // Education reject request
+    REJECT("Reject");
 
 	private String value;
 

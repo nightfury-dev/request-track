@@ -32,4 +32,14 @@ public class DatetimeUtils {
         }
     }
 
+    public static String getNextMonth(Integer year, Integer month) {
+        if (month == 12) {
+            year++;
+            month = 1;
+        } else {
+            month++;
+        }
+        return year + "-" + month;
+    }
+
 }

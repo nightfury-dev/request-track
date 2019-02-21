@@ -36,37 +36,43 @@ public class RequestController {
 	private ExcelUtils excelUtils;
 
 	@GetMapping
-	public ResponseEntity showRequests(Authentication authentication) {
+	public ResponseEntity showRequests(Authentication authentication,
+									   @RequestParam(value = "division", required = false) String division,
+									   @RequestParam(value = "from", required = false) String from,
+									   @RequestParam(value = "to", required = false) String to) {
 		UserDTO userDTO = userService.findByEmail(authentication.getName());
-		boolean isManager = userDTO.getRole().equals(Roles.M.getValue())
-				|| userDTO.getRole().equals(Roles.SM.getValue());
+		boolean isManager = Roles.M.getValue().equals(userDTO.getRole()) || Roles.SM.getValue().equals(userDTO.getRole());
+		boolean isCoordinator = Roles.EC.getValue().equals(userDTO.getRole());
 
 		// Is manager div
 		if (isManager)
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(requestService.findByDivision(userDTO.getDivision().getValue()));
+			return ResponseEntity.status(HttpStatus.OK).body(requestService.findByDivision(userDTO.getDivision().getValue()));
+
+		// Is coordinator
+		if (isCoordinator)
+			return ResponseEntity.status(HttpStatus.OK).body(requestService.search(division, from, to));
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND);
 	}
 
-	@PostMapping("/import")
-	public ResponseEntity importRequestTrainees(@RequestParam("multipartFile") MultipartFile multipartFile,
-			HttpServletRequest request) {
-		try {
-			String uploadRootPath = request.getServletContext().getRealPath("upload");
-			JSONObject errors = excelUtils.checkImportRequestTrainees(multipartFile, uploadRootPath);
+    @PostMapping("/import")
+    public ResponseEntity importRequestTrainees(@RequestParam("multipartFile") MultipartFile multipartFile,
+                                                HttpServletRequest request) {
+        try {
+            String uploadRootPath = request.getServletContext().getRealPath("upload");
+            JSONObject errors = excelUtils.checkImportRequestTrainees(multipartFile, uploadRootPath);
 
-			// If file import has errors
-			if (errors != null && !errors.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errors);
-			}
+            // If file import has errors
+            if (errors != null && !errors.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errors);
+            }
 
-			requestService.insertListRequest(excelUtils.listRequestFromExcel(multipartFile, uploadRootPath));
-			return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-		}
-	}
+            requestService.insertListRequest(excelUtils.listRequestFromExcel(multipartFile, uploadRootPath));
+            return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 	@PutMapping("/{id}/edit")
 	public ResponseEntity<RequestDTO> editRequest(@PathVariable("id") Integer id, @RequestBody RequestDTO requestDTO) {
@@ -87,4 +93,5 @@ public class RequestController {
 			return new ResponseEntity<RequestDTO>(requestDTOResult, HttpStatus.OK);
 		}
 	}
+
 }

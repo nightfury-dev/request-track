@@ -1,12 +1,12 @@
 package framgia.co.edu.ftrr.service.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.entity.Request;
 import framgia.co.edu.ftrr.repository.RequestRepository;
 import framgia.co.edu.ftrr.service.RequestService;
 import framgia.co.edu.ftrr.util.RequestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,8 @@ public class RequestServiceImpl implements RequestService {
 
 	@Value("${error.insert.request_trainees}")
 	private String insertRequestError;
+    @Value("${invalid.month}")
+    private String invalidMonth;
 
 	@Override
 	@Transactional
@@ -95,4 +97,42 @@ public class RequestServiceImpl implements RequestService {
 			return null;
 		}
 	}
+
+    @Override
+    public List<RequestDTO> search(String division, String from, String to) {
+        try {
+            Integer fromYear = null;
+            Integer fromMonth = null;
+            Integer toYear = null;
+            Integer toMonth = null;
+
+            // month pattern: [yyyy-MM]
+            if (StringUtils.isNotBlank(from)) {
+                String[] temps = from.split("-");
+                fromYear = Integer.parseInt(temps[0]);
+                fromMonth = Integer.parseInt(temps[1]);
+            }
+
+            // month pattern: [yyyy-MM]
+            if (StringUtils.isNotBlank(to)) {
+                String[] temps = to.split("-");
+                toYear = Integer.parseInt(temps[0]);
+                toMonth = Integer.parseInt(temps[1]);
+            }
+
+            if (fromMonth < 1 || fromMonth > 12 || toMonth < 1 || toMonth > 12)
+                throw new Exception(invalidMonth);
+
+            if (fromYear == toYear && fromMonth == toMonth) {
+                toYear = null;
+                toMonth = null;
+            }
+
+            return RequestUtils.listRequestToListRequestDTO(requestRepository.search(division, fromYear, fromMonth, toYear, toMonth));
+        } catch (Exception e) {
+            logger.error("Error in search: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
 }

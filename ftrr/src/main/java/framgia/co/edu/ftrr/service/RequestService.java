@@ -12,8 +12,10 @@ public interface RequestService {
 
 	List<RequestDTO> findByDivision(String division);
 	
-	public RequestDTO editRequest(int id, RequestDTO requestDTO);
+	RequestDTO editRequest(int id, RequestDTO requestDTO);
 	
-	public RequestDTO confirmRequest(int id);
+	RequestDTO confirmRequest(int id);
+
+    List<RequestDTO> search(String division, String from, String to);
 
 }
