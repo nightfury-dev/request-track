@@ -42,15 +42,26 @@ public class RequestController {
 									   @RequestParam(value = "to", required = false) String to) {
 		UserDTO userDTO = userService.findByEmail(authentication.getName());
 		boolean isManager = Roles.M.getValue().equals(userDTO.getRole()) || Roles.SM.getValue().equals(userDTO.getRole());
+		boolean isEduManager = Roles.ESM.getValue().equals(userDTO.getRole());
 		boolean isCoordinator = Roles.EC.getValue().equals(userDTO.getRole());
+		boolean isHR = Roles.HR.getValue().equals(userDTO.getRole());
 
 		// Is manager div
 		if (isManager)
 			return ResponseEntity.status(HttpStatus.OK).body(requestService.findByDivision(userDTO.getDivision().getValue()));
 
+		// Is Education manager
+		if (isEduManager)
+			return ResponseEntity.status(HttpStatus.OK).body(requestService.getAll());
+
 		// Is coordinator
 		if (isCoordinator)
 			return ResponseEntity.status(HttpStatus.OK).body(requestService.search(division, from, to));
+
+		// Is HR
+		if (isHR) {
+			return ResponseEntity.status(HttpStatus.OK).body(requestService.getAllByHR());
+		}
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND);
 	}

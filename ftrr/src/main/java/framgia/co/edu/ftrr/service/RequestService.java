@@ -18,4 +18,8 @@ public interface RequestService {
 
     List<RequestDTO> search(String division, String from, String to);
 
+    List<RequestDTO> getAllByHR();
+
+	List<RequestDTO> getAll();
+
 }

@@ -12,4 +12,9 @@ public interface RequestRepository  extends JpaRepository<Request, Integer>, Req
     @Query("FROM Request a WHERE a.division = :division ORDER BY a.status, a.createdAt")
     List<Request> findByDivision(@Param("division") String division);
 
+    @Query("FROM Request a WHERE a.status IN ('Interview', 'Done') ORDER BY a.status, a.createdAt")
+    List<Request> getAllByHR();
+
+    List<Request> findAllByOrderByStatusAscCreatedAtAsc();
+
 }

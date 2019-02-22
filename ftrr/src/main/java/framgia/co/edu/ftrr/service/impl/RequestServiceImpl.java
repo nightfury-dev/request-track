@@ -5,6 +5,7 @@ import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.entity.Request;
 import framgia.co.edu.ftrr.repository.RequestRepository;
 import framgia.co.edu.ftrr.service.RequestService;
+import framgia.co.edu.ftrr.util.DatetimeUtils;
 import framgia.co.edu.ftrr.util.RequestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -120,7 +121,7 @@ public class RequestServiceImpl implements RequestService {
                 toMonth = Integer.parseInt(temps[1]);
             }
 
-            if (fromMonth < 1 || fromMonth > 12 || toMonth < 1 || toMonth > 12)
+            if (DatetimeUtils.isNotValidMonths(fromMonth, toMonth))
                 throw new Exception(invalidMonth);
 
             if (fromYear == toYear && fromMonth == toMonth) {
@@ -135,4 +136,23 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
+	@Override
+	public List<RequestDTO> getAllByHR() {
+		try {
+			return RequestUtils.listRequestToListRequestDTO(requestRepository.getAllByHR());
+		} catch (Exception e) {
+			logger.error("Error in getAllByHR: " + e.getMessage());
+			return Collections.emptyList();
+		}
+	}
+
+	@Override
+	public List<RequestDTO> getAll() {
+		try {
+			return RequestUtils.listRequestToListRequestDTO(requestRepository.findAllByOrderByStatusAscCreatedAtAsc());
+		} catch (Exception e) {
+			logger.error("Error in getAll: " + e.getMessage());
+			return Collections.emptyList();
+		}
+	}
 }

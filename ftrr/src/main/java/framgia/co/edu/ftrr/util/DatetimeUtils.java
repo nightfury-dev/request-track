@@ -42,4 +42,16 @@ public class DatetimeUtils {
         return year + "-" + month;
     }
 
+    public static boolean isNotValidMonths(Integer... months) {
+        boolean result = false;
+        for (Integer month: months) {
+            if (month == null) {
+                result = result || false;
+                continue;
+            }
+            result = result || month < 1 || month > 12;
+        }
+        return result;
+    }
+
 }
