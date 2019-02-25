@@ -21,14 +21,14 @@ public class Notification implements java.io.Serializable {
 	private Date createdAt;
 	private Date updatedAt;
 	private Date readedAt;
-	private Integer userRequest;
+	private User userRequest;
 	private Date deletedAt;
 
 	public Notification() {
 	}
 
 	public Notification(User user, String content, String status, Integer urlId, Date createdAt, Date updatedAt,
-			Date readedAt, Integer userRequest, Date deletedAt) {
+			Date readedAt, User userRequest, Date deletedAt) {
 		this.user = user;
 		this.content = content;
 		this.status = status;
@@ -118,12 +118,13 @@ public class Notification implements java.io.Serializable {
 		this.readedAt = readedAt;
 	}
 
-	@Column(name = "user_request")
-	public Integer getUserRequest() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_request")
+	public User getUserRequest() {
 		return this.userRequest;
 	}
 
-	public void setUserRequest(Integer userRequest) {
+	public void setUserRequest(User userRequest) {
 		this.userRequest = userRequest;
 	}
 
