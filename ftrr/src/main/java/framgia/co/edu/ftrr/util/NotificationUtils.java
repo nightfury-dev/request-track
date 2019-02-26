@@ -14,7 +14,7 @@ public class NotificationUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationUtils.class);
 
-    public static NotificationDTO NotificationToNotificationDTO(Notification notification) {
+    public static NotificationDTO notificationToNotificationDTO(Notification notification) {
         try {
             NotificationDTO notificationDTO = new NotificationDTO();
             BeanUtils.copyProperties(notification, notificationDTO);
@@ -29,14 +29,14 @@ public class NotificationUtils {
 
     public static List<NotificationDTO> listNotificationToListNotificationDTO(List<Notification> notifications) {
         try {
-            return notifications.stream().map(notification -> NotificationToNotificationDTO(notification)).collect(Collectors.toList());
+            return notifications.stream().map(notification -> notificationToNotificationDTO(notification)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error in listNotificationToListNotificationDTO: " + e.getMessage());
             return Collections.emptyList();
         }
     }
 
-    public static Notification NotificationDTOToNotification(NotificationDTO NotificationDTO) {
+    public static Notification notificationDTOToNotification(NotificationDTO NotificationDTO) {
         try {
             Notification Notification = new Notification();
             BeanUtils.copyProperties(NotificationDTO, Notification);
@@ -49,7 +49,7 @@ public class NotificationUtils {
 
     public static List<Notification> listNotificationDTOToListNotification(List<NotificationDTO> notificationDTOs) {
         try {
-            return notificationDTOs.stream().map(notificationDTO -> NotificationDTOToNotification(notificationDTO)).collect(Collectors.toList());
+            return notificationDTOs.stream().map(notificationDTO -> notificationDTOToNotification(notificationDTO)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error in listNotificationDTOToListNotification: " + e.getMessage());
             return Collections.emptyList();

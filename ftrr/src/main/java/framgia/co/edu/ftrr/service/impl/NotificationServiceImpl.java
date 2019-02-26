@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,5 +62,15 @@ public class NotificationServiceImpl implements NotificationService {
         if (request == null || StringUtils.isBlank(request.getLanguage())) return Collections.emptyList();
         List<ScopeTraining> scopeTrainings = scopeTrainingRepository.getAllByLanguage(request.getLanguage());
         return scopeTrainings.stream().map(ScopeTraining::getUser).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NotificationDTO> getListNotificationByUser(String email) {
+        try {
+            List<Notification> list = notificationRepository.findAllByUser(email);
+            return NotificationUtils.listNotificationToListNotificationDTO(list);
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 }
