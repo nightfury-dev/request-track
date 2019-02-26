@@ -3,8 +3,13 @@ package framgia.co.edu.ftrr.common;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Roles {
-    M("Manager"), SM("Section Manager"), ESM("Section Manager Education"),
-    HR("Human Resource"), EC("Education Coordinator"), TN("Trainer");
+    SM("Section Manager"),
+    DM("Divison Manager"),
+    HR("Human Resource"),
+    EC("Education Coordinator"),
+    TRAINER("Trainer"),
+    GL("Group leader"),
+    OTHER("Employee");
 
     private String value;
 

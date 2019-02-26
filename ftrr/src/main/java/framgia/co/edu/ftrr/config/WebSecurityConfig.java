@@ -1,9 +1,9 @@
 package framgia.co.edu.ftrr.config;
 
+import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.config.filter.JWTAuthenticationFilter;
 import framgia.co.edu.ftrr.config.filter.JWTLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,15 +26,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-	@Value("${auth.request}")
-	private String authRequest;
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/").permitAll()
+		http.csrf().disable().authorizeRequests()
+				.antMatchers("/").permitAll()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers("/requests**").hasAnyAuthority(authRequest)
-				.anyRequest().authenticated().and()
+				.and()
+				.authorizeRequests().antMatchers("/div/**").hasAnyRole("DM", "SM")
+				.and()
+				.authorizeRequests().antMatchers("/edu/**").hasAnyRole("EC", "TRAINER")
+				.and()
+				.authorizeRequests().antMatchers("/hr/**").hasRole(Roles.HR.toString())
+				.and()
+				.authorizeRequests().antMatchers("/requests/**/interviews/**").hasRole(Roles.GL.toString())
+				.anyRequest().authenticated()
+				.and()
 				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
