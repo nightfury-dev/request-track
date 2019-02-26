@@ -22,4 +22,6 @@ public interface RequestService {
 
 	List<RequestDTO> getAll();
 
+	boolean isRequestConfirmed(Integer id);
+
 }

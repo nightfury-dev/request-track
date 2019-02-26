@@ -1,6 +1,11 @@
 package framgia.co.edu.ftrr.entity;
 // Generated Feb 12, 2019 2:57:27 PM by Hibernate Tools 5.1.10.Final
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,6 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Entity
 @Table(name = "notifications", catalog = "FTRR")
+@EntityListeners(AuditingEntityListener.class)
 public class Notification implements java.io.Serializable {
 
 	private Integer id;
@@ -90,6 +96,7 @@ public class Notification implements java.io.Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", length = 19)
+	@CreatedDate
 	public Date getCreatedAt() {
 		return this.createdAt;
 	}
@@ -100,6 +107,7 @@ public class Notification implements java.io.Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at", length = 19)
+	@LastModifiedDate
 	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
@@ -120,6 +128,7 @@ public class Notification implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_request")
+	@CreatedBy
 	public User getUserRequest() {
 		return this.userRequest;
 	}

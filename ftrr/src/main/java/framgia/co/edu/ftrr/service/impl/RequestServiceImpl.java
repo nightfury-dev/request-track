@@ -155,4 +155,8 @@ public class RequestServiceImpl implements RequestService {
 			return Collections.emptyList();
 		}
 	}
+
+	public boolean isRequestConfirmed(Integer id){
+		return requestRepository.existsByIdAndStatus(id, RequestStatus.CONFIRMED.getValue());
+	}
 }
