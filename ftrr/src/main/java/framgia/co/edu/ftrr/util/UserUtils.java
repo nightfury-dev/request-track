@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserUtils {
@@ -29,7 +30,8 @@ public class UserUtils {
 
     public static List<UserDTO> listUserToListUserDTO(List<User> users) {
         try {
-            return users.stream().map(user -> userToUserDTO(user)).collect(Collectors.toList());
+            return Optional.ofNullable(users).orElseGet(Collections::emptyList)
+                    .stream().map(user -> userToUserDTO(user)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error in listUserToListUserDTO: " + e.getMessage());
             return Collections.emptyList();
@@ -50,7 +52,8 @@ public class UserUtils {
 
     public static List<User> listUserDTOToListUser(List<UserDTO> userDTOs) {
         try {
-            return userDTOs.stream().map(userDTO -> userDTOToUser(userDTO)).collect(Collectors.toList());
+            return Optional.ofNullable(userDTOs).orElseGet(Collections::emptyList)
+                    .stream().map(userDTO -> userDTOToUser(userDTO)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error in listUserDTOToListUser: " + e.getMessage());
             return Collections.emptyList();
@@ -59,7 +62,7 @@ public class UserUtils {
 
     private static Division getDivision(String source) {
         try {
-            for (Division division: Division.values()) {
+            for (Division division : Division.values()) {
                 if (division.getValue().equals(source))
                     return division;
             }

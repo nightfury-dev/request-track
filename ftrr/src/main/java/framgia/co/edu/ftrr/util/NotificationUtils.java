@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class NotificationUtils {
@@ -29,7 +30,8 @@ public class NotificationUtils {
 
     public static List<NotificationDTO> listNotificationToListNotificationDTO(List<Notification> notifications) {
         try {
-            return notifications.stream().map(notification -> notificationToNotificationDTO(notification)).collect(Collectors.toList());
+            return Optional.ofNullable(notifications).orElseGet(Collections::emptyList)
+                    .stream().map(notification -> notificationToNotificationDTO(notification)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error in listNotificationToListNotificationDTO: " + e.getMessage());
             return Collections.emptyList();
@@ -49,7 +51,8 @@ public class NotificationUtils {
 
     public static List<Notification> listNotificationDTOToListNotification(List<NotificationDTO> notificationDTOs) {
         try {
-            return notificationDTOs.stream().map(notificationDTO -> notificationDTOToNotification(notificationDTO)).collect(Collectors.toList());
+            return Optional.ofNullable(notificationDTOs).orElseGet(Collections::emptyList)
+                    .stream().map(notificationDTO -> notificationDTOToNotification(notificationDTO)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error in listNotificationDTOToListNotification: " + e.getMessage());
             return Collections.emptyList();

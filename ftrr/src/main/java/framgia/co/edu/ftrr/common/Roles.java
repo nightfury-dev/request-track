@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Roles {
     SM("Section Manager"),
-    DM("Divison Manager"),
+    DM("Division Manager"),
     HR("Human Resource"),
     EC("Education Coordinator"),
     TRAINER("Trainer"),

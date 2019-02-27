@@ -28,13 +28,14 @@ public class Trainee implements java.io.Serializable {
 	private String language;
 	private List<ResultTraining> resultTrainingses;
 	private List<ResultInterview> resultInterviewses;
+	private User trainer;
 
 	public Trainee() {
 	}
 
 	public Trainee(Level level, User user, String name, String email, Date startedTime, String office,
 			String status, Date createdAt, Date updatedAt, Date deletedAt, String language,
-				   List<ResultTraining> resultTrainingses, List<ResultInterview> resultInterviewses) {
+				   List<ResultTraining> resultTrainingses, List<ResultInterview> resultInterviewses, User trainer) {
 		this.level = level;
 		this.user = user;
 		this.name = name;
@@ -48,6 +49,7 @@ public class Trainee implements java.io.Serializable {
 		this.language = language;
 		this.resultTrainingses = resultTrainingses;
 		this.resultInterviewses = resultInterviewses;
+		this.trainer = trainer;
 	}
 
 	@Id
@@ -182,6 +184,16 @@ public class Trainee implements java.io.Serializable {
 
 	public void setResultInterviewses(List<ResultInterview> resultInterviewses) {
 		this.resultInterviewses = resultInterviewses;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "trainer_id")
+	public User getTrainer() {
+		return this.trainer;
+	}
+
+	public void setTrainer(User trainer) {
+		this.trainer= trainer;
 	}
 
 }
