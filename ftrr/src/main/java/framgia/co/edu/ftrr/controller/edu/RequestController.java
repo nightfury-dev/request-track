@@ -1,4 +1,4 @@
-package framgia.co.edu.ftrr.controller.ec;
+package framgia.co.edu.ftrr.controller.edu;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

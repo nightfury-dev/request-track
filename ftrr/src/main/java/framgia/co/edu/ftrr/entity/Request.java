@@ -165,7 +165,7 @@ public class Request implements java.io.Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "requests")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "request")
 	public List<TraineeForRequest> getTraineeForRequests() {
 		return this.traineeForRequests;
 	}

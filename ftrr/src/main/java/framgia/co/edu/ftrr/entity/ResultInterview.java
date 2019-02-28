@@ -16,7 +16,7 @@ public class ResultInterview implements java.io.Serializable {
 	private Integer id;
 	private ResultType resultType;
 	private TitleInterview titleInterview;
-	private TraineeForRequest trainees;
+	private TraineeForRequest traineeForRequest;
 	private User createdBy;
 	private User updatedBy;
 	private String content;
@@ -27,12 +27,12 @@ public class ResultInterview implements java.io.Serializable {
 	public ResultInterview() {
 	}
 
-	public ResultInterview(ResultType resultType, TitleInterview titleInterview, TraineeForRequest trainees,
+	public ResultInterview(ResultType resultType, TitleInterview titleInterview, TraineeForRequest traineeForRequest,
 			User createdBy, User updatedBy, String content, String result, Date createdAt,
 			Date updatedAt) {
 		this.resultType = resultType;
 		this.titleInterview = titleInterview;
-		this.trainees = trainees;
+		this.traineeForRequest = traineeForRequest;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
 		this.content = content;
@@ -74,12 +74,12 @@ public class ResultInterview implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "trainee_for_request_id")
-	public TraineeForRequest getTrainees() {
-		return this.trainees;
+	public TraineeForRequest getTraineeForRequest() {
+		return this.traineeForRequest;
 	}
 
-	public void setTrainees(TraineeForRequest trainees) {
-		this.trainees = trainees;
+	public void setTraineeForRequest(TraineeForRequest traineeForRequest) {
+		this.traineeForRequest = traineeForRequest;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

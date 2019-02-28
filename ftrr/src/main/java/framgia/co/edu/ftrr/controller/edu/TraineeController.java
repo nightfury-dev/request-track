@@ -1,4 +1,4 @@
-package framgia.co.edu.ftrr.controller.ec;
+package framgia.co.edu.ftrr.controller.edu;
 
 import framgia.co.edu.ftrr.dto.request.TraineeDTO;
 import org.slf4j.Logger;
