@@ -20,8 +20,8 @@ public class RequestUtils {
             RequestDTO requestDTO = new RequestDTO();
             BeanUtils.copyProperties(request, requestDTO);
             requestDTO.setStatus(getRequestStatus(request.getStatus()));
-            requestDTO.setCreatedAt(DatetimeUtils.timestampToString(request.getCreatedAt()));
-            requestDTO.setUpdatedAt(DatetimeUtils.timestampToString(request.getUpdatedAt()));
+            requestDTO.setCreatedAt(request.getCreatedAt());
+            requestDTO.setUpdatedAt(request.getUpdatedAt());
             return requestDTO;
         } catch (Exception e) {
             logger.error("Error in requestToRequestDTO: " + e.getMessage());
@@ -43,8 +43,8 @@ public class RequestUtils {
             Request request = new Request();
             BeanUtils.copyProperties(requestDTO, request);
             request.setStatus(requestDTO.getStatus().getValue());
-            request.setCreatedAt(DatetimeUtils.stringToTimestamp(requestDTO.getCreatedAt()));
-            request.setCreatedAt(DatetimeUtils.stringToTimestamp(requestDTO.getUpdatedAt()));
+            request.setCreatedAt(requestDTO.getCreatedAt());
+            request.setCreatedAt(requestDTO.getUpdatedAt());
             return request;
         } catch (Exception e) {
             logger.error("Error in requestDTOToRequest: " + e.getMessage());

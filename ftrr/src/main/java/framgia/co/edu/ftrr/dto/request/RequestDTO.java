@@ -29,7 +29,7 @@ public class RequestDTO implements java.io.Serializable {
     private Date deadline;
     private String language;
     private RequestStatus status;
-    private String createdAt;
-    private String updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
 }

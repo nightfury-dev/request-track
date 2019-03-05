@@ -19,7 +19,7 @@ public class NotificationUtils {
         try {
             NotificationDTO notificationDTO = new NotificationDTO();
             BeanUtils.copyProperties(notification, notificationDTO);
-            notificationDTO.setUser(notification.getUsers());
+            notificationDTO.setUser(notification.getUser());
             notificationDTO.setUserRequest(notification.getUserRequest());
             return notificationDTO;
         } catch (Exception e) {

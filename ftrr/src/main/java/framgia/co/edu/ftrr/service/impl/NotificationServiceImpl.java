@@ -48,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
                 Notification notification = new Notification();
                 notification.setContent(notificationContent);
                 notification.setStatus("0");
-                notification.setUsers(user);
+                notification.setUser(user);
                 listNotification.add(notification);
             }
             return NotificationUtils.listNotificationToListNotificationDTO(notificationRepository.saveAll(listNotification));
