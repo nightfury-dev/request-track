@@ -25,4 +25,13 @@ public class TraineeServiceImpl implements TraineeService {
             return Collections.emptyList();
         }
     }
+
+    @Override
+    public TraineeDTO findById(Integer id) {
+        try {
+            return TraineeUtils.traineeToTraineeDTO(traineeRepository.findById(id).orElse(null));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

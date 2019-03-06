@@ -21,7 +21,7 @@ public class Trainee implements java.io.Serializable {
     private Level level;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private User user;
+    private User updatedBy;
     @Column(name = "name")
     private String name;
     @Column(name = "email")

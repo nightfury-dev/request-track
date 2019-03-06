@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,4 +30,17 @@ public class TraineeController extends EcController {
         }
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<TraineeDTO> getTraineeById(@PathVariable Integer id) {
+        try {
+            TraineeDTO trainee = getTraineeService().findById(id);
+
+            if (trainee == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+            return new ResponseEntity<>(trainee, HttpStatus.OK);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

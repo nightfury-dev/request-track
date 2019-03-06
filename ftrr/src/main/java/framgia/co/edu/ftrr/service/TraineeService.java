@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface TraineeService {
     List<TraineeDTO> loadTrainees();
+
+    TraineeDTO findById(Integer id);
 }
