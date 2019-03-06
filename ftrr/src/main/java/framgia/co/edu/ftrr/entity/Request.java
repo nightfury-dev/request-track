@@ -40,7 +40,7 @@ public class Request implements java.io.Serializable {
     @Column(name = "language")
     private String language;
     @Column(name = "status")
-    private String status;
+    private Integer status;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
     @CreatedDate

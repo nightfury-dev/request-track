@@ -26,7 +26,7 @@ public class Notification implements java.io.Serializable {
 	@Column(name = "content")
 	private String content;
 	@Column(name = "status", length = 45)
-	private String status;
+	private Integer status;
 	@Column(name = "url_id")
 	private Integer urlId;
 	@Temporal(TemporalType.TIMESTAMP)

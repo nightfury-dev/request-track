@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.service.impl;
 
+import framgia.co.edu.ftrr.common.NotificationStatus;
 import framgia.co.edu.ftrr.dto.request.NotificationDTO;
 import framgia.co.edu.ftrr.entity.Notification;
 import framgia.co.edu.ftrr.entity.Request;
@@ -47,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
             for (User user : listUser) {
                 Notification notification = new Notification();
                 notification.setContent(notificationContent);
-                notification.setStatus("0");
+                notification.setStatus(NotificationStatus.UNSEEN.getCode());
                 notification.setUser(user);
                 listNotification.add(notification);
             }

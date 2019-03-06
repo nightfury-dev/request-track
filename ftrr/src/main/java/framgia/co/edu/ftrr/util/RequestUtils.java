@@ -42,7 +42,7 @@ public class RequestUtils {
         try {
             Request request = new Request();
             BeanUtils.copyProperties(requestDTO, request);
-            request.setStatus(requestDTO.getStatus().getValue());
+            request.setStatus(requestDTO.getStatus().getCode());
             request.setCreatedAt(requestDTO.getCreatedAt());
             request.setCreatedAt(requestDTO.getUpdatedAt());
             return request;
@@ -61,10 +61,10 @@ public class RequestUtils {
         }
     }
 
-    private static RequestStatus getRequestStatus(String source) {
+    private static RequestStatus getRequestStatus(Integer source) {
         try {
             for (RequestStatus requestStatus: RequestStatus.values()) {
-                if (requestStatus.getValue().equals(source))
+                if (requestStatus.getCode().equals(source))
                     return requestStatus;
             }
             return null;

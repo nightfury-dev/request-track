@@ -91,7 +91,7 @@ public class RequestServiceImpl implements RequestService {
 			if (request == null || !request.getStatus().equals(RequestStatus.WAITING.getValue()))
 				return null;
 
-			request.setStatus(RequestStatus.CONFIRMED.getValue());
+			request.setStatus(RequestStatus.CONFIRMED.getCode());
 			return RequestUtils.requestToRequestDTO(requestRepository.save(request));
 		} catch (Exception e) {
 			logger.error("Error in confirmRequest: " + e.getMessage());
