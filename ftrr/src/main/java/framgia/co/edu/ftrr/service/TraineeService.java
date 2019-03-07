@@ -10,4 +10,5 @@ public interface TraineeService {
     List<TraineeDTO> loadTrainees();
 
     TraineeDTO findById(Integer id);
+
 }

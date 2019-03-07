@@ -1,6 +1,9 @@
 package framgia.co.edu.ftrr.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +24,7 @@ public class Trainee implements java.io.Serializable {
     private Level level;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
+    @LastModifiedBy
     private User updatedBy;
     @Column(name = "name")
     private String name;
@@ -35,9 +39,11 @@ public class Trainee implements java.io.Serializable {
     private Integer status;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
+    @CreatedDate
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", length = 19)
+    @LastModifiedDate
     private Date updatedAt;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at", length = 19)

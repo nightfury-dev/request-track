@@ -15,8 +15,7 @@ import java.util.List;
 
 @RestController("EcTraineeController")
 @RequestMapping("/edu/trainees")
-
-public class TraineeController extends EcController {
+public class TraineeController extends EduController {
     private static final Logger logger = LoggerFactory.getLogger(TraineeController.class);
 
     @GetMapping
@@ -43,4 +42,5 @@ public class TraineeController extends EcController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

@@ -12,7 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RestController("EcRequestController")
 @RequestMapping("/edu/requests")
 @PreAuthorize("hasRole('EC')")
-public class RequestController extends EcController {
+public class RequestController extends EduController {
     private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
 
     @GetMapping

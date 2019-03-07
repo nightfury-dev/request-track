@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController("EcTraineeForRequestController")
 @RequestMapping("/edu/traineeforrequests")
-public class TraineeForRequestController extends EcController {
+public class TraineeForRequestController extends EduController {
     private static final Logger logger = LoggerFactory.getLogger(TraineeForRequestController.class);
 
     @PostMapping

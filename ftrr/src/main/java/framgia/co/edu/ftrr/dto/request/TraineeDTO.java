@@ -28,7 +28,7 @@ public class TraineeDTO implements java.io.Serializable {
     private Date updatedAt;
     private Date deletedAt;
     private String language;
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "trainee", "updatedBy","createdBy"})
     private List<ResultTraining> resultTrainings;
     @JsonIgnore
     private List<ResultInterview> resultInterviews;
