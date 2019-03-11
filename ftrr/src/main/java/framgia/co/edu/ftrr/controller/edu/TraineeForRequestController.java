@@ -17,7 +17,7 @@ public class TraineeForRequestController extends EduController {
     private static final Logger logger = LoggerFactory.getLogger(TraineeForRequestController.class);
 
     @PostMapping
-    @PreAuthorize("hasRole('EC')")
+    @PreAuthorize("@roleServiceImpl.isEc()")
     public ResponseEntity<TraineeForRequestDTO> createTraineeForRequest(@RequestBody TraineeForRequestDTO traineeForRequest) {
         try {
             TraineeForRequestDTO traineeForRequestDTO = getTraineeForRequestService().saveTraineeForRequest(traineeForRequest);

@@ -58,7 +58,7 @@ public class TokenAuthenticationUtil {
 		String user = claims.getSubject();
 		// get authorities
 		List<GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-				.map(auth -> new SimpleGrantedAuthority(auth)).collect(Collectors.toList());
+				.map(auth -> new SimpleGrantedAuthority("ROLE_"+auth)).collect(Collectors.toList());
 		return StringUtil.isNullOrEmpty(user)
 				? null : new UsernamePasswordAuthenticationToken(user, null, authorities);
 

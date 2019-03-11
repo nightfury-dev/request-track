@@ -30,7 +30,7 @@ public class User implements java.io.Serializable {
     @Column(name = "gender", length = 6)
     private String gender;
     @Column(name = "role", length = 2)
-    private String role;
+    private Integer role;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
     private Date createdAt;
