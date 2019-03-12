@@ -24,4 +24,6 @@ public interface RequestService {
 
 	boolean isRequestConfirmed(Integer id);
 
+	public RequestDTO findById(Integer id) ;
+
 }

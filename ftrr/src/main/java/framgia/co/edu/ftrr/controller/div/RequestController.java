@@ -69,7 +69,7 @@ public class RequestController extends DivController {
     }
 
     @PutMapping("/{id}/confirm")
-    public ResponseEntity<RequestDTO> editRequest(@PathVariable("id") Integer id){
+    public ResponseEntity<RequestDTO> editRequest(@PathVariable("id") Integer id) {
         RequestDTO requestDTOResult = getRequestService().confirmRequest(id);
 
         if (requestDTOResult == null)
@@ -77,6 +77,12 @@ public class RequestController extends DivController {
 
         return new ResponseEntity(requestDTOResult, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RequestDTO> getRequest(@PathVariable("id") Integer id) {
+        RequestDTO request = getRequestService().findById(id);
+        return request == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity(request, HttpStatus.OK);
     }
 
 }

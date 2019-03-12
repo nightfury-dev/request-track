@@ -159,4 +159,14 @@ public class RequestServiceImpl implements RequestService {
 	public boolean isRequestConfirmed(Integer id){
 		return requestRepository.existsByIdAndStatus(id, RequestStatus.CONFIRMED.getValue());
 	}
+
+	@Override
+	public RequestDTO findById(Integer id) {
+		try {
+			return RequestUtils.requestToRequestDTO(requestRepository.findById(id).orElse(null));
+		} catch(Exception e) {
+			logger.error("Error in getAll: " + e.getMessage());
+			return null;
+		}
+	}
 }

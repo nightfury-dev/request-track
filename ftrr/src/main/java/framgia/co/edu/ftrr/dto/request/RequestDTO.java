@@ -28,7 +28,7 @@ public class RequestDTO implements java.io.Serializable {
     private Integer quantity;
     private Date deadline;
     private String language;
-    private RequestStatus status;
+    private String status;
     private Date createdAt;
     private Date updatedAt;
 

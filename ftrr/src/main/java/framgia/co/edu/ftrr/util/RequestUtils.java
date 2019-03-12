@@ -19,7 +19,7 @@ public class RequestUtils {
         try {
             RequestDTO requestDTO = new RequestDTO();
             BeanUtils.copyProperties(request, requestDTO);
-            requestDTO.setStatus(getRequestStatus(request.getStatus()));
+            requestDTO.setStatus(getRequestStatus(request.getStatus()).getValue());
             requestDTO.setCreatedAt(request.getCreatedAt());
             requestDTO.setUpdatedAt(request.getUpdatedAt());
             return requestDTO;
@@ -42,7 +42,7 @@ public class RequestUtils {
         try {
             Request request = new Request();
             BeanUtils.copyProperties(requestDTO, request);
-            request.setStatus(requestDTO.getStatus().getCode());
+            request.setStatus(getRequestStatus(requestDTO.getStatus()).getCode());
             request.setCreatedAt(requestDTO.getCreatedAt());
             request.setCreatedAt(requestDTO.getUpdatedAt());
             return request;
@@ -65,6 +65,19 @@ public class RequestUtils {
         try {
             for (RequestStatus requestStatus: RequestStatus.values()) {
                 if (requestStatus.getCode().equals(source))
+                    return requestStatus;
+            }
+            return null;
+        } catch (Exception e) {
+            logger.error("Error in getRequestStatus: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static RequestStatus getRequestStatus(String value) {
+        try {
+            for (RequestStatus requestStatus: RequestStatus.values()) {
+                if (requestStatus.getValue().equals(value))
                     return requestStatus;
             }
             return null;

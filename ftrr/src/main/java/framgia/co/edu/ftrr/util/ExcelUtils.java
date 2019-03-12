@@ -111,7 +111,7 @@ public class ExcelUtils {
             request.setLanguage(row.getCell(1).getStringCellValue());
             request.setQuantity((int) row.getCell(2).getNumericCellValue());
             request.setDeadline(row.getCell(3).getDateCellValue());
-            request.setStatus(RequestStatus.WAITING);
+            request.setStatus(RequestStatus.WAITING.getValue());
 
             return request;
         } catch (Exception e) {
