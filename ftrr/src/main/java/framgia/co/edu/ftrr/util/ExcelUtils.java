@@ -2,6 +2,12 @@ package framgia.co.edu.ftrr.util;
 
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
+import framgia.co.edu.ftrr.dto.request.ResultTrainingDTO;
+import framgia.co.edu.ftrr.dto.request.TraineeDTO;
+import framgia.co.edu.ftrr.entity.Level;
+import framgia.co.edu.ftrr.service.LevelService;
+import framgia.co.edu.ftrr.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -9,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -25,6 +32,10 @@ import java.util.*;
 public class ExcelUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ExcelUtils.class);
+    @Autowired
+    LevelService levelService;
+    @Autowired
+    UserService userService;
 
     @Value("${error.division.blank}")
     private String divisionBlankError;
@@ -34,8 +45,13 @@ public class ExcelUtils {
     private String quantityNumericError;
     @Value("${error.deadline.date_format}")
     private String deadlineFormatError;
+    @Value("${error.format}")
+    private String formatError;
+    @Value("${error.notfound}")
+    private String notFoundError;
 
     private File convertMultipartFileToFile(MultipartFile multipartFile, String uploadRootPath) {
+
         try {
             File uploadRootDir = new File(uploadRootPath);
 
@@ -71,6 +87,23 @@ public class ExcelUtils {
         }
     }
 
+    public List<ResultTrainingDTO> listResultTraingFromExcel(MultipartFile multipartFile, String uploadRootPath) {
+        try {
+            List<ResultTrainingDTO> resultTrainings = new ArrayList<>();
+            Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
+            iterator.next();
+            iterator.next(); // Ignore title of file Excel
+            while (iterator.hasNext()) {
+                resultTrainings.add(mapRowExcelToTrainee(iterator.next()));
+            }
+
+            return resultTrainings;
+        } catch (Exception e) {
+            logger.error("Error in listResultTraingFromExcel: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
     private RequestDTO mapRowExcelToRequest(Row row) {
         try {
             RequestDTO request = new RequestDTO();
@@ -81,6 +114,29 @@ public class ExcelUtils {
             request.setStatus(RequestStatus.WAITING);
 
             return request;
+        } catch (Exception e) {
+            logger.error("Error in mapRowExcelToRequest: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private ResultTrainingDTO mapRowExcelToTrainee(Row row) {
+        try {
+            ResultTrainingDTO resultTraining = new ResultTrainingDTO();
+            TraineeDTO trainee = new TraineeDTO();
+
+            trainee.setName(row.getCell(0).getStringCellValue());
+            trainee.setEmail(row.getCell(1).getStringCellValue());
+            trainee.setLanguage(row.getCell(2).getStringCellValue());
+            trainee.setOffice(row.getCell(3).getStringCellValue());
+            trainee.setTrainerName(row.getCell(4).getStringCellValue());
+            trainee.setStartedTime(row.getCell(5).getDateCellValue());
+            trainee.setLevelName(row.getCell(6).getStringCellValue());
+
+            resultTraining.setPoint((int) row.getCell(7).getNumericCellValue());
+            resultTraining.setResult(row.getCell(8).getStringCellValue());
+            resultTraining.setTrainee(TraineeUtils.traineeDTOToTrainee(trainee));
+            return resultTraining;
         } catch (Exception e) {
             logger.error("Error in mapRowExcelToRequest: " + e.getMessage());
             return null;
@@ -122,6 +178,46 @@ public class ExcelUtils {
         }
     }
 
+    public JSONObject checkImportTrainee(MultipartFile multipartFile, String uploadRootPath) {
+        JSONObject results = new JSONObject();
+        Map<Integer, JSONObject> mapError = new HashMap<>();
+        int rowNum = 1; // Row number without title's sheet
+        Map<String, Level> levelMap = levelService.getMapLevel();
+        try {
+            Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
+
+            iterator.next(); // Ignore title of file Excel
+            iterator.next();
+            while (iterator.hasNext()) {
+                JSONObject errors = checkRowTrainee(iterator.next(), levelMap);
+                if (!errors.isEmpty()) {
+                    JSONObject cols = new JSONObject();// All error in row across each column
+                    cols.put("cols", errors);
+                    mapError.put(rowNum, cols);
+                }
+                rowNum++;
+            }
+
+            JSONObject rows = new JSONObject();// All error in sheet across each row
+
+            // If file import hasn't errors
+            if (mapError.isEmpty())
+                return null;
+
+            rows.put("rows", mapError);
+            results.put("errors", rows);
+
+            return results;
+        } catch (Exception e) {
+            logger.error("Error in checkImportTrainee: " + e.getMessage());
+            Map<Integer, String> mapException = new HashMap<>();
+            mapException.put(rowNum, e.getMessage());
+            results.put("exception", mapException);
+
+            return results;
+        }
+    }
+
     private Iterator<Row> getRows(MultipartFile multipartFile, String uploadRootPath) {
         FileInputStream fis = null;
         Workbook workbook = null;
@@ -148,11 +244,11 @@ public class ExcelUtils {
         int cell = 0;
         try {
             // Check field division
-            if (!isNotNull(row, cell++))
+            if (isNull(row, cell++))
                 errors.put(cell - 1, divisionBlankError);
 
             // Check field language
-            if (!isNotNull(row, cell++))
+            if (isNull(row, cell++))
                 errors.put(cell - 1, languageBlankError);
 
             // Check field quantity
@@ -165,19 +261,87 @@ public class ExcelUtils {
 
             return errors;
         } catch (Exception e) {
-            logger.error("Error in checkRowRequestTrainees at row " +  row.getRowNum() +
+            logger.error("Error in checkRowRequestTrainees at row " + row.getRowNum() +
                     ", cell " + cell + ": " + e.getMessage());
             errors.put(cell, "Exception: " + e.getMessage());
             return errors;
         }
     }
 
-    private boolean isNotNull(Row row, int cell) {
+    private JSONObject checkRowTrainee(Row row, Map<String, Level> levelMap) {
+        JSONObject errors = new JSONObject();
+        int cell = 0;
+        String language = "";
+        String trainerName;
+        try {
+            // Check field name
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+
+            // Check field email
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+
+            // Check field language
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+            else {
+                language = row.getCell(cell - 1).getStringCellValue();
+            }
+
+            // Check field office
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+
+            // Check field trainer name
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+            {
+                if (StringUtils.isNotBlank(language)) {
+                    trainerName = row.getCell(cell - 1).getStringCellValue();
+                    if (!userService.existsTrainer(trainerName, language)) {
+                        errors.put(cell - 1, notFoundError);
+                    }
+                }
+            }
+
+
+            // Check field time start
+            if (!isValidDate(row, cell++))
+                errors.put(cell - 1, formatError);
+
+            // Check field level
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+            else {
+                if (!levelMap.containsKey(row.getCell(cell - 1).getStringCellValue())) {
+                    errors.put(cell - 1, notFoundError);
+                }
+            }
+
+            // Check field point
+            if (!isNumeric(row, cell++))
+                errors.put(cell - 1, formatError);
+
+            // Check field trainer review
+            if (isNull(row, cell++))
+                errors.put(cell - 1, formatError);
+
+            return errors;
+        } catch (Exception e) {
+            logger.error("Error in checkRowTrainee at row " + row.getRowNum() +
+                    ", cell " + cell + ": " + e.getMessage());
+            errors.put(cell, "Exception: " + e.getMessage());
+            return errors;
+        }
+    }
+
+    private boolean isNull(Row row, int cell) {
         try {
             row.getCell(cell).getStringCellValue();
-            return true;
-        } catch (Exception e) {
             return false;
+        } catch (Exception e) {
+            return true;
         }
     }
 

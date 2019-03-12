@@ -16,6 +16,7 @@ public class TraineeDTO implements java.io.Serializable {
     private Integer id;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "trainees"})
     private Level level;
+    private String levelName;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User updatedBy;
@@ -35,4 +36,5 @@ public class TraineeDTO implements java.io.Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User trainer;
+    private String trainerName;
 }

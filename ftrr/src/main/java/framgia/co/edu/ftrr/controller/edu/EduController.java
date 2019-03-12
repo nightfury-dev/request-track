@@ -1,6 +1,7 @@
 package framgia.co.edu.ftrr.controller.edu;
 
 import framgia.co.edu.ftrr.service.*;
+import framgia.co.edu.ftrr.util.ExcelUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,5 +21,8 @@ public abstract class EduController {
 
     @Autowired
     private ResultTrainingService resultTrainingService;
+
+    @Autowired
+    private ExcelUtils excelUtils;
 
 }
