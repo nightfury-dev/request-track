@@ -25,4 +25,9 @@ public abstract class EduController {
     @Autowired
     private ExcelUtils excelUtils;
 
+    @Autowired
+    private StepService stepService;
+
+    @Autowired
+    private WorkfollowService workfollowService;
 }

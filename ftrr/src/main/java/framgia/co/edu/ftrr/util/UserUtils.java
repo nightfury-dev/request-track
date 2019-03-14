@@ -16,6 +16,7 @@ public class UserUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(UserUtils.class);
 
+
     public static UserDTO userToUserDTO(User user) {
         try {
             UserDTO userDTO = new UserDTO();

@@ -263,6 +263,7 @@ public class ExcelUtils {
         } catch (Exception e) {
             logger.error("Error in checkRowRequestTrainees at row " + row.getRowNum() +
                     ", cell " + cell + ": " + e.getMessage());
+
             errors.put(cell, "Exception: " + e.getMessage());
             return errors;
         }
