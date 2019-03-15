@@ -1,6 +1,9 @@
 package framgia.co.edu.ftrr.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +12,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "workfollows", catalog = "FTRR")
 public class Workfollow implements java.io.Serializable {
     @Id
@@ -28,8 +32,10 @@ public class Workfollow implements java.io.Serializable {
     private Date deletedAt;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
+    @CreatedDate
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", length = 19)
+    @LastModifiedDate
     private Date updatedAt;
 }

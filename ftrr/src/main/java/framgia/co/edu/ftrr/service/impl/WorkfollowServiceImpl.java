@@ -61,4 +61,20 @@ public class WorkfollowServiceImpl implements WorkfollowService {
             return Collections.emptyList();
         }
     }
+
+    @Override
+    public WorkfollowDTO saveWorkfollow(WorkfollowDTO workfollow) {
+            try {
+                WorkfollowDTO workfollowDTO = WorkfollowUtils.workfollowToWorkfollowDTO(
+                        workfollowRepository.save(WorkfollowUtils.workfollowDTOToWorkfollow(workfollow)));
+                if (StringUtils.isNotBlank(workfollowDTO.getSteps())) {
+                    workfollowDTO.setListStep(stepService.getListStepByIds(workfollow.getSteps()));
+                }
+                return workfollowDTO;
+            } catch (Exception e) {
+                logger.error("Error in saveStep" + e.getMessage());
+                throw e;
+            }
+
+    }
 }

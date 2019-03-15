@@ -18,8 +18,8 @@ public class WorkfollowController extends EduController {
     @PostMapping("/steps")
     public ResponseEntity<StepDTO> createStep(@RequestBody StepDTO step) {
         try {
-            StepDTO stepDTO = getStepService().saveStep(step);
             if (step.getId() != null) return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            StepDTO stepDTO = getStepService().saveStep(step);
 
             return stepDTO == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                     : new ResponseEntity<>(stepDTO, HttpStatus.CREATED);
@@ -61,6 +61,20 @@ public class WorkfollowController extends EduController {
                     : new ResponseEntity<>(workfollows, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<WorkfollowDTO> createWorkfollow(@RequestBody WorkfollowDTO workfollowDTO) {
+        try {
+            if (workfollowDTO.getId() != null) return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            WorkfollowDTO workfollow = getWorkfollowService().saveWorkfollow(workfollowDTO);
+
+            return workfollowDTO == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                    : new ResponseEntity<>(workfollow, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

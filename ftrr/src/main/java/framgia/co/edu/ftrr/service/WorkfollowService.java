@@ -10,4 +10,6 @@ public interface WorkfollowService {
     WorkfollowDTO findById(Integer id);
 
     List<WorkfollowDTO> findAll();
+
+    WorkfollowDTO saveWorkfollow(WorkfollowDTO workfollow);
 }
