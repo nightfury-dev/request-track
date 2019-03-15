@@ -77,4 +77,10 @@ public class WorkfollowServiceImpl implements WorkfollowService {
             }
 
     }
+
+    @Override
+    public WorkfollowDTO updateWorkfollow(Integer id, WorkfollowDTO workfollow){
+        workfollow.setId(id);
+        return saveWorkfollow(workfollow);
+    }
 }

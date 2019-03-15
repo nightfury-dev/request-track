@@ -71,11 +71,37 @@ public class WorkfollowController extends EduController {
             if (workfollowDTO.getId() != null) return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             WorkfollowDTO workfollow = getWorkfollowService().saveWorkfollow(workfollowDTO);
 
-            return workfollowDTO == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+            return workfollow == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                     : new ResponseEntity<>(workfollow, HttpStatus.CREATED);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{id}/edit")
+    public ResponseEntity<WorkfollowDTO> editWorkfollow(@PathVariable Integer id) {
+        try {
+            WorkfollowDTO workfollow = getWorkfollowService().findById(id);
+            return workfollow == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                    : new ResponseEntity<>(workfollow, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<WorkfollowDTO> updateWorkfollow(@PathVariable Integer id, @RequestBody WorkfollowDTO workfollowDTO) {
+        try {
+            WorkfollowDTO workfollow = getWorkfollowService().updateWorkfollow(id, workfollowDTO);
+
+            return workfollow == null ? new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY)
+                    : new ResponseEntity<>(workfollow, HttpStatus.OK);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

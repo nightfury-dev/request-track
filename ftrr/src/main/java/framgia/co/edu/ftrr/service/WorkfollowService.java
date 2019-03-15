@@ -12,4 +12,6 @@ public interface WorkfollowService {
     List<WorkfollowDTO> findAll();
 
     WorkfollowDTO saveWorkfollow(WorkfollowDTO workfollow);
+
+    WorkfollowDTO updateWorkfollow(Integer id, WorkfollowDTO workfollowDTO);
 }
