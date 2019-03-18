@@ -24,7 +24,7 @@ public class RequestDTO implements java.io.Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User updatedBy;
-    private String division;
+    private Integer division;
     private Integer quantity;
     private Date deadline;
     private String language;

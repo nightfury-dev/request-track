@@ -30,7 +30,7 @@ public class RequestController extends DivController {
                 return ResponseEntity.status(HttpStatus.OK).body(getRequestService().getAll());
 
             // Role SM/DM of Division
-            return ResponseEntity.status(HttpStatus.OK).body(getRequestService().findByDivision(userDTO.getDivision().getValue()));
+            return ResponseEntity.status(HttpStatus.OK).body(getRequestService().findByDivision(userDTO.getDivision().getCode()));
 
         } catch (Exception ex) {
             logger.error(ex.getMessage());

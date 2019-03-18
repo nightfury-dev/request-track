@@ -107,7 +107,7 @@ public class ExcelUtils {
     private RequestDTO mapRowExcelToRequest(Row row) {
         try {
             RequestDTO request = new RequestDTO();
-            request.setDivision(row.getCell(0).getStringCellValue());
+            request.setDivision((int) row.getCell(0).getNumericCellValue());
             request.setLanguage(row.getCell(1).getStringCellValue());
             request.setQuantity((int) row.getCell(2).getNumericCellValue());
             request.setDeadline(row.getCell(3).getDateCellValue());

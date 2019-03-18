@@ -16,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class TraineeForRequestServiceImpl implements TraineeForRequestService {
     private static final Logger logger = LoggerFactory.getLogger(TraineeForRequestServiceImpl.class);
@@ -48,8 +53,24 @@ public class TraineeForRequestServiceImpl implements TraineeForRequestService {
             return TraineeForRequestUtils
                     .traineeForRequestToTraineeForRequestDTO(traineeForRequestRepository.save(traineeForRequest));
         } catch (Exception e) {
-            logger.error("Error in saveTraineeForRequest: "+ e.getMessage());
+            logger.error("Error in saveTraineeForRequest: " + e.getMessage());
             throw e;
+        }
+    }
+
+    @Override
+    public List<TraineeForRequest> loadTraineeForRequestsByDivisionAndStatus(Integer division, Integer status, Date fromDate) {
+        try {
+            if (fromDate == null) {
+                Calendar fromCalendar = Calendar.getInstance();
+                fromCalendar.set(Calendar.DATE, 1);
+                return traineeForRequestRepository.loadTraineeForRequestsByDivisionAndStatus(division, status, fromCalendar.getTime());
+            } else {
+                return traineeForRequestRepository.loadTraineeForRequestsByDivisionAndStatus(division, status, fromDate);
+            }
+        } catch (Exception e) {
+            logger.error("Error in getAllByDivisionAndStatus: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 

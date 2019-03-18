@@ -56,7 +56,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	public List<RequestDTO> findByDivision(String division) {
+	public List<RequestDTO> findByDivision(Integer division) {
 		try {
 			return RequestUtils.listRequestToListRequestDTO(requestRepository.findByDivision(division));
 		} catch (Exception e) {

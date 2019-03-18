@@ -10,7 +10,7 @@ public interface RequestService {
 
 	List<RequestDTO> insertListRequest(List<RequestDTO> requestDTOs);
 
-	List<RequestDTO> findByDivision(String division);
+	List<RequestDTO> findByDivision(Integer division);
 	
 	RequestDTO editRequest(int id, RequestDTO requestDTO);
 	

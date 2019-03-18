@@ -31,7 +31,7 @@ public class Request implements java.io.Serializable {
     @LastModifiedBy
     private User updatedBy;
     @Column(name = "division")
-    private String division;
+    private Integer division;
     @Column(name = "quantity")
     private Integer quantity;
     @Temporal(TemporalType.DATE)
