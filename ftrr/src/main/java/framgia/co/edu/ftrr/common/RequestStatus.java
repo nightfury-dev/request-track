@@ -2,6 +2,9 @@ package framgia.co.edu.ftrr.common;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum RequestStatus {
     // Request just created
     WAITING(1, "Waiting"),
@@ -34,6 +37,12 @@ public enum RequestStatus {
     @JsonValue
     public Integer getCode() {
         return this.code;
+    }
+
+    public static Optional<RequestStatus> valueOf(int code) {
+        return Arrays.stream(values())
+                .filter(requestStatus -> requestStatus.code == code)
+                .findFirst();
     }
 
 }

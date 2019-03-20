@@ -23,7 +23,7 @@ public class FinalResult implements java.io.Serializable {
 	@JoinColumn(name = "updated_by")
 	private User user;
 	@Column(name = "result")
-	private String result;
+	private Integer result;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", length = 19)
 	private Date createdAt;

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DatetimeUtils {
 
@@ -44,7 +46,7 @@ public class DatetimeUtils {
 
     public static boolean isNotValidMonths(Integer... months) {
         boolean result = false;
-        for (Integer month: months) {
+        for (Integer month : months) {
             if (month == null) {
                 result = result || false;
                 continue;
@@ -54,4 +56,13 @@ public class DatetimeUtils {
         return result;
     }
 
+    public static Date getCurrentMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, 1);
+        return calendar.getTime();
+    }
+
+    public static Date getCurrentTime() {
+        return Calendar.getInstance().getTime();
+    }
 }

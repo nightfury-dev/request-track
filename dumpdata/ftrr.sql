@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100136
 File Encoding         : 65001
 
-Date: 2019-03-06 11:16:49
+Date: 2019-03-20 11:18:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `final_results`;
 CREATE TABLE `final_results` (
   `id` int(11) NOT NULL,
-  `result` enum('Join DIV','Waiting','Extend','Fail') COLLATE utf8_vietnamese_ci NOT NULL,
+  `result` enum('1','2','3','4') COLLATE utf8_vietnamese_ci NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `final_results` (
 -- ----------------------------
 -- Records of final_results
 -- ----------------------------
-INSERT INTO `final_results` VALUES ('4', 'Join DIV', '2019-01-01 00:00:00', null, null);
+INSERT INTO `final_results` VALUES ('4', '2', '2019-01-01 00:00:00', null, null);
 
 -- ----------------------------
 -- Table structure for levels
@@ -103,7 +103,7 @@ CREATE TABLE `plan_resources` (
 DROP TABLE IF EXISTS `requests`;
 CREATE TABLE `requests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `division` enum('Division 1','Division 2','Division 3') COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `division` enum('1','2','3') COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `deadline` date DEFAULT NULL,
   `language` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
@@ -124,13 +124,13 @@ CREATE TABLE `requests` (
 -- ----------------------------
 -- Records of requests
 -- ----------------------------
-INSERT INTO `requests` VALUES ('1', 'Division 1', '5', '1998-06-20', 'Go', '3', '2', '1985-09-03 01:41:16', null, null);
-INSERT INTO `requests` VALUES ('2', 'Division 1', '1', '1991-01-12', 'NodeJS', '2', '2', '2013-03-18 20:44:27', '2', '2019-02-26 16:02:07');
-INSERT INTO `requests` VALUES ('3', 'Division 2', '3', '1979-04-29', 'React', '1', '10', '2009-01-30 11:23:48', null, null);
-INSERT INTO `requests` VALUES ('4', 'Division 2', '3', '2015-02-20', 'Front-end', '4', '10', '2009-02-08 23:06:02', null, '2013-03-18 20:44:27');
-INSERT INTO `requests` VALUES ('5', 'Division 3', '3', '1990-01-08', 'Java', '5', '11', '1977-05-28 09:28:21', '1', '2013-03-18 20:44:27');
-INSERT INTO `requests` VALUES ('6', 'Division 1', '2', '2019-02-21', 'Java', '3', '2', '2019-02-21 09:07:42', '1', '2019-02-21 09:07:42');
-INSERT INTO `requests` VALUES ('7', 'Division 3', '5', '2018-12-12', 'Ruby', '3', '11', '2019-02-21 09:07:42', '1', '2019-02-21 09:07:42');
+INSERT INTO `requests` VALUES ('1', '1', '5', '1998-06-20', 'Go', '3', '2', '1985-09-03 01:41:16', null, null);
+INSERT INTO `requests` VALUES ('2', '2', '1', '1991-01-12', 'NodeJS', '2', '2', '2013-03-18 20:44:27', '2', '2019-02-26 16:02:07');
+INSERT INTO `requests` VALUES ('3', '2', '3', '1979-04-29', 'React', '1', '10', '2009-01-30 11:23:48', null, null);
+INSERT INTO `requests` VALUES ('4', '2', '3', '2015-02-20', 'Front-end', '4', '10', '2009-02-08 23:06:02', null, '2013-03-18 20:44:27');
+INSERT INTO `requests` VALUES ('5', '3', '3', '1990-01-08', 'Java', '5', '11', '1977-05-28 09:28:21', '1', '2013-03-18 20:44:27');
+INSERT INTO `requests` VALUES ('6', '2', '2', '2019-02-21', 'Java', '3', '2', '2019-02-21 09:07:42', '1', '2019-02-21 09:07:42');
+INSERT INTO `requests` VALUES ('7', '1', '5', '2018-12-12', 'Ruby', '3', '11', '2019-02-21 09:07:42', '1', '2019-02-21 09:07:42');
 
 -- ----------------------------
 -- Table structure for result_interviews
@@ -168,7 +168,7 @@ CREATE TABLE `result_trainings` (
   `content` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `point` int(11) DEFAULT NULL,
-  `results` varchar(255) DEFAULT NULL,
+  `result` varchar(255) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `trainee_id` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -176,11 +176,20 @@ CREATE TABLE `result_trainings` (
   KEY `FK6b68ymgx6h6osqbia5sdd0uhw` (`created_by`),
   KEY `FKna7hoajqujtalg4ol9rw0s9ea` (`trainee_id`),
   KEY `FKp397nvwy2yu2skp4trqf18103` (`updated_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of result_trainings
 -- ----------------------------
+INSERT INTO `result_trainings` VALUES ('1', 'abc', '2019-03-01 09:34:25', '12', '3da', '1', '3', '2');
+INSERT INTO `result_trainings` VALUES ('10', 'abc', '2019-03-07 10:41:53', '12', '3da', '13', '2', '13');
+INSERT INTO `result_trainings` VALUES ('11', 'abc', '2019-03-07 15:02:51', '12', null, '13', '2', '13');
+INSERT INTO `result_trainings` VALUES ('24', null, '2019-03-12 13:40:38', '34', 'awerwe', '13', '7', '13');
+INSERT INTO `result_trainings` VALUES ('25', null, '2019-03-12 13:40:38', '23', 'werewr', '13', '8', '13');
+INSERT INTO `result_trainings` VALUES ('26', null, '2019-03-12 13:40:39', '43', 'werewr', '13', '9', '13');
+INSERT INTO `result_trainings` VALUES ('27', null, '2019-03-12 13:43:31', '34', 'awerwe', '13', '10', '13');
+INSERT INTO `result_trainings` VALUES ('28', null, '2019-03-12 13:43:31', '23', 'werewr', '13', '11', '13');
+INSERT INTO `result_trainings` VALUES ('29', null, '2019-03-12 13:43:31', '43', 'werewr', '13', '12', '13');
 
 -- ----------------------------
 -- Table structure for result_types
@@ -214,7 +223,7 @@ CREATE TABLE `scope_trainings` (
 -- ----------------------------
 -- Records of scope_trainings
 -- ----------------------------
-INSERT INTO `scope_trainings` VALUES ('1', '2', 'JAVA', null, null);
+INSERT INTO `scope_trainings` VALUES ('1', '13', 'JAVA', null, null);
 
 -- ----------------------------
 -- Table structure for steps
@@ -228,11 +237,13 @@ CREATE TABLE `steps` (
   `name` varchar(255) DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of steps
 -- ----------------------------
+INSERT INTO `steps` VALUES ('1', '2019-03-13 09:08:58', null, 'sdf', '123', '2019-03-13 09:08:58');
+INSERT INTO `steps` VALUES ('2', '2019-03-13 09:09:31', null, 'sdf', '123', '2019-03-13 09:09:31');
 
 -- ----------------------------
 -- Table structure for title_interviews
@@ -273,22 +284,22 @@ CREATE TABLE `trainee_for_requests` (
 -- ----------------------------
 -- Records of trainee_for_requests
 -- ----------------------------
-INSERT INTO `trainee_for_requests` VALUES ('1', '1', '30', '2', '2018-12-11 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('2', '1', '37', '2', '2018-12-11 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('3', '1', '42', '2', '2018-12-11 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('4', '1', '44', '3', '2018-12-10 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('5', '1', '48', '2', '2018-12-13 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('6', '2', '1', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('8', '3', '3', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('9', '3', '4', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('10', '3', '5', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('11', '4', '73', '3', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('12', '4', '77', '3', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('13', '4', '78', '3', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('14', '5', '20', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('15', '5', '21', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('16', '5', '22', '2', '2019-01-19 00:00:00', null, null);
-INSERT INTO `trainee_for_requests` VALUES ('57', '3', '2', '2', '2019-03-04 14:43:24', '2019-03-04 14:43:24', null);
+INSERT INTO `trainee_for_requests` VALUES ('1', '1', '2', '3', '2018-12-11 00:00:00', '2019-03-06 14:12:40', '1');
+INSERT INTO `trainee_for_requests` VALUES ('2', '1', '1', '3', '2018-12-11 00:00:00', '2019-03-06 14:12:40', '2');
+INSERT INTO `trainee_for_requests` VALUES ('3', '1', '3', '3', '2018-12-11 00:00:00', '2019-03-06 14:12:40', null);
+INSERT INTO `trainee_for_requests` VALUES ('4', '1', '1', '3', '2018-12-10 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('5', '1', '2', '3', '2018-12-13 00:00:00', '2019-03-06 14:12:40', null);
+INSERT INTO `trainee_for_requests` VALUES ('6', '2', '3', '2', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('8', '3', '3', '3', '2019-01-19 00:00:00', '2019-03-06 14:15:05', '13');
+INSERT INTO `trainee_for_requests` VALUES ('9', '3', '1', '3', '2019-01-19 00:00:00', '2019-03-06 14:15:05', '13');
+INSERT INTO `trainee_for_requests` VALUES ('10', '3', '2', '3', '2019-01-19 00:00:00', '2019-03-06 14:15:05', '13');
+INSERT INTO `trainee_for_requests` VALUES ('11', '4', '3', '3', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('12', '4', '1', '3', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('13', '4', '2', '3', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('14', '5', '3', '2', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('15', '5', '2', '2', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('16', '5', '2', '2', '2019-01-19 00:00:00', null, null);
+INSERT INTO `trainee_for_requests` VALUES ('57', '3', '3', '3', '2019-03-04 14:43:24', '2019-03-06 14:15:05', '13');
 
 -- ----------------------------
 -- Table structure for trainees
@@ -311,14 +322,23 @@ CREATE TABLE `trainees` (
   PRIMARY KEY (`id`),
   KEY `FKrm6589y9696whfr319pyjfvj8` (`level_id`),
   KEY `FKew8bf0q134atgw51jy9hj3toi` (`updated_by`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of trainees
 -- ----------------------------
-INSERT INTO `trainees` VALUES ('1', '2019-02-27 16:40:58', null, 'doandinhlinh@gmail.com', 'JAVA', 'Linh', 'Toong', null, '0', '2019-02-21 16:41:36', '1', null, '1');
-INSERT INTO `trainees` VALUES ('2', '2019-02-27 16:40:58', null, 'doandinhlinh@gmail.com', 'JAVA', 'Linh', 'Toong', null, '0', '2019-02-21 16:41:36', '1', null, '1');
-INSERT INTO `trainees` VALUES ('3', '2019-02-27 16:40:58', null, 'doandinhlinh@gmail.com', 'JAVA', 'Linh', 'Toong', null, '0', '2019-02-21 16:41:36', '1', null, '1');
+INSERT INTO `trainees` VALUES ('1', '2019-02-27 16:40:58', null, 'doandinhlinh@gmail.com', 'JAVA', 'Linh', 'Toong', null, '0', '2019-02-21 16:41:36', '1', '2', '13');
+INSERT INTO `trainees` VALUES ('2', '2019-02-27 16:40:58', null, 'doandinhlinh@gmail.com', 'JAVA', 'Linh', 'Toong', null, '0', '2019-02-21 16:41:36', '1', null, '13');
+INSERT INTO `trainees` VALUES ('3', '2019-02-27 16:40:58', null, '123', 'JAVA', 'Linh', 'Toong', null, '0', '2019-02-21 16:41:36', '1', '2', '1');
+INSERT INTO `trainees` VALUES ('4', null, null, 'abc@gmail.com', 'JAVA', 'Nguyen Van A', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('5', null, null, 'Doan Dinh Linh', 'JAVA', 'Nguyen Van B', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('6', null, null, 'Doan Dinh Linh', 'JAVA', 'Nguyen Van C', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('7', null, null, 'abc@gmail.com', 'JAVA', 'Nguyen Van A', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('8', null, null, 'Doan Dinh Linh', 'JAVA', 'Nguyen Van B', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('9', null, null, 'Doan Dinh Linh', 'JAVA', 'Nguyen Van C', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('10', null, null, 'abc@gmail.com', 'JAVA', 'Nguyen Van A', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('11', null, null, 'Doan Dinh Linh', 'JAVA', 'Nguyen Van B', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
+INSERT INTO `trainees` VALUES ('12', null, null, 'Doan Dinh Linh', 'JAVA', 'Nguyen Van C', 'abc', '1996-01-11 00:00:00', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for users
@@ -332,7 +352,7 @@ CREATE TABLE `users` (
   `division` enum('Division 1','Division 2','Division 3','Human Development Division','BackOffice') DEFAULT 'Human Development Division',
   `phone` varchar(45) DEFAULT NULL,
   `gender` enum('MALE','FEMALE') DEFAULT NULL,
-  `role` enum('ROLE_SM','ROLE_DM','ROLE_HR','ROLE_EC','ROLE_TRAINER','ROLE_GL','ROLE_OTHER') DEFAULT 'ROLE_OTHER',
+  `role` enum('1','2','3','4','5','6','7') DEFAULT '7',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `encrypted_password` varchar(100) DEFAULT NULL,
@@ -350,33 +370,33 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '6046', 'ec1@gmail.com', 'Elroy Streich', 'Human Development Division', '1-911-154-2853x951', 'MALE', 'ROLE_EC', '2008-04-23 19:53:40', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('2', '3416', 'sm11@gmail.com', 'Earnest Brown MD', 'Division 1', '(741)518-3418', 'MALE', 'ROLE_SM', '2017-04-28 20:07:36', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('3', '7863', 'hr1@gmail.com', 'Evan Thompson', 'BackOffice', '1-941-409-9380', 'MALE', 'ROLE_HR', '1970-06-19 22:11:20', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('4', '4663', 'hr2@gmail.com', 'Nella Rogahn IV', 'BackOffice', '614.206.9929x488', 'FEMALE', 'ROLE_HR', '2002-07-01 17:39:39', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('5', '7402', 'hr3@gmail.com', 'Petra Bogan', 'BackOffice', '1-131-088-4892x06201', 'MALE', 'ROLE_HR', '2002-11-23 03:16:09', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('6', '3958', 'dm1@gmail.com', 'Alanna Botsford', 'Division 1', '241-364-0270x08741', 'MALE', 'ROLE_DM', '1982-12-13 21:16:22', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('7', '9836', 'dm3@gmail.com', 'Laurine Cremin Sr.', 'Division 3', '967.459.8149', 'FEMALE', 'ROLE_DM', '2006-09-12 23:11:07', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('8', '6768', 'dm2@gmail.com', 'Mr. Willy Sanford', 'Division 2', '734.648.6758', 'FEMALE', 'ROLE_DM', '1995-05-19 04:16:33', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('9', '4579', 'sm1@gmail.com', 'Mrs. Lenore Shanahan', 'Division 1', '286-136-2109', 'FEMALE', 'ROLE_SM', '1974-10-27 12:25:50', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('10', '6267', 'sm2@gmail.com', 'Dr. Fernando Schmitt Jr.', 'Division 2', '131.353.7561x498', 'FEMALE', 'ROLE_SM', '1985-06-17 11:44:52', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('11', '9036', 'sm3@gmail.com', 'Kendrick Heidenreich', 'Division 3', '1-383-838-8866', 'FEMALE', 'ROLE_SM', '1988-12-08 18:36:33', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('12', '3686', 'sm@gmail.com', 'Neoma Klocko Jr.', 'Human Development Division', '1-814-385-7663x9308', 'MALE', 'ROLE_SM', '1985-10-12 23:17:50', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('13', '4590', 'trainer1@gmail.com', 'Rolando Olson', 'Human Development Division', '00347351376', 'MALE', 'ROLE_TRAINER', '1990-10-02 15:30:34', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('14', '7174', 'trainer2@gmail.com', 'Clint Harris', 'Human Development Division', '1-562-822-6541', 'MALE', 'ROLE_TRAINER', '2001-01-07 00:26:07', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('15', '8210', 'trainer3@gmail.com', 'Dr. Winfield Bechtelar V', 'Human Development Division', '+22(1)9491211975', 'FEMALE', 'ROLE_TRAINER', '1996-11-28 23:13:07', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('16', '7193', 'trainer4@gmail.com', 'Mr. Luther O\'Kon', 'Human Development Division', '598-519-2496x93280', 'MALE', 'ROLE_TRAINER', '2012-12-11 23:52:10', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('17', '8435', 'trainer5@gmail.com', 'Leonie Mante', 'Human Development Division', '942-733-2812x8269', 'FEMALE', 'ROLE_TRAINER', '1989-09-01 08:24:13', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('18', '5180', 'trainer6@gmail.com', 'Dr. Pauline Brekke', 'Human Development Division', '651.417.9938x06603', 'FEMALE', 'ROLE_TRAINER', '2005-05-25 02:06:19', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('19', '9947', 'gl1@gmail.com', 'Westley Senger', 'Division 1', '080-599-8897', 'MALE', 'ROLE_GL', '2008-11-01 18:38:21', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('20', '9976', 'gl2@gmail.com', 'Margaret Watsica', 'Division 1', '1-025-384-3814x750', 'MALE', 'ROLE_GL', '2009-09-25 22:43:46', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('21', '3738', 'gl3@gmail.com', 'Buddy Runte', 'Division 1', '1-306-725-8495x00547', 'MALE', 'ROLE_GL', '1986-01-28 18:04:14', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('22', '4177', 'gl4@gmail.com', 'Dr. Colby Ledner PhD', 'Division 1', '(720)408-0973x818', 'MALE', 'ROLE_GL', '1999-06-06 20:55:27', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('23', '7811', 'gl5@gmail.com', 'Prof. Kamryn Durgan IV', 'Division 1', '(984)325-2596x003', 'MALE', 'ROLE_GL', '1985-07-09 09:39:17', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('24', '4372', 'gl6@gmail.com', 'Effie Gutkowski', 'Division 2', '1-693-176-4996', 'MALE', 'ROLE_GL', '2016-02-11 11:10:35', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('25', '8368', 'gl7@gmail.com', 'Liam Schamberger Sr.', 'Division 2', '091.358.9606x5376', 'FEMALE', 'ROLE_GL', '2010-01-17 08:25:38', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('26', '7938', 'gl8@gmail.com', 'Reymundo Russel', 'Division 2', '049.127.1070x30897', 'MALE', 'ROLE_GL', '1999-10-14 12:37:24', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
-INSERT INTO `users` VALUES ('27', '9281', 'gl9@gmail.com', 'Riley Kozey', 'Division 3', '08946842434', 'FEMALE', 'ROLE_GL', '1981-01-16 10:39:27', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('1', '6046', 'ec1@gmail.com', 'Elroy Streich', 'Human Development Division', '1-911-154-2853x951', 'MALE', '', '2008-04-23 19:53:40', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('2', '3416', 'sm11@gmail.com', 'Earnest Brown MD', 'Division 1', '(741)518-3418', 'MALE', '', '2017-04-28 20:07:36', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('3', '7863', 'hr1@gmail.com', 'Evan Thompson', 'BackOffice', '1-941-409-9380', 'MALE', '', '1970-06-19 22:11:20', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('4', '4663', 'hr2@gmail.com', 'Nella Rogahn IV', 'BackOffice', '614.206.9929x488', 'FEMALE', '', '2002-07-01 17:39:39', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('5', '7402', 'hr3@gmail.com', 'Petra Bogan', 'BackOffice', '1-131-088-4892x06201', 'MALE', '', '2002-11-23 03:16:09', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('6', '3958', 'dm1@gmail.com', 'Alanna Botsford', 'Division 1', '241-364-0270x08741', 'MALE', '', '1982-12-13 21:16:22', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('7', '9836', 'dm3@gmail.com', 'Laurine Cremin Sr.', 'Division 3', '967.459.8149', 'FEMALE', '', '2006-09-12 23:11:07', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('8', '6768', 'dm2@gmail.com', 'Mr. Willy Sanford', 'Division 2', '734.648.6758', 'FEMALE', '', '1995-05-19 04:16:33', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('9', '4579', 'sm1@gmail.com', 'Mrs. Lenore Shanahan', 'Division 1', '286-136-2109', 'FEMALE', '', '1974-10-27 12:25:50', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('10', '6267', 'sm2@gmail.com', 'Dr. Fernando Schmitt Jr.', 'Division 2', '131.353.7561x498', 'FEMALE', '', '1985-06-17 11:44:52', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('11', '9036', 'sm3@gmail.com', 'Kendrick Heidenreich', 'Division 3', '1-383-838-8866', 'FEMALE', '', '1988-12-08 18:36:33', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('12', '3686', 'sm@gmail.com', 'Neoma Klocko Jr.', 'Human Development Division', '1-814-385-7663x9308', 'MALE', '', '1985-10-12 23:17:50', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('13', '4590', 'trainer1@gmail.com', 'Doan Dinh Linh', 'Human Development Division', '00347351376', 'MALE', '5', '1990-10-02 15:30:34', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('14', '7174', 'trainer2@gmail.com', 'Clint Harris', 'Human Development Division', '1-562-822-6541', 'MALE', '', '2001-01-07 00:26:07', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('15', '8210', 'trainer3@gmail.com', 'Dr. Winfield Bechtelar V', 'Human Development Division', '+22(1)9491211975', 'FEMALE', '', '1996-11-28 23:13:07', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('16', '7193', 'trainer4@gmail.com', 'Mr. Luther O\'Kon', 'Human Development Division', '598-519-2496x93280', 'MALE', '', '2012-12-11 23:52:10', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('17', '8435', 'trainer5@gmail.com', 'Leonie Mante', 'Human Development Division', '942-733-2812x8269', 'FEMALE', '', '1989-09-01 08:24:13', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('18', '5180', 'trainer6@gmail.com', 'Dr. Pauline Brekke', 'Human Development Division', '651.417.9938x06603', 'FEMALE', '', '2005-05-25 02:06:19', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('19', '9947', 'gl1@gmail.com', 'Westley Senger', 'Division 1', '080-599-8897', 'MALE', '', '2008-11-01 18:38:21', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('20', '9976', 'gl2@gmail.com', 'Margaret Watsica', 'Division 1', '1-025-384-3814x750', 'MALE', '', '2009-09-25 22:43:46', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('21', '3738', 'gl3@gmail.com', 'Buddy Runte', 'Division 1', '1-306-725-8495x00547', 'MALE', '', '1986-01-28 18:04:14', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('22', '4177', 'gl4@gmail.com', 'Dr. Colby Ledner PhD', 'Division 1', '(720)408-0973x818', 'MALE', '', '1999-06-06 20:55:27', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('23', '7811', 'gl5@gmail.com', 'Prof. Kamryn Durgan IV', 'Division 1', '(984)325-2596x003', 'MALE', '', '1985-07-09 09:39:17', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('24', '4372', 'gl6@gmail.com', 'Effie Gutkowski', 'Division 2', '1-693-176-4996', 'MALE', '', '2016-02-11 11:10:35', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('25', '8368', 'gl7@gmail.com', 'Liam Schamberger Sr.', 'Division 2', '091.358.9606x5376', 'FEMALE', '', '2010-01-17 08:25:38', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('26', '7938', 'gl8@gmail.com', 'Reymundo Russel', 'Division 2', '049.127.1070x30897', 'MALE', '', '1999-10-14 12:37:24', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
+INSERT INTO `users` VALUES ('27', '9281', 'gl9@gmail.com', 'Riley Kozey', 'Division 3', '08946842434', 'FEMALE', '', '1981-01-16 10:39:27', null, '$2a$10$e1rjqncX9xvdTPrJMFowuuCgrhmmOXwiHnjBNVmUnX3hmLe1mxQO6', null, null, null, null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for workfollows
@@ -392,9 +412,21 @@ CREATE TABLE `workfollows` (
   `steps` varchar(255) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of workfollows
 -- ----------------------------
+INSERT INTO `workfollows` VALUES ('1', null, null, 'dasd', 'asdsa', '1', '[1,2]', '2019-03-15 11:13:18');
+INSERT INTO `workfollows` VALUES ('2', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('3', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('4', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('5', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('6', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('7', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('8', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('9', null, null, 'dasd', 'asdsa', '1', '[1,2,3]', null);
+INSERT INTO `workfollows` VALUES ('10', '2019-03-15 08:41:34', null, 'dasd', 'asdsa', '1', '[1,2,3]', '2019-03-15 08:41:34');
+INSERT INTO `workfollows` VALUES ('11', '2019-03-15 08:43:35', null, 'dasd', 'asdsa', '1', '[1,2,3]', '2019-03-15 08:43:35');
+INSERT INTO `workfollows` VALUES ('12', '2019-03-15 08:43:58', null, 'dasd', 'asdsa', '1', '[1,2,3]', '2019-03-15 08:43:58');
 SET FOREIGN_KEY_CHECKS=1;

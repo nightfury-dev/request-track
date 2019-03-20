@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RequestRepository extends JpaRepository<Request, Integer>, RequestRepositoryCustom {
@@ -19,4 +20,9 @@ public interface RequestRepository extends JpaRepository<Request, Integer>, Requ
 
     @Query("select case when count(e) > 0 then true else false end from Request e where e.id = :id and e.status = :status")
     Boolean existsByIdAndStatus(@Param("id") Integer id, @Param("status") String status);
+
+    @Query("from Request r where r.division = :division and r.createdAt between :startDate and :endDate")
+    List<Request> getRequestsByDivisionAndCreatedAt(
+            @Param("division") Integer division, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
 }
