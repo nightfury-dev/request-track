@@ -38,6 +38,7 @@ public class DashboardServiceImpl implements DashboardService {
     @Transactional
     public Map<String, List<DivStatistic>> getStatisticDataFollowDiv(Date startDate) {
         try {
+
             Date endDate = DatetimeUtils.getCurrentTime();
             startDate = startDate == null ? DatetimeUtils.getCurrentMonth() : startDate;
 
