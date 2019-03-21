@@ -1,6 +1,7 @@
 package framgia.co.edu.ftrr.controller.div;
 
 import framgia.co.edu.ftrr.common.Division;
+import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import org.json.simple.JSONObject;
@@ -87,11 +88,27 @@ public class RequestController extends DivController {
         return request == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity(request, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/process",
+    @GetMapping(value = "/confirm",
             params = {"page", "size"})
     public ResponseEntity<Page<RequestDTO>> getRequestsWaitingConfirm(@RequestParam("page") int page, @RequestParam("size") int size) {
         try {
-            Page<RequestDTO> requestPage = getRequestService().findRequestsWaitingConfirmPaginated(PageRequest.of(page, size));
+            Page<RequestDTO> requestPage = getRequestService()
+                    .findRequestsWaitingConfirmPaginated(RequestStatus.CONFIRMED, PageRequest.of(page, size));
+            if (page > requestPage.getTotalPages()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(requestPage, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/waiting-final-result",
+            params = {"page", "size"})
+    public ResponseEntity<Page<RequestDTO>> getRequestsWaitingFinalResult(@RequestParam("page") int page, @RequestParam("size") int size) {
+        try {
+            Page<RequestDTO> requestPage = getRequestService()
+                    .findRequestsWaitingConfirmPaginated(RequestStatus.WAITING_FINAL_RESULT, PageRequest.of(page, size));
             if (page > requestPage.getTotalPages()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

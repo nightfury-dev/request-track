@@ -2,6 +2,8 @@ package framgia.co.edu.ftrr.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import framgia.co.edu.ftrr.common.RequestStatus;
+import framgia.co.edu.ftrr.entity.Trainee;
+import framgia.co.edu.ftrr.entity.TraineeForRequest;
 import framgia.co.edu.ftrr.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,5 +34,6 @@ public class RequestDTO implements java.io.Serializable {
     private String status;
     private Date createdAt;
     private Date updatedAt;
+    private List<TraineeDTO> trainees;
 
 }

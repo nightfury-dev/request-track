@@ -14,7 +14,7 @@ public enum RequestStatus {
     IN_PROGRESS(3, "In progress"),
     // Interviewing
     INTERVIEW(4, "Interview"),
-    WATING_FINAL_RESULT(5, "Waiting final result"),
+    WAITING_FINAL_RESULT(5, "Waiting final result"),
     // Finished interview
     DONE(6, "Done"),
     // Education doesn't has trainees or division has no need

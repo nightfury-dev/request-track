@@ -25,10 +25,10 @@ public class TraineeForRequest implements java.io.Serializable {
     private Request request;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainee_id")
-    private User user;
+    private Trainee trainee;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Trainee trainee;
+    private User updatedBy;
     @Column(name = "status")
     private Integer status;
     @Temporal(TemporalType.TIMESTAMP)

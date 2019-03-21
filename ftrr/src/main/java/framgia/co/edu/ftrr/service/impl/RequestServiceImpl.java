@@ -2,12 +2,14 @@ package framgia.co.edu.ftrr.service.impl;
 
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
+import framgia.co.edu.ftrr.dto.request.TraineeDTO;
 import framgia.co.edu.ftrr.entity.Request;
 import framgia.co.edu.ftrr.repository.RequestRepository;
 import framgia.co.edu.ftrr.service.RequestService;
 import framgia.co.edu.ftrr.service.UserService;
 import framgia.co.edu.ftrr.util.DatetimeUtils;
 import framgia.co.edu.ftrr.util.RequestUtils;
+import framgia.co.edu.ftrr.util.TraineeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
@@ -177,15 +180,26 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Page<RequestDTO> findRequestsWaitingConfirmPaginated(Pageable pageable) {
+    public Page<RequestDTO> findRequestsWaitingConfirmPaginated(RequestStatus requestStatus, Pageable pageable) {
         try {
             Integer division = userService.loadCurrentLoginUser().getDivision();
             Page<Request> requestPage =
-                    requestRepository.getRequestsByStatusAndDivision(RequestStatus.WATING_FINAL_RESULT.getCode(), division, pageable);
+                    requestRepository.getRequestsByStatusAndDivision(requestStatus.getCode(), division, pageable);
             Page<RequestDTO> dtoPage = requestPage.map(new Function<Request, RequestDTO>() {
                 @Override
                 public RequestDTO apply(Request request) {
-                    return RequestUtils.requestToRequestDTO(request);
+                    RequestDTO requestDTO = RequestUtils.requestToRequestDTO(request);
+                    requestDTO.setTrainees(request.getTraineeForRequests()
+                            .stream().map(traineeForRequest -> {
+                                TraineeDTO traineeDTO = TraineeUtils.traineeToTraineeDTO(traineeForRequest.getTrainee());
+                                if (requestStatus == RequestStatus.WAITING_FINAL_RESULT) {
+                                    if (traineeForRequest.getResultInterviews() != null) {
+                                        traineeDTO.setResultInterviews(traineeForRequest.getResultInterviews());
+                                    }
+                                }
+                                return traineeDTO;
+                            }).collect(Collectors.toList()));
+                    return requestDTO;
                 }
             });
             return dtoPage;
