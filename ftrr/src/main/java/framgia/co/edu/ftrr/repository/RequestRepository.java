@@ -1,6 +1,8 @@
 package framgia.co.edu.ftrr.repository;
 
 import framgia.co.edu.ftrr.entity.Request;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +27,5 @@ public interface RequestRepository extends JpaRepository<Request, Integer>, Requ
     List<Request> getRequestsByDivisionAndCreatedAt(
             @Param("division") Integer division, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    Page<Request> getRequestsByStatusAndDivision(Integer status, Integer division, Pageable pageable);
 }

@@ -6,6 +6,8 @@ import framgia.co.edu.ftrr.dto.request.UserDTO;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -83,6 +85,20 @@ public class RequestController extends DivController {
     public ResponseEntity<RequestDTO> getRequest(@PathVariable("id") Integer id) {
         RequestDTO request = getRequestService().findById(id);
         return request == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity(request, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/process",
+            params = {"page", "size"})
+    public ResponseEntity<Page<RequestDTO>> getRequestsWaitingConfirm(@RequestParam("page") int page, @RequestParam("size") int size) {
+        try {
+            Page<RequestDTO> requestPage = getRequestService().findRequestsWaitingConfirmPaginated(PageRequest.of(page, size));
+            if (page > requestPage.getTotalPages()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(requestPage, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

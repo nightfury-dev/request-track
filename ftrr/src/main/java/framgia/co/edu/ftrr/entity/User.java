@@ -24,7 +24,7 @@ public class User implements java.io.Serializable {
     @Column(name = "name", length = 45)
     private String name;
     @Column(name = "division", length = 45)
-    private String division;
+    private Integer division;
     @Column(name = "phone", length = 45)
     private String phone;
     @Column(name = "gender", length = 6)

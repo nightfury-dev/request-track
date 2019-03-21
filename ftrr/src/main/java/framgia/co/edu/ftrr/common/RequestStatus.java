@@ -14,12 +14,13 @@ public enum RequestStatus {
     IN_PROGRESS(3, "In progress"),
     // Interviewing
     INTERVIEW(4, "Interview"),
+    WATING_FINAL_RESULT(5, "Waiting final result"),
     // Finished interview
-    DONE(5, "Done"),
+    DONE(6, "Done"),
     // Education doesn't has trainees or division has no need
-    PENDING(6, "Pending"),
+    PENDING(7, "Pending"),
     // Education reject request
-    REJECT(7, "Reject");
+    REJECT(8, "Reject");
 
     private String value;
     private Integer code;
@@ -27,6 +28,12 @@ public enum RequestStatus {
     RequestStatus(Integer code, String value) {
         this.value = value;
         this.code = code;
+    }
+
+    public static Optional<RequestStatus> valueOf(int code) {
+        return Arrays.stream(values())
+                .filter(requestStatus -> requestStatus.code == code)
+                .findFirst();
     }
 
     @JsonValue
@@ -37,12 +44,6 @@ public enum RequestStatus {
     @JsonValue
     public Integer getCode() {
         return this.code;
-    }
-
-    public static Optional<RequestStatus> valueOf(int code) {
-        return Arrays.stream(values())
-                .filter(requestStatus -> requestStatus.code == code)
-                .findFirst();
     }
 
 }

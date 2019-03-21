@@ -43,7 +43,7 @@ public class UserUtils {
         try {
             User user = new User();
             BeanUtils.copyProperties(userDTO, user);
-            user.setDivision(userDTO.getDivision().getValue());
+            user.setDivision(userDTO.getDivision().getCode());
             return user;
         } catch (Exception e) {
             logger.error("Error in userDTOToUser: " + e.getMessage());
@@ -61,10 +61,10 @@ public class UserUtils {
         }
     }
 
-    private static Division getDivision(String source) {
+    private static Division getDivision(int source) {
         try {
             for (Division division : Division.values()) {
-                if (division.getValue().equals(source))
+                if (division.getCode().equals(source))
                     return division;
             }
             return null;

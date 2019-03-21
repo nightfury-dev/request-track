@@ -9,6 +9,7 @@ import framgia.co.edu.ftrr.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,5 +36,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsTrainer(String name, String language) {
         return scopeTrainingRepository.existsTrainer(name, language);
+    }
+
+    @Override
+    public User loadCurrentLoginUser() {
+        try {
+            return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        } catch (Exception e) {
+            logger.error("Error in findCurrentLoginUser: " + e.getMessage());
+            return null;
+        }
     }
 }
