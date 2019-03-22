@@ -4,6 +4,7 @@ import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.common.TraineeRequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.dto.request.TraineeDTO;
+import framgia.co.edu.ftrr.dto.request.UserDTO;
 import framgia.co.edu.ftrr.entity.Request;
 import framgia.co.edu.ftrr.entity.TraineeForRequest;
 import framgia.co.edu.ftrr.repository.RequestRepository;
@@ -237,6 +238,17 @@ public class RequestServiceImpl implements RequestService {
         } catch (Exception e) {
             logger.error("Error in confirmTraineeInterview:" + e.getMessage());
             throw e;
+        }
+    }
+
+    @Override
+    public List<UserDTO> loadInterviewer(Integer id) {
+        try {
+            Integer division = requestRepository.findById(id).orElseThrow(() -> new EntityNotFoundException()).getDivision();
+            return userService.loadInterviewer(division);
+        } catch (Exception e) {
+            logger.error("Error in loadInterviewer: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 }

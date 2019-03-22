@@ -2,6 +2,7 @@ package framgia.co.edu.ftrr.service;
 
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
+import framgia.co.edu.ftrr.dto.request.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,4 +33,6 @@ public interface RequestService {
     Page<RequestDTO> findRequestsWaitingConfirmPaginated(RequestStatus requestStatus, Pageable pageable);
 
     RequestDTO confirmTraineeInterview(RequestDTO request);
+
+    List<UserDTO> loadInterviewer(Integer id);
 }

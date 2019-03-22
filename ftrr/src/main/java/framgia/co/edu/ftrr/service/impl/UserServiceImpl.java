@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.service.impl;
 
+import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import framgia.co.edu.ftrr.entity.User;
 import framgia.co.edu.ftrr.repository.ScopeTrainingRepository;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +45,21 @@ public class UserServiceImpl implements UserService {
     public User loadCurrentLoginUser() {
         try {
             return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        } catch (Exception e) {
+            logger.error("Error in findCurrentLoginUser: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<UserDTO> loadInterviewer(Integer division) {
+        try {
+            Integer[] interviewRoleArray = new Integer[]{
+                    Roles.GL.getCode(),
+                    Roles.TL.getCode()
+            };
+
+            return UserUtils.listUserToListUserDTO(userRepository.findAllByDivisionAndRoleIn(division, interviewRoleArray));
         } catch (Exception e) {
             logger.error("Error in findCurrentLoginUser: " + e.getMessage());
             return null;

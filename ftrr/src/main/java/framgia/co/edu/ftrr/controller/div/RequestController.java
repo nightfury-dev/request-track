@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController("DivisionRequestController")
 @RequestMapping("/div/requests")
@@ -33,7 +34,7 @@ public class RequestController extends DivController {
                 return ResponseEntity.status(HttpStatus.OK).body(getRequestService().getAll());
 
             // Role SM/DM of Division
-            return ResponseEntity.status(HttpStatus.OK).body(getRequestService().findByDivision(userDTO.getDivision().getCode()));
+            return ResponseEntity.status(HttpStatus.OK).body(getRequestService().findByDivision(userDTO.getDivision()));
 
         } catch (Exception ex) {
             logger.error(ex.getMessage());
@@ -130,4 +131,13 @@ public class RequestController extends DivController {
         }
     }
 
+    @GetMapping("/{id}/interviewer")
+    public ResponseEntity<List<UserDTO>> loadInterviewer(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(getRequestService().loadInterviewer(id), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
