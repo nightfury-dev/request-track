@@ -19,5 +19,5 @@ public class TitleInterview implements java.io.Serializable {
     @Column(name = "deleted_at", length = 19)
     private Date deletedAt;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "titleInterview")
-    private List<ResultInterview> resultInterviews;
+    private List<Interview> interviews;
 }

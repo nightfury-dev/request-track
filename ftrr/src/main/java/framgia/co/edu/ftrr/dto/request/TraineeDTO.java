@@ -1,8 +1,8 @@
 package framgia.co.edu.ftrr.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import framgia.co.edu.ftrr.entity.Interview;
 import framgia.co.edu.ftrr.entity.Level;
-import framgia.co.edu.ftrr.entity.ResultInterview;
 import framgia.co.edu.ftrr.entity.ResultTraining;
 import framgia.co.edu.ftrr.entity.User;
 import lombok.Data;
@@ -34,6 +34,6 @@ public class TraineeDTO implements java.io.Serializable {
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User trainer;
     private String trainerName;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "trainee", "updatedBy","createdBy"})
-    private List<ResultInterview> resultInterviews;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "trainee", "updatedBy", "createdBy"})
+    private List<Interview> interviews;
 }

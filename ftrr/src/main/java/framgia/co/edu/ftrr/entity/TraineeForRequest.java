@@ -40,7 +40,7 @@ public class TraineeForRequest implements java.io.Serializable {
     @UpdateTimestamp
     private Date updatedAt;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "traineeForRequest")
-    private List<ResultInterview> resultInterviews;
+    private List<Interview> interviews;
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "traineeForRequest")
     private FinalResult finalResult;
 }

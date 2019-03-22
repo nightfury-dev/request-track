@@ -198,8 +198,8 @@ public class RequestServiceImpl implements RequestService {
                             .stream().map(traineeForRequest -> {
                                 TraineeDTO traineeDTO = TraineeUtils.traineeToTraineeDTO(traineeForRequest.getTrainee());
                                 if (requestStatus == RequestStatus.WAITING_FINAL_RESULT) {
-                                    if (traineeForRequest.getResultInterviews() != null) {
-                                        traineeDTO.setResultInterviews(traineeForRequest.getResultInterviews());
+                                    if (traineeForRequest.getInterviews() != null) {
+                                        traineeDTO.setInterviews(traineeForRequest.getInterviews());
                                     }
                                 }
                                 return traineeDTO;

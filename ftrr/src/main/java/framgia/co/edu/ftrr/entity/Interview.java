@@ -9,8 +9,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-@Table(name = "result_interviews", catalog = "FTRR")
-public class ResultInterview implements java.io.Serializable {
+@Table(name = "interviews", catalog = "FTRR")
+public class Interview implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -40,4 +40,9 @@ public class ResultInterview implements java.io.Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at", length = 19)
 	private Date updatedAt;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "reviewer")
+	private User reviewer;
+	@Column(name = "interview_time", length = 19)
+	private Date interviewTime;
 }

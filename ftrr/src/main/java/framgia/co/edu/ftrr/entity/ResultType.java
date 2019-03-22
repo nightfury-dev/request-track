@@ -18,5 +18,5 @@ public class ResultType implements java.io.Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "resultType")
-    private List<ResultInterview> resultInterviews;
+    private List<Interview> interviews;
 }
