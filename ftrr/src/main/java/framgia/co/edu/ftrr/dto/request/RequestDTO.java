@@ -1,8 +1,6 @@
 package framgia.co.edu.ftrr.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import framgia.co.edu.ftrr.common.RequestStatus;
-import framgia.co.edu.ftrr.entity.Trainee;
 import framgia.co.edu.ftrr.entity.TraineeForRequest;
 import framgia.co.edu.ftrr.entity.User;
 import lombok.AllArgsConstructor;
@@ -35,5 +33,8 @@ public class RequestDTO implements java.io.Serializable {
     private Date createdAt;
     private Date updatedAt;
     private List<TraineeDTO> trainees;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "updatedBy", "request", "resultInterviews",
+            "finalResult", "trainee"})
+    private List<TraineeForRequest> traineeForRequests;
 
 }

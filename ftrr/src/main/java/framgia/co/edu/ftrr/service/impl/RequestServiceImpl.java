@@ -1,9 +1,11 @@
 package framgia.co.edu.ftrr.service.impl;
 
 import framgia.co.edu.ftrr.common.RequestStatus;
+import framgia.co.edu.ftrr.common.TraineeRequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.dto.request.TraineeDTO;
 import framgia.co.edu.ftrr.entity.Request;
+import framgia.co.edu.ftrr.entity.TraineeForRequest;
 import framgia.co.edu.ftrr.repository.RequestRepository;
 import framgia.co.edu.ftrr.service.RequestService;
 import framgia.co.edu.ftrr.service.UserService;
@@ -22,9 +24,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -206,6 +210,33 @@ public class RequestServiceImpl implements RequestService {
         } catch (Exception e) {
             logger.error("Error in findRequestsWaitingConfirmPaginated: " + e.getMessage());
             return Page.empty();
+        }
+    }
+
+    @Override
+    @Transactional
+    public RequestDTO confirmTraineeInterview(RequestDTO requestDTO) {
+        try {
+            Request request = requestRepository.findById(requestDTO.getId()).orElseThrow(() -> new EntityNotFoundException());
+
+            Map<Integer, TraineeRequestStatus> mapTraineeForRequestStatus = requestDTO.getTraineeForRequests()
+                    .stream().collect(Collectors.toMap(x -> x.getId(), x -> TraineeRequestStatus.valueOf(x.getStatus()).get()));
+
+            request.setStatus(RequestStatus.INTERVIEW.getCode());
+
+            for (TraineeForRequest traineeForRequest : request.getTraineeForRequests()) {
+                if (mapTraineeForRequestStatus.get(traineeForRequest.getId()) == TraineeRequestStatus.PROCESSING) {
+                    traineeForRequest.setStatus(TraineeRequestStatus.PROCESSING.getValue());
+                } else {
+                    traineeForRequest.setStatus(TraineeRequestStatus.REJECT.getValue());
+                }
+            }
+
+            return RequestUtils.requestToRequestDTO(requestRepository.save(request));
+
+        } catch (Exception e) {
+            logger.error("Error in confirmTraineeInterview:" + e.getMessage());
+            throw e;
         }
     }
 }

@@ -118,4 +118,16 @@ public class RequestController extends DivController {
         }
     }
 
+
+    //confirm trainee for request status to interview in request by div
+    @PutMapping("/confirm-interview")
+    public ResponseEntity<RequestDTO> confirmTraineeInterview(@RequestBody RequestDTO request) {
+        try {
+            return new ResponseEntity<>(getRequestService().confirmTraineeInterview(request), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

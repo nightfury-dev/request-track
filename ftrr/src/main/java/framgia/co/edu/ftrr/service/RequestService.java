@@ -31,4 +31,5 @@ public interface RequestService {
 
     Page<RequestDTO> findRequestsWaitingConfirmPaginated(RequestStatus requestStatus, Pageable pageable);
 
+    RequestDTO confirmTraineeInterview(RequestDTO request);
 }
