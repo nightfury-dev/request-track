@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.service.impl;
 
+import framgia.co.edu.ftrr.common.Division;
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.common.TraineeRequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
@@ -248,6 +249,16 @@ public class RequestServiceImpl implements RequestService {
             return userService.loadInterviewer(division);
         } catch (Exception e) {
             logger.error("Error in loadInterviewer: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<UserDTO> loadHRInterviewer() {
+        try {
+            return userService.loadInterviewer(Division.HR.getCode());
+        } catch (Exception e) {
+            logger.error("Error in loadHRInterviewer: " + e.getMessage());
             return Collections.emptyList();
         }
     }

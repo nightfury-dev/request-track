@@ -35,4 +35,6 @@ public interface RequestService {
     RequestDTO confirmTraineeInterview(RequestDTO request);
 
     List<UserDTO> loadInterviewer(Integer id);
+
+    List<UserDTO> loadHRInterviewer();
 }

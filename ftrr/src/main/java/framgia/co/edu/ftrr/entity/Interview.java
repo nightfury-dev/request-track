@@ -17,42 +17,42 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "interviews", catalog = "FTRR")
 public class Interview implements java.io.Serializable {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "result_type_id")
-	private ResultType resultType;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "title_interview_id")
-	private TitleInterview titleInterview;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "trainee_for_request_id")
-	private TraineeForRequest traineeForRequest;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by")
-	@CreatedBy
-	private User createdBy;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "updated_by")
-	@LastModifiedBy
-	private User updatedBy;
-	@Column(name = "content")
-	private String content;
-	@Column(name = "result")
-	private String result;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", length = 19)
-	@CreatedDate
-	private Date createdAt;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at", length = 19)
-	@LastModifiedDate
-	private Date updatedAt;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "reviewer")
-	private User reviewer;
-	@Column(name = "interview_time", length = 19)
-	private Date interviewTime;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    private Integer id;
+    @Column(name = "result_type_id")
+    private Integer resultType;
+    @Column(name = "title_interview_id")
+    private Integer titleInterview;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trainee_for_request_id")
+    private TraineeForRequest traineeForRequest;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    @CreatedBy
+    private User createdBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_by")
+    @LastModifiedBy
+    private User updatedBy;
+    @Column(name = "content")
+    private String content;
+    @Column(name = "result")
+    private String result;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", length = 19)
+    @CreatedDate
+    private Date createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", length = 19)
+    @LastModifiedDate
+    private Date updatedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewer")
+    private User reviewer;
+    @Column(name = "start_time", length = 19)
+    private Date startTime;
+    @Column(name = "end_time", length = 19)
+    private Date endTime;
 }

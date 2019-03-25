@@ -30,4 +30,7 @@ public abstract class EduController {
 
     @Autowired
     private WorkfollowService workfollowService;
+
+    @Autowired
+    private InterviewService interviewService;
 }

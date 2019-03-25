@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final String ROLE_GL = String.valueOf(Roles.GL.getCode());
     private final String ROLE_DM = String.valueOf(Roles.DM.getCode());
     private final String other = String.valueOf(Roles.OTHER.getCode());
-    
+
     @Autowired
     private DataSource dataSource;
 
@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/edu/**").hasAnyRole(ROLE_EC, ROLE_TRAINER)
                 .and()
-                .authorizeRequests().antMatchers("/hr/**").hasRole(ROLE_HR)
+                .authorizeRequests().antMatchers("/hr/**").hasAnyRole(ROLE_HR)
                 .and()
                 .authorizeRequests().antMatchers("/requests/**/interviews/**").hasRole(ROLE_GL)
                 .anyRequest().authenticated()
