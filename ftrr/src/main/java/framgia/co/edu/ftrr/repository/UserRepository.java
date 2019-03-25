@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> getOneByEmail(String email);
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     User findByEmail(String email);
 
