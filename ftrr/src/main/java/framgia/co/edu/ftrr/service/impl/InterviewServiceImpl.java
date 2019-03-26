@@ -11,12 +11,15 @@ import framgia.co.edu.ftrr.repository.RequestRepository;
 import framgia.co.edu.ftrr.repository.TraineeForRequestRepository;
 import framgia.co.edu.ftrr.repository.UserRepository;
 import framgia.co.edu.ftrr.service.InterviewService;
+import framgia.co.edu.ftrr.util.ImportInterviewExcelUtils;
 import framgia.co.edu.ftrr.util.InterviewUtils;
+import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DateTimeException;
@@ -81,6 +84,27 @@ public class InterviewServiceImpl implements InterviewService {
         } catch (Exception e) {
             logger.error("Error in saveInterviews" + e.getMessage());
             throw e;
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<InterviewDTO> importFromExcel(MultipartFile multipartFile) {
+        try {
+            Iterator<Row> rows = ImportInterviewExcelUtils.readExcelMultipartFile(multipartFile);
+            rows.next();
+            List<Interview> interviews = new ArrayList<>();
+            while (rows.hasNext()) {
+                Interview interviewFromExcel = ImportInterviewExcelUtils.importInterviewFromRow(rows.next());
+                Interview interview = interviewRepository.findById(interviewFromExcel.getId()).orElseThrow(() -> new EntityNotFoundException());
+                interview.setContent(interviewFromExcel.getContent());
+                interview.setResult(interviewFromExcel.getResult());
+                interviews.add(interviewRepository.save(interview));
+            }
+            return InterviewUtils.listInterviewToListInterviewDTO(interviews);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return Collections.emptyList();
         }
     }
 
