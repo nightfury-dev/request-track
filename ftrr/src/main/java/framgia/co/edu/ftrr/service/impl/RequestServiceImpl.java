@@ -6,12 +6,14 @@ import framgia.co.edu.ftrr.common.TraineeRequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.dto.request.TraineeDTO;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
+import framgia.co.edu.ftrr.entity.Interview;
 import framgia.co.edu.ftrr.entity.Request;
 import framgia.co.edu.ftrr.entity.TraineeForRequest;
 import framgia.co.edu.ftrr.repository.RequestRepository;
 import framgia.co.edu.ftrr.service.RequestService;
 import framgia.co.edu.ftrr.service.UserService;
 import framgia.co.edu.ftrr.util.DatetimeUtils;
+import framgia.co.edu.ftrr.util.InterviewUtils;
 import framgia.co.edu.ftrr.util.RequestUtils;
 import framgia.co.edu.ftrr.util.TraineeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -178,9 +177,17 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public RequestDTO findById(Integer id) {
         try {
-            return RequestUtils.requestToRequestDTO(requestRepository.findById(id).orElse(null));
+            Request request = requestRepository.findById(id).orElse(null);
+            RequestDTO requestDTO = RequestUtils.requestToRequestDTO(request);
+
+            List<Interview> interviews = Optional.ofNullable(request.getTraineeForRequests()).get()
+                    .stream().flatMap(t -> t.getInterviews().stream()).collect(Collectors.toList());
+
+            requestDTO.setInterviews(InterviewUtils.listInterviewToListInterviewDTO(interviews));
+            return requestDTO;
         } catch (Exception e) {
-            logger.error("Error in getAll: " + e.getMessage());
+            logger.error("Error in findById: " +
+                    ": " + e.getMessage());
             return null;
         }
     }
