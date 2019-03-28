@@ -33,8 +33,7 @@ public class RequestDTO implements java.io.Serializable {
     private Date createdAt;
     private Date updatedAt;
     private List<TraineeDTO> trainees;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "updatedBy", "request", "resultInterviews",
-            "finalResult", "trainee", "interviews"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "updatedBy", "request", "resultInterviews", "trainee", "interviews"})
     private List<TraineeForRequest> traineeForRequests;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "traineeForRequest", "createdBy", "updatedBy", "interviews"})
     private List<InterviewDTO> interviews;

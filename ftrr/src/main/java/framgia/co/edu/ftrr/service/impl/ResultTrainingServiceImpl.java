@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ResultTrainingImpl implements ResultTrainingService {
+public class ResultTrainingServiceImpl implements ResultTrainingService {
     private static final Logger logger = LoggerFactory.getLogger(ResultTrainingController.class);
 
     @Autowired

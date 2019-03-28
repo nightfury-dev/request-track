@@ -6,6 +6,7 @@ import framgia.co.edu.ftrr.common.TraineeRequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.dto.request.TraineeDTO;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
+import framgia.co.edu.ftrr.entity.FinalResult;
 import framgia.co.edu.ftrr.entity.Interview;
 import framgia.co.edu.ftrr.entity.Request;
 import framgia.co.edu.ftrr.entity.TraineeForRequest;
@@ -269,4 +270,43 @@ public class RequestServiceImpl implements RequestService {
             return Collections.emptyList();
         }
     }
+
+    @Override
+    public RequestDTO updateFinalResult(Integer requestId, RequestDTO requestDTO) {
+        try {
+            Request request = requestRepository.findById(requestId).orElseThrow(() -> new EntityNotFoundException());
+            if (request == null || !request.getStatus().equals(RequestStatus.WAITING_FINAL_RESULT.getCode()))
+                return null;
+
+            //Create a map with key is traineeForRequest id and value is its finalResult from request Dto
+            Map<Integer, FinalResult> resultTrainingMap = requestDTO.getTraineeForRequests().stream()
+                    .collect(Collectors.toMap(x -> x.getId(), x -> x.getFinalResult()));
+
+            //with each TraineeForRequest set finalResult_id, planResource_id is traineeForRequest_id if they exist.
+            for (Map.Entry<Integer, FinalResult> resultEntry : resultTrainingMap.entrySet()) {
+                Optional.ofNullable(resultEntry.getValue()).ifPresent(finalResult -> {
+                    finalResult.setId(resultEntry.getKey());
+                    Optional.ofNullable(finalResult.getPlanResource()).ifPresent(planResource -> {
+                        planResource.setId(resultEntry.getKey());
+                    });
+                });
+            }
+
+            //Change status list Trainee For Request of Request
+            for (TraineeForRequest traineeForRequest : request.getTraineeForRequests()) {
+                traineeForRequest.setFinalResult(resultTrainingMap.get(traineeForRequest.getId()));
+                traineeForRequest.setStatus(TraineeRequestStatus.FINISH.getValue());
+            }
+
+            //Change status of request
+            request.setStatus(RequestStatus.DONE.getCode());
+
+            return RequestUtils.requestToRequestDTO(requestRepository.save(request));
+        } catch (Exception e) {
+            logger.error("Error in updateFinalResult: " + e.getMessage());
+            return null;
+        }
+    }
+
+
 }

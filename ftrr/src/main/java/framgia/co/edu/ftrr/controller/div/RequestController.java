@@ -3,6 +3,7 @@ package framgia.co.edu.ftrr.controller.div;
 import framgia.co.edu.ftrr.common.Division;
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
+import framgia.co.edu.ftrr.dto.request.TraineeForRequestDTO;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -139,6 +140,16 @@ public class RequestController extends DivController {
             logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/{requestId}/final-result")
+    public ResponseEntity<RequestDTO> updateFinalResults(@PathVariable Integer requestId, @RequestBody RequestDTO requestDTO){
+        RequestDTO requestDTOResult = getRequestService().updateFinalResult(requestId, requestDTO);
+
+        if (requestDTOResult == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity(requestDTOResult, HttpStatus.OK);
     }
 
 }

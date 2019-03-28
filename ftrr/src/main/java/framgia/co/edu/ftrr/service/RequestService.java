@@ -37,4 +37,6 @@ public interface RequestService {
     List<UserDTO> loadInterviewer(Integer id);
 
     List<UserDTO> loadHRInterviewer();
+
+    RequestDTO updateFinalResult(Integer requestId, RequestDTO requestDTO);
 }
