@@ -1,16 +1,13 @@
 package framgia.co.edu.ftrr.service.impl;
 
-import framgia.co.edu.ftrr.common.Division;
-import framgia.co.edu.ftrr.common.RequestStatus;
-import framgia.co.edu.ftrr.common.TraineeRequestStatus;
+import framgia.co.edu.ftrr.common.*;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
 import framgia.co.edu.ftrr.dto.request.TraineeDTO;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
-import framgia.co.edu.ftrr.entity.FinalResult;
-import framgia.co.edu.ftrr.entity.Interview;
-import framgia.co.edu.ftrr.entity.Request;
-import framgia.co.edu.ftrr.entity.TraineeForRequest;
+import framgia.co.edu.ftrr.entity.*;
+import framgia.co.edu.ftrr.repository.NotificationRepository;
 import framgia.co.edu.ftrr.repository.RequestRepository;
+import framgia.co.edu.ftrr.repository.UserRepository;
 import framgia.co.edu.ftrr.service.RequestService;
 import framgia.co.edu.ftrr.service.UserService;
 import framgia.co.edu.ftrr.util.DatetimeUtils;
@@ -39,12 +36,16 @@ import java.util.stream.Collectors;
 public class RequestServiceImpl implements RequestService {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestServiceImpl.class);
-
+    @Value("notification to hr/sm/dm/ec")
+    String notificationToSmDm;
     @Autowired
     private RequestRepository requestRepository;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
     @Value("${error.insert.request_trainees}")
     private String insertRequestError;
     @Value("${invalid.month}")
@@ -301,6 +302,9 @@ public class RequestServiceImpl implements RequestService {
             //Change status of request
             request.setStatus(RequestStatus.DONE.getCode());
 
+            //Notify to EC/SM/DM/HR
+            notifyFinalResult(request);
+
             return RequestUtils.requestToRequestDTO(requestRepository.save(request));
         } catch (Exception e) {
             logger.error("Error in updateFinalResult: " + e.getMessage());
@@ -308,5 +312,27 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
+    private void notifyFinalResult(Request request) {
+        List<Notification> listNotification = new ArrayList<>();
+        for (User user : getListUserToNotify(request)) {
+            Notification notification = new Notification();
+            notification.setContent(notificationToSmDm);
+            notification.setStatus(NotificationStatus.UNSEEN.getCode());
+            notification.setUser(user);
+            listNotification.add(notification);
+        }
+        notificationRepository.saveAll(listNotification);
+    }
 
+    private Set<User> getListUserToNotify(Request request) {
+        Set<User> userSet = new HashSet<>();
+        request.getTraineeForRequests().stream().forEach(traineeForRequest -> {
+            for (Interview interview : traineeForRequest.getInterviews()) {
+                userSet.add(interview.getReviewer());
+            }
+        });
+        Integer[] rolesSmDm = {Roles.DM.getCode(), Roles.SM.getCode(), Roles.EC.getCode()};
+        userRepository.findAllByDivisionAndRoleIn(request.getDivision(), rolesSmDm).stream().forEach(user -> userSet.add(user));
+        return userSet;
+    }
 }
