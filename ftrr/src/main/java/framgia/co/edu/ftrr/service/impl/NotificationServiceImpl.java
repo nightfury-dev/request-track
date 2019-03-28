@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +36,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     UserRepository userRepository;
     @Value("notification to trainer")
-    String notificationContent;
+    String notificationToTrainer;
 
     @Override
     @Transactional
@@ -47,7 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
             List<User> listUser = getListTrainerToNotify(requestId);
             for (User user : listUser) {
                 Notification notification = new Notification();
-                notification.setContent(notificationContent);
+                notification.setContent(notificationToTrainer);
                 notification.setStatus(NotificationStatus.UNSEEN.getCode());
                 notification.setUser(user);
                 listNotification.add(notification);
@@ -74,4 +73,5 @@ public class NotificationServiceImpl implements NotificationService {
             return Collections.emptyList();
         }
     }
+
 }
