@@ -1,6 +1,5 @@
 package framgia.co.edu.ftrr.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,7 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController {
 
     @PostMapping("/login")
-    public String login(){
+    public String login() {
+        return "login";
+    }
+
+    @PostMapping("/wsm-login")
+    public String wsmLogin() {
         return "login";
     }
 

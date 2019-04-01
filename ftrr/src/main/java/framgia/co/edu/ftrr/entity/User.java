@@ -29,7 +29,7 @@ public class User implements java.io.Serializable {
     @Column(name = "phone", length = 45)
     private String phone;
     @Column(name = "gender", length = 6)
-    private String gender;
+    private Integer gender;
     @Column(name = "role", length = 2)
     private Integer role;
     @Temporal(TemporalType.TIMESTAMP)

@@ -22,7 +22,7 @@ public class UserDTO {
     private String name;
     private Integer division;
     private String phone;
-    private String gender;
+    private Integer gender;
     private String role;
     private Timestamp createdAt;
     private Timestamp updatedAt;

@@ -1,16 +1,19 @@
 package framgia.co.edu.ftrr.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import framgia.co.edu.ftrr.entity.Group;
+import framgia.co.edu.ftrr.entity.Position;
+import framgia.co.edu.ftrr.entity.Workspace;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class UserWsmResponse {
-    Company company;
-    ArrayList<String> workspaces;
-    ArrayList<Group> groups;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserWsmResponse implements Serializable {
     private Integer id;
     private String email;
     private String name;
@@ -27,52 +30,6 @@ public class UserWsmResponse {
     private Position position;
     @JsonProperty("staff_type")
     private String staffType;
-
-    @Data
-    private static class Position {
-        private float id;
-        private String name;
-        private String description;
-        @JsonProperty("deleted_at")
-        private String deletedAt;
-        @JsonProperty("created_at")
-        private String createdAt;
-        @JsonProperty("updated_at")
-        private String updatedAt;
-        @JsonProperty("company_id")
-        private float companyId;
-        @JsonProperty("position_type")
-        private String positionType;
-    }
-
-    @Data
-    private static class Company {
-        private Integer id;
-        private String name;
-        @JsonProperty("parent_id")
-        private String parentId;
-        private String status;
-        @JsonProperty("owner_id")
-        private Integer ownerId;
-        @JsonProperty("deleted_at")
-        private String deletedAt;
-        @JsonProperty("createdAt")
-        private String createdAt;
-        @JsonProperty("updatedAt")
-        private String updatedAt;
-    }
-
-    @Data
-    private static class Group {
-        @JsonProperty("parent_path")
-        ArrayList<ParentPath> parentPaths;
-        private float id;
-        private String name;
-    }
-
-    @Data
-    private static class ParentPath {
-        private Integer id;
-        private String name;
-    }
+    private List<Workspace> workspaces;
+    private List<Group> groups;
 }

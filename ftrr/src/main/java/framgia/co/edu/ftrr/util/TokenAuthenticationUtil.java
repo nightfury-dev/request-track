@@ -26,12 +26,12 @@ public class TokenAuthenticationUtil {
     static final String CUSTOM_USER_KEY = "CustomUser";
     private static UserService userService;
 
-    public static void addAuthentication(HttpServletResponse res, String username) throws JsonProcessingException {
-        CustomPrincipal customPrincipal = userService.loadCustomPrincipal(username);
+    public static void addAuthentication(HttpServletResponse res, Authentication authentication) throws JsonProcessingException {
+//        CustomPrincipal customPrincipal = userService.loadCustomPrincipal(username);
         ObjectMapper mapper = new ObjectMapper();
-        String customPrincipalJson = mapper.writeValueAsString(customPrincipal);
+        String customPrincipalJson = mapper.writeValueAsString(authentication.getPrincipal());
 
-        String JWT = Jwts.builder().setSubject(username)
+        String JWT = Jwts.builder()
                 .claim(CUSTOM_USER_KEY, customPrincipalJson)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET).compact();

@@ -1,12 +1,13 @@
 package framgia.co.edu.ftrr.config;
 
-import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.config.filter.JWTAuthenticationFilter;
 import framgia.co.edu.ftrr.config.filter.JWTLoginFilter;
+import framgia.co.edu.ftrr.config.filter.WsmLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,13 +24,6 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final String ROLE_SM = String.valueOf(Roles.SM.getCode());
-    private final String ROLE_HR = String.valueOf(Roles.HR.getCode());
-    private final String ROLE_EC = String.valueOf(Roles.EC.getCode());
-    private final String ROLE_TRAINER = String.valueOf(Roles.TRAINER.getCode());
-    private final String ROLE_GL = String.valueOf(Roles.GL.getCode());
-    private final String ROLE_DM = String.valueOf(Roles.DM.getCode());
-    private final String other = String.valueOf(Roles.OTHER.getCode());
 
     @Autowired
     private DataSource dataSource;
@@ -38,8 +32,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/wsm-login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new WsmLoginFilter("/wsm-login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
