@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -55,4 +56,17 @@ public class User implements java.io.Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "confirmation_sent_at", length = 19)
     private Date confirmationSentAt;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "group_user",
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<Group> groups;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_id")
+    private Position position;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "workspace_user",
+            joinColumns = @JoinColumn(name = "workspace_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<Workspace> workspaces;
 }
