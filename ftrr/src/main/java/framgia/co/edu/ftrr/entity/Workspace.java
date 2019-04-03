@@ -44,7 +44,7 @@ public class Workspace {
     @Column(name = "updated_at", length = 19)
     @LastModifiedDate
     private Date updatedAt;
-    @Column(name = "time_zone")
+    @Column(name = "timezone")
     private String timeZone;
     @Column(name = "address")
     private String address;

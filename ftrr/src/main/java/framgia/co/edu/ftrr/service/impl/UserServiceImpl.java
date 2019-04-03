@@ -1,6 +1,7 @@
 package framgia.co.edu.ftrr.service.impl;
 
 import framgia.co.edu.ftrr.common.Roles;
+import framgia.co.edu.ftrr.config.CustomPrincipal;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import framgia.co.edu.ftrr.entity.User;
 import framgia.co.edu.ftrr.repository.ScopeTrainingRepository;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +26,25 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private ScopeTrainingRepository scopeTrainingRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomPrincipal loadCustomPrincipal(String username) {
+        try {
+            User user = userRepository.getOneByEmail(username).get();
+
+            CustomPrincipal customPrincipal = new CustomPrincipal();
+            customPrincipal.setUsername(username);
+            customPrincipal.setPassword(user.getEncryptedPassword());
+            customPrincipal.setGroups(user.getGroups());
+            customPrincipal.setPosition(user.getPosition());
+
+            return customPrincipal;
+        } catch (Exception e) {
+            logger.error("Error in loadCustomPrincipal: " + e.getMessage());
+            return null;
+        }
+    }
 
     @Override
     public UserDTO findByEmail(String email) {
