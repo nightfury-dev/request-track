@@ -3,7 +3,6 @@ package framgia.co.edu.ftrr.controller.div;
 import framgia.co.edu.ftrr.common.Division;
 import framgia.co.edu.ftrr.common.RequestStatus;
 import framgia.co.edu.ftrr.dto.request.RequestDTO;
-import framgia.co.edu.ftrr.dto.request.TraineeForRequestDTO;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -132,18 +131,8 @@ public class RequestController extends DivController {
         }
     }
 
-    @GetMapping("/{id}/interviewer")
-    public ResponseEntity<List<UserDTO>> loadInterviewer(@PathVariable("id") Integer id) {
-        try {
-            return new ResponseEntity<>(getRequestService().loadInterviewer(id), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PostMapping("/{requestId}/final-result")
-    public ResponseEntity<RequestDTO> updateFinalResults(@PathVariable Integer requestId, @RequestBody RequestDTO requestDTO){
+    public ResponseEntity<RequestDTO> updateFinalResults(@PathVariable Integer requestId, @RequestBody RequestDTO requestDTO) {
         RequestDTO requestDTOResult = getRequestService().updateFinalResult(requestId, requestDTO);
 
         if (requestDTOResult == null)

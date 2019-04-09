@@ -252,27 +252,6 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<UserDTO> loadInterviewer(Integer id) {
-        try {
-            Integer division = requestRepository.findById(id).orElseThrow(() -> new EntityNotFoundException()).getDivision();
-            return userService.loadInterviewer(division);
-        } catch (Exception e) {
-            logger.error("Error in loadInterviewer: " + e.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
-    public List<UserDTO> loadHRInterviewer() {
-        try {
-            return userService.loadInterviewer(Division.HR.getCode());
-        } catch (Exception e) {
-            logger.error("Error in loadHRInterviewer: " + e.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
     public RequestDTO updateFinalResult(Integer requestId, RequestDTO requestDTO) {
         try {
             Request request = requestRepository.findById(requestId).orElseThrow(() -> new EntityNotFoundException());

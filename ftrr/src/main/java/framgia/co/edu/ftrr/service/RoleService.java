@@ -9,5 +9,5 @@ public interface RoleService {
     Boolean isHr();
     Boolean isEc();
     Boolean isTrainer();
-    Boolean isGl();
+    Boolean isEmployee();
 }

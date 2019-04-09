@@ -1,9 +1,9 @@
 package framgia.co.edu.ftrr.service.impl;
 
 import framgia.co.edu.ftrr.common.Gender;
-import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.config.CustomPrincipal;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
+import framgia.co.edu.ftrr.dto.response.InterviewerSearchResponse;
 import framgia.co.edu.ftrr.dto.response.UserWsmResponse;
 import framgia.co.edu.ftrr.entity.Group;
 import framgia.co.edu.ftrr.entity.Position;
@@ -14,18 +14,27 @@ import framgia.co.edu.ftrr.repository.ScopeTrainingRepository;
 import framgia.co.edu.ftrr.repository.UserRepository;
 import framgia.co.edu.ftrr.service.UserService;
 import framgia.co.edu.ftrr.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,21 +96,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> loadInterviewer(Integer division) {
-        try {
-            Integer[] interviewRoleArray = new Integer[]{
-                    Roles.GL.getCode(),
-                    Roles.TL.getCode()
-            };
-
-            return UserUtils.listUserToListUserDTO(userRepository.findAllByDivisionAndRoleIn(division, interviewRoleArray));
-        } catch (Exception e) {
-            logger.error("Error in findCurrentLoginUser: " + e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
     @Transactional
     public CustomPrincipal loadOrUpdateUser(UserWsmResponse userWsmResponse) {
         try {
@@ -114,6 +108,55 @@ public class UserServiceImpl implements UserService {
             logger.error("Error in loadOrUpdateUser: " + e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public Page<UserDTO> searchInterviewers(InterviewerSearchResponse interviewerSearchResponse, Pageable pageable) {
+        try {
+            Page<User> usersPage = findUserByCriteria(interviewerSearchResponse.getName(),
+                    interviewerSearchResponse.getEmail(),
+                    interviewerSearchResponse.getPositionIds(),
+                    interviewerSearchResponse.getWorkspaceIds(),
+                    pageable);
+
+            Page<UserDTO> dtoPage = usersPage.map(new Function<User, UserDTO>() {
+                @Override
+                public UserDTO apply(User user) {
+                    UserDTO userDTO = UserUtils.userToUserDTO(user);
+                    return userDTO;
+                }
+            });
+            return dtoPage;
+        } catch (Exception e) {
+            logger.error("Error in searchInterviewers: " + e.getMessage());
+            return Page.empty();
+        }
+    }
+
+    private Page<User> findUserByCriteria(String name,
+                                          String email,
+                                          Integer[] positions,
+                                          Integer[] workspaces,
+                                          Pageable pageable) {
+        return userRepository.findAll(new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (StringUtils.isNotBlank(name)) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("name"), "%" + name + "%")));
+                }
+                if (StringUtils.isNotBlank(email)) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("email"), "%" + email + "%")));
+                }
+                if (positions.length > 0) {
+                    predicates.add(criteriaBuilder.and(root.get("position").get("id").in(positions)));
+                }
+                if (workspaces.length > 0) {
+                    predicates.add(criteriaBuilder.and(root.join("workspaces").get("id").in(workspaces)));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, pageable);
     }
 
     private void checkUserWsmResponse(UserWsmResponse userWsmResponse) {

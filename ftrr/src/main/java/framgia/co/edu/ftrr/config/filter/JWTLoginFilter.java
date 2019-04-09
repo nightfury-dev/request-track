@@ -2,7 +2,7 @@ package framgia.co.edu.ftrr.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import framgia.co.edu.ftrr.common.LoginReponseStringMessages;
+import framgia.co.edu.ftrr.common.StringsCommon;
 import framgia.co.edu.ftrr.dto.request.AccountCredentials;
 import framgia.co.edu.ftrr.dto.response.LoginMessageReponse;
 import framgia.co.edu.ftrr.util.TokenAuthenticationUtil;
@@ -45,7 +45,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         TokenAuthenticationUtil.addAuthentication(response, authResult);
         LoginMessageReponse messageReponse = new LoginMessageReponse();
         messageReponse.setCode("200");
-        messageReponse.setMessage(LoginReponseStringMessages.LOGINSUCESS);
+        messageReponse.setMessage(StringsCommon.LOGINSUCESS);
 
         String employeeJsonString = objectWriter.writeValueAsString(messageReponse);
         PrintWriter out = response.getWriter();
@@ -61,7 +61,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             throws IOException, ServletException {
         LoginMessageReponse messageReponse = new LoginMessageReponse();
         messageReponse.setCode("404");
-        messageReponse.setMessage(LoginReponseStringMessages.LOGINFAIL);
+        messageReponse.setMessage(StringsCommon.LOGINFAIL);
 
         String employeeJsonString = objectWriter.writeValueAsString(messageReponse);
         PrintWriter out = response.getWriter();

@@ -6,6 +6,9 @@ import framgia.co.edu.ftrr.service.UserService;
 import framgia.co.edu.ftrr.util.ExcelUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 public abstract class DivController {
@@ -21,5 +24,15 @@ public abstract class DivController {
 
     @Autowired
     private InterviewService interviewService;
+
+    @Value("${rest.api.page-size-default}")
+    private Integer pageSizeDefault;
+
+    protected PageRequest createPageRequest(Pageable pageable) {
+        if (pageable.getPageSize() != 1) {
+            pageSizeDefault = pageable.getPageSize();
+        }
+        return PageRequest.of(pageable.getPageNumber(), pageSizeDefault, pageable.getSort());
+    }
 
 }

@@ -2,7 +2,6 @@ package framgia.co.edu.ftrr.service.impl;
 
 import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.service.RoleService;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,14 +15,14 @@ public class RoleServiceImpl implements RoleService {
     public RoleServiceImpl() {
     }
 
-    private Authentication getAuthentication(){
+    private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
     private Boolean hasRole(Integer role) {
         Set<String> roles = getAuthentication().getAuthorities().stream()
                 .map(r -> r.getAuthority()).collect(Collectors.toSet());
-        return roles.contains("ROLE_"+role);
+        return roles.contains("ROLE_" + role);
     }
 
     @Override
@@ -52,8 +51,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Boolean isGl() {
-        return hasRole(Roles.GL.getCode());
+    public Boolean isEmployee() {
+        return hasRole(Roles.OTHER.getCode());
     }
 
 }
