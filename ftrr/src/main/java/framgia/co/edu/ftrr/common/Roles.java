@@ -8,7 +8,8 @@ public enum Roles {
     HR(3, "Human Resource"),
     EC(4, "Education Coordinator"),
     TRAINER(5, "Trainer"),
-    OTHER(7, "Employee");
+    OTHER(7, "Employee"),
+    ADMIN(8, "Admin");
 
     private String value;
     private Integer code;

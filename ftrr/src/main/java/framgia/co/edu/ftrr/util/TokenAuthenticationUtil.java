@@ -10,12 +10,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class TokenAuthenticationUtil {
@@ -49,8 +53,10 @@ public class TokenAuthenticationUtil {
 
         CustomPrincipal customPrincipal = mapper.readValue(claims.get(CUSTOM_USER_KEY).toString(), CustomPrincipal.class);
 
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(customPrincipal.getRole())));
         return customPrincipal == null
-                ? null : new UsernamePasswordAuthenticationToken(customPrincipal, null, null);
+                ? null : new UsernamePasswordAuthenticationToken(customPrincipal, null, grantedAuthorities);
     }
 
     @Autowired

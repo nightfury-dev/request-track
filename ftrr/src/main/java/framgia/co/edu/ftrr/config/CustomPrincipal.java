@@ -12,4 +12,5 @@ public class CustomPrincipal{
     private String password;
     private Position position;
     private List<Group> groups;
+    private int role;
 }

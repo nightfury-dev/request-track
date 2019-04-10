@@ -1,6 +1,7 @@
 package framgia.co.edu.ftrr.service.impl;
 
 import framgia.co.edu.ftrr.common.Gender;
+import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.config.CustomPrincipal;
 import framgia.co.edu.ftrr.dto.request.UserDTO;
 import framgia.co.edu.ftrr.dto.response.InterviewerSearchResponse;
@@ -19,6 +20,8 @@ import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,9 +41,31 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@PropertySource(value = "classpath:wsm.properties", encoding = "UTF-8")
 public class UserServiceImpl implements UserService {
-
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    @Value(value = "${check.role.ec.position.name}")
+    private String ecPositionName;
+    @Value("${check.role.ec.position.id}")
+    private String ecPositionId;
+    @Value("${check.role.ec.groups.name}")
+    private String ecGroupsName;
+    @Value("${check.role.sm.position.name}")
+    private String smPositionName;
+    @Value("${check.role.sm.position.id}")
+    private Integer smPositionId;
+    @Value("${check.role.dm.position.name}")
+    private String dmPositionName;
+    @Value("${check.role.dm.position.id}")
+    private Integer dmPositionId;
+    @Value("${check.role.hr.position.name}")
+    private String hrPositionName;
+    @Value("${check.role.hr.position.id}")
+    private Integer hrPositionId;
+    @Value("${check.role.trainer.position.name}")
+    private String trainerPositionName;
+    @Value("${check.role.trainer.position.id}")
+    private Integer trainerPositionId;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -49,6 +74,10 @@ public class UserServiceImpl implements UserService {
     private GroupRepository groupRepository;
     @Autowired
     private PositionRepository positionRepository;
+
+    public UserServiceImpl() {
+    }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -205,11 +234,12 @@ public class UserServiceImpl implements UserService {
         user.setPosition(userWsmResponse.getPosition());
         user.setGroups(userWsmResponse.getGroups());
         user.setWorkspaces(userWsmResponse.getWorkspaces());
+        user.setRole(getRoleFromGroupAndPosition(userWsmResponse.getGroups(), userWsmResponse.getPosition()));
     }
 
     private CustomPrincipal buildCustomPrincipal(User user) {
         CustomPrincipal customPrincipal = new CustomPrincipal();
-
+        customPrincipal.setRole(user.getRole());
         customPrincipal.setUsername(user.getEmail());
         customPrincipal.setPassword(user.getEncryptedPassword());
         customPrincipal.setPosition(user.getPosition());
@@ -219,5 +249,21 @@ public class UserServiceImpl implements UserService {
         }).collect(Collectors.toList()));
 
         return customPrincipal;
+    }
+
+    private Integer getRoleFromGroupAndPosition(List<Group> groups, Position position) {
+        if (position.getName().equalsIgnoreCase(dmPositionName) && position.getId().equals(dmPositionId))
+            return Roles.DM.getCode();
+        if (position.getName().equalsIgnoreCase(smPositionName) && position.getId().equals(smPositionId) &&
+                groups.stream().anyMatch(g -> g.getParentPath() != null || g.getParentPath().equals("[]")))
+            return Roles.SM.getCode();
+        if (position.getName().equalsIgnoreCase(trainerPositionName) && position.getId().equals(trainerPositionId))
+            return Roles.TRAINER.getCode();
+        if (position.getName().equalsIgnoreCase(ecPositionName) && position.getId().equals(ecPositionId) &&
+                groups.stream().anyMatch(g -> g.getName().contains(ecGroupsName)))
+            return Roles.EC.getCode();
+        if (position.getName().equalsIgnoreCase(hrPositionName) && position.getId().equals(hrPositionId))
+            return Roles.HR.getCode();
+        return Roles.OTHER.getCode();
     }
 }
