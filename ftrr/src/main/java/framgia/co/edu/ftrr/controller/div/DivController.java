@@ -7,10 +7,12 @@ import framgia.co.edu.ftrr.util.ExcelUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @Getter
+@PropertySource(value = "classpath:page.properties", encoding = "UTF-8")
 public abstract class DivController {
 
     @Autowired
