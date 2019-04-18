@@ -9,4 +9,6 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
+export const FETCH_REQUEST_INTERVIEW = 'boilerplate/Home/FETCH_REQUEST_INTERVIEW';
+export const FETCH_REQUEST_INTERVIEW_SUCCESS = 'boilerplate/Home/FETCH_REQUEST_INTERVIEW_SUCCESS';
+export const FETCH_REQUEST_INTERVIEW_ERROR = 'boilerplate/Home/FETCH_REQUEST_INTERVIEW_FAIL';

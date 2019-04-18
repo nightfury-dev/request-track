@@ -11,18 +11,31 @@
  */
 import { fromJS } from 'immutable';
 
-import { CHANGE_USERNAME } from './constants';
+import { FETCH_REQUEST_INTERVIEW, FETCH_REQUEST_INTERVIEW_ERROR, FETCH_REQUEST_INTERVIEW_SUCCESS } from './constants';
 
 // The initial state of the App
 export const initialState = fromJS({
-  username: '',
+  request_interviews: [],
+  loading: false,
+  error:false
 });
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_USERNAME:
-      // Delete prefixed '@' from the github username
-      return state.set('username', action.name.replace(/@/gi, ''));
+    case FETCH_REQUEST_INTERVIEW:
+      return state
+        .set("loading",true)
+        .set("error",false)
+    case FETCH_REQUEST_INTERVIEW_SUCCESS:
+      return state
+        .set("loading",false)
+        .set("request_interviews",action.request);
+    case FETCH_REQUEST_INTERVIEW_ERROR:
+      console.log("redux",action.error)
+      return state
+        .set("error",action.error)
+        .set("loading",false)
+
     default:
       return state;
   }
