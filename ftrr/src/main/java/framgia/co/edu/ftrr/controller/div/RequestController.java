@@ -29,11 +29,11 @@ public class RequestController extends DivController {
         try {
             UserDTO userDTO = getUserService().findByEmail(authentication.getName());
 
-            // role SM of Human Development Division
+//             role SM of Human Development Division
             if (Division.HD.getValue().equals(userDTO.getDivision()))
                 return ResponseEntity.status(HttpStatus.OK).body(getRequestService().getAll());
 
-            // Role SM/DM of Division
+//             Role SM/DM of Division
             return ResponseEntity.status(HttpStatus.OK).body(getRequestService().findByDivision(userDTO.getDivision()));
 
         } catch (Exception ex) {

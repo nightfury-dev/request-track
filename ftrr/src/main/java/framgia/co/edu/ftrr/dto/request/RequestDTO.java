@@ -20,10 +20,10 @@ public class RequestDTO implements java.io.Serializable {
 
     private Integer id;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
-            "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
+            "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt", "position"})
     private User createdBy;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
-            "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
+            "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt", "position"})
     private User updatedBy;
     private Integer division;
     private Integer quantity;
@@ -33,7 +33,7 @@ public class RequestDTO implements java.io.Serializable {
     private Date createdAt;
     private Date updatedAt;
     private List<TraineeDTO> trainees;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "updatedBy", "request", "resultInterviews", "trainee", "interviews"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "updatedBy", "request", "resultInterviews", "createdBy", "interviews"})
     private List<TraineeForRequest> traineeForRequests;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "traineeForRequest", "createdBy", "updatedBy", "interviews"})
     private List<InterviewDTO> interviews;
