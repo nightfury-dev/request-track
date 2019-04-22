@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController("EcRequestController")
 @RequestMapping("/edu/requests")
-@PreAuthorize("@roleServiceImpl.isEc()")
 public class RequestController extends EduController {
     private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
 

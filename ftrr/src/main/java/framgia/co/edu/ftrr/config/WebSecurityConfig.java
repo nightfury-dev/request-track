@@ -1,5 +1,6 @@
 package framgia.co.edu.ftrr.config;
 
+import framgia.co.edu.ftrr.common.Roles;
 import framgia.co.edu.ftrr.config.filter.JWTAuthenticationFilter;
 import framgia.co.edu.ftrr.config.filter.JWTLoginFilter;
 import framgia.co.edu.ftrr.config.filter.WsmLoginFilter;
@@ -25,6 +26,13 @@ import javax.sql.DataSource;
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final String ROLE_SM = String.valueOf(Roles.SM.getCode());
+    private final String ROLE_HR = String.valueOf(Roles.HR.getCode());
+    private final String ROLE_EC = String.valueOf(Roles.EC.getCode());
+    private final String ROLE_TRAINER = String.valueOf(Roles.TRAINER.getCode());
+    private final String ROLE_DM = String.valueOf(Roles.DM.getCode());
+    private final String other = String.valueOf(Roles.OTHER.getCode());
+
     @Autowired
     private DataSource dataSource;
 
@@ -34,7 +42,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/wsm-login").permitAll()
-                .anyRequest().authenticated()
+                .and()
+                .authorizeRequests().antMatchers("/div/**").hasAnyRole(ROLE_DM, ROLE_SM)
+                .and()
+                .authorizeRequests().antMatchers("/edu/**").hasAnyRole(ROLE_EC, ROLE_TRAINER)
+                .and()
+                .authorizeRequests().antMatchers("/hr/**").hasRole(ROLE_HR)
                 .and()
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
