@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
 
+/**
+ * Filter cho api /login dùng cho admin login
+ */
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -33,41 +36,45 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
+
+        // Bắt request đi qua và lấy ra 2 param là username và password
         AccountCredentials credentials = new AccountCredentials(request.getParameter("username"),
                 request.getParameter("password"));
+
+        // Trả về 1 object authentication để check thông qua method configure trong web securityConfig
+        // Sau khi có kết quả sẽ được handle sucess hoặc fail
         return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
                 credentials.getUsername(), credentials.getPassword(), Collections.emptyList()));
     }
 
+    //Method handle kết quả login
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        TokenAuthenticationUtil.addAuthentication(response, authResult);
-        LoginMessageReponse messageReponse = new LoginMessageReponse();
-        messageReponse.setCode("200");
-        messageReponse.setMessage(StringsCommon.LOGINSUCESS);
 
-        String employeeJsonString = objectWriter.writeValueAsString(messageReponse);
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(employeeJsonString);
-        out.flush();
+        //Thêm token khi login sucess vào response header khi login thành công
+        TokenAuthenticationUtil.addAuthentication(response, authResult);
+
+        LoginMessageReponse messageReponse = new LoginMessageReponse("200", StringsCommon.LOGINSUCESS);
+        builtResponse(response, messageReponse);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response, AuthenticationException failed)
             throws IOException, ServletException {
-        LoginMessageReponse messageReponse = new LoginMessageReponse();
-        messageReponse.setCode("404");
-        messageReponse.setMessage(StringsCommon.LOGINFAIL);
+        LoginMessageReponse messageReponse = new LoginMessageReponse("404", StringsCommon.LOGINFAIL);
+        builtResponse(response, messageReponse);
 
-        String employeeJsonString = objectWriter.writeValueAsString(messageReponse);
+    }
+
+    //Method add result body to response
+    private void builtResponse(HttpServletResponse response, LoginMessageReponse loginMessageReponse) throws IOException {
+        String resultString = objectWriter.writeValueAsString(loginMessageReponse);
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.print(employeeJsonString);
+        out.print(resultString);
         out.flush();
     }
 }

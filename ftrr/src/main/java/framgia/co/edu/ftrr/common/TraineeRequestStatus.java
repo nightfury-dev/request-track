@@ -20,6 +20,7 @@ public enum TraineeRequestStatus {
         this.name = name;
     }
 
+    //method get enum object from code
     public static Optional<TraineeRequestStatus> valueOf(int code) {
         return Arrays.stream(values())
                 .filter(traineeRequestStatus -> traineeRequestStatus.value == code)

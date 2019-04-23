@@ -128,7 +128,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public CustomPrincipal loadOrUpdateUser(UserWsmResponse userWsmResponse) {
         try {
+            //Check info from wsm.
             checkUserWsmResponse(userWsmResponse);
+
+            //Get user from db. Return new user if it doesnt exist. After all update user to db
             User user = userRepository.getOneByEmail(userWsmResponse.getEmail()).orElse(new User());
             getValueFromWsmToUser(user, userWsmResponse);
             user = userRepository.save(user);
@@ -189,6 +192,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkUserWsmResponse(UserWsmResponse userWsmResponse) {
+        //check group and position. if it doesnt exist add to db
         Optional.ofNullable(userWsmResponse.getGroups()).ifPresent(groups -> {
             List<Group> groupsAfterUpdate = new ArrayList<>();
             groups.stream().forEach(group -> {

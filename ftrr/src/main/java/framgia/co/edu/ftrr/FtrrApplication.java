@@ -17,6 +17,7 @@ public class FtrrApplication {
         SpringApplication.run(FtrrApplication.class, args);
     }
 
+    //Swagger config
     @Bean
     public Docket studentAPI() {
         return new Docket(DocumentationType.SWAGGER_2)

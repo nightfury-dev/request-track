@@ -14,6 +14,7 @@ import java.io.IOException;
 @PropertySource(value = "classpath:wsm.properties", encoding = "UTF-8")
 public class WsmTokenUtils {
 
+    //Call wsm api and get info then map to UserWsmResponse object
     public static UserWsmResponse getUserInfo(final String accessToken) {
         try {
             OkHttpClient client = new OkHttpClient();

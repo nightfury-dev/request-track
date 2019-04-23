@@ -1,14 +1,12 @@
 package framgia.co.edu.ftrr.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import framgia.co.edu.ftrr.entity.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
+@Data
 @ToString
+@AllArgsConstructor
 public class LoginMessageReponse {
     String code;
     String message;

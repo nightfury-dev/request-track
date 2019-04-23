@@ -14,6 +14,16 @@ import java.io.IOException;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
+    /**
+     * Filter này sẽ lọc tất cả các request không phải login đi qua sever và check xem
+     request này có kèm theo jwt token phù hợp
+     Nếu jwt token hợp lệ nó sẽ add thêm authentication vào vào security contex
+     * @param servletRequest
+     * @param servletResponse
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {

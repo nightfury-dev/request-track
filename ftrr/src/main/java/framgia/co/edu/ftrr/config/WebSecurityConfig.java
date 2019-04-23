@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //config admin login only in db
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("select email,encrypted_password,enabled from users where email=?")
                 .authoritiesByUsernameQuery("select email,role from users where email=?")
@@ -70,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
+    //Config swagger
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs/**");
