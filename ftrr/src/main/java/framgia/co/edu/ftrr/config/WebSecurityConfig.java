@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/edu/**").hasAnyRole(ROLE_EC, ROLE_TRAINER)
                 .and()
                 .authorizeRequests().antMatchers("/hr/**").hasRole(ROLE_HR)
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)

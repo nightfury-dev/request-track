@@ -54,7 +54,7 @@ public class TokenAuthenticationUtil {
         CustomPrincipal customPrincipal = mapper.readValue(claims.get(CUSTOM_USER_KEY).toString(), CustomPrincipal.class);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(customPrincipal.getRole())));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + customPrincipal.getRole()));
         return customPrincipal == null
                 ? null : new UsernamePasswordAuthenticationToken(customPrincipal, null, grantedAuthorities);
     }
