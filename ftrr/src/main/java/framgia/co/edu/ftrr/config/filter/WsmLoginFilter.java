@@ -53,18 +53,21 @@ public class WsmLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         //Check token from client
         String token = request.getParameter("token");
-        if (StringUtils.isBlank(token))
-            return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(null, null, null));
+        if (StringUtils.isBlank(token)) {
+            unsuccessfulAuthentication(request, response, null);
+        }
 
         //get user info from wsm sever and check
         UserWsmResponse userWsmResponse = WsmTokenUtils.getUserInfo(token);
-        if (userWsmResponse.getId() == null)
-            return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(null, null, null));
+        if (userWsmResponse.getId() == null) {
+            unsuccessfulAuthentication(request, response, null);
+            return null;
+        }
 
         //load and update user from wsm to db
         CustomPrincipal customPrincipal = userService.loadOrUpdateUser(userWsmResponse);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(customPrincipal, null, null);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(customPrincipal.getUsername(), null, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return authentication;
@@ -74,7 +77,7 @@ public class WsmLoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         //Thêm token khi login sucess vào response header khi login thành công
-        TokenAuthenticationUtil.addAuthentication(response, authResult);
+        TokenAuthenticationUtil.addAuthentication(response, authResult.getName());
 
         LoginMessageReponse messageReponse = new LoginMessageReponse("200", StringsCommon.LOGINSUCESS);
         builtResponse(response, messageReponse);

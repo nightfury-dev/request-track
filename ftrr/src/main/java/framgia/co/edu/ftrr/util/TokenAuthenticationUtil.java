@@ -1,10 +1,8 @@
 package framgia.co.edu.ftrr.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import framgia.co.edu.ftrr.config.CustomPrincipal;
-import framgia.co.edu.ftrr.service.UserService;
-import io.jsonwebtoken.Claims;
+import framgia.co.edu.ftrr.entity.User;
+import framgia.co.edu.ftrr.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +25,14 @@ public class TokenAuthenticationUtil {
     static final String SECRET = "ThisIsASecret";
     static final String TOKEN_PREFIX = "Bearer";
     static final String HEADER_STRING = "Authorization";
-    static final String CUSTOM_USER_KEY = "CustomUser";
-    private static UserService userService;
+    private static UserRepository userRepository;
 
-    public static void addAuthentication(HttpServletResponse res, Authentication authentication) throws JsonProcessingException {
-//        CustomPrincipal customPrincipal = userService.loadCustomPrincipal(username);
-        ObjectMapper mapper = new ObjectMapper();
-        String customPrincipalJson = mapper.writeValueAsString(authentication.getPrincipal());
-
+    public static void addAuthentication(HttpServletResponse res, String username) throws JsonProcessingException {
         String JWT = Jwts.builder()
-                .claim(CUSTOM_USER_KEY, customPrincipalJson)
+                .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET).compact();
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
     }
 
@@ -47,20 +41,22 @@ public class TokenAuthenticationUtil {
         if (token == null) {
             return null;
         }
-        Claims claims = Jwts.parser().setSigningKey(SECRET)
-                .parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody();
-        ObjectMapper mapper = new ObjectMapper();
+        String userName = Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody()
+                .getSubject();
 
-        CustomPrincipal customPrincipal = mapper.readValue(claims.get(CUSTOM_USER_KEY).toString(), CustomPrincipal.class);
+        User user = userRepository.getOneByEmail(userName).orElse(null);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + customPrincipal.getRole()));
-        return customPrincipal == null
-                ? null : new UsernamePasswordAuthenticationToken(customPrincipal, null, grantedAuthorities);
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        return user == null
+                ? null : new UsernamePasswordAuthenticationToken(user.getEmail(), null, grantedAuthorities);
     }
 
     @Autowired
-    public void setUserRepository(UserService userService) {
-        TokenAuthenticationUtil.userService = userService;
+    public void setUserService(UserRepository userRepository) {
+        TokenAuthenticationUtil.userRepository = userRepository;
     }
 }

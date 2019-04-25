@@ -3,7 +3,6 @@ package framgia.co.edu.ftrr.config.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import framgia.co.edu.ftrr.common.StringsCommon;
-import framgia.co.edu.ftrr.config.CustomPrincipal;
 import framgia.co.edu.ftrr.dto.request.AccountCredentials;
 import framgia.co.edu.ftrr.dto.response.LoginMessageReponse;
 import framgia.co.edu.ftrr.repository.UserRepository;
@@ -12,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
@@ -25,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 
 /**
  * Filter cho api /login dùng cho admin login
@@ -53,19 +52,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         AccountCredentials credentials = new AccountCredentials(request.getParameter("username"),
                 request.getParameter("password"));
 
-        // Trả về 1 object authentication để check thông qua method configure trong web securityConfig
-        // Sau khi có kết quả sẽ được handle sucess hoặc fail
-        CustomPrincipal customPrincipal = new CustomPrincipal();
-        customPrincipal.setUsername(credentials.getUsername());
-
-        userRepository.getOneByEmail(credentials.getUsername()).ifPresent(user -> {
-            customPrincipal.setRole(user.getRole());
-        });
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(customPrincipal, null, null);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return authentication;
+        return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
+                credentials.getUsername(), credentials.getPassword(), Collections.emptyList()));
     }
 
     //Method handle kết quả login
@@ -74,7 +62,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                                             Authentication authResult) throws IOException, ServletException {
 
         //Thêm token khi login sucess vào response header khi login thành công
-        TokenAuthenticationUtil.addAuthentication(response, authResult);
+        TokenAuthenticationUtil.addAuthentication(response, authResult.getName());
 
         LoginMessageReponse messageReponse = new LoginMessageReponse("200", StringsCommon.LOGINSUCESS);
         builtResponse(response, messageReponse);
