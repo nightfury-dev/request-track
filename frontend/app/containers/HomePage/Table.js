@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 class Table extends Component {
   constructor(props) {
@@ -87,8 +88,11 @@ class Table extends Component {
               <td><span className="badge badge-warning">{item.status}</span></td>
               <td>
                 <div className="btn-group btn-group-xs">
-                  <button className="btn btn-default px-0" data-toggle="modal" data-target="#edit">
-                    <div className="fa fa-eye text-warning"></div>
+                  <button className="btn btn-default px-0">
+                    <Link to={`request/${item.id}`}>
+                      <i className="fa fa-eye text-warning">
+                      </i>
+                    </Link>
                   </button>
                 </div>
                 <div className="btn-group btn-group-xs">
@@ -157,7 +161,8 @@ class Table extends Component {
                 </div>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" type="button" data-dismiss="modal"><FormattedMessage {...messages.modalButtonCancel}/></button>
+                <button className="btn btn-secondary" type="button" data-dismiss="modal">
+                  <FormattedMessage {...messages.modalButtonCancel}/></button>
               </div>
             </div>
           </div>

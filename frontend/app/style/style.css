@@ -227,7 +227,7 @@ body {
 
 .sidebar {
   color: white;
-  height: 100%;
+  min-height: 100vh;
   padding: 0;
   background-color: #4D5573}
   .sidebar-logo {
@@ -266,7 +266,7 @@ body {
 
 .page_content {
   background-color: #eaedf1;
-  height: 100%; }
+  min-height: 100vh; }
 
 .job__item {
   overflow: hidden; }
