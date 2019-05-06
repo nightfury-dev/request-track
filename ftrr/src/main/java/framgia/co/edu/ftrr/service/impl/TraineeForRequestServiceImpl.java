@@ -50,6 +50,7 @@ public class TraineeForRequestServiceImpl implements TraineeForRequestService {
             traineeForRequest.setTrainee(trainee);
             traineeForRequest.setRequest(request);
             traineeForRequest.setStatus(TraineeRequestStatus.WAITING_CONFIRM.getValue());
+
             return TraineeForRequestUtils
                     .traineeForRequestToTraineeForRequestDTO(traineeForRequestRepository.save(traineeForRequest));
         } catch (Exception e) {
@@ -64,6 +65,7 @@ public class TraineeForRequestServiceImpl implements TraineeForRequestService {
             if (fromDate == null) {
                 Calendar fromCalendar = Calendar.getInstance();
                 fromCalendar.set(Calendar.DATE, 1);
+
                 return traineeForRequestRepository.loadTraineeForRequestsByDivisionAndStatus(division, status, fromCalendar.getTime());
             } else {
                 return traineeForRequestRepository.loadTraineeForRequestsByDivisionAndStatus(division, status, fromDate);

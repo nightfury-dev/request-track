@@ -19,21 +19,28 @@ public class Workfollow implements java.io.Serializable {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "status")
     private Byte status;
+
     @Column(name = "steps")
     private String steps;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at", length = 19)
     private Date deletedAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
     @CreatedDate
     private Date createdAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", length = 19)
     @LastModifiedDate

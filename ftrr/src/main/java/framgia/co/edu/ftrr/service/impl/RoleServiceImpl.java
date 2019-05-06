@@ -22,6 +22,7 @@ public class RoleServiceImpl implements RoleService {
     private Boolean hasRole(Integer role) {
         Set<String> roles = getAuthentication().getAuthorities().stream()
                 .map(r -> r.getAuthority()).collect(Collectors.toSet());
+
         return roles.contains("ROLE_" + role);
     }
 

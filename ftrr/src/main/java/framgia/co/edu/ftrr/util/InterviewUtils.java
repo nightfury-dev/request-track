@@ -19,6 +19,7 @@ public class InterviewUtils {
         try {
             InterviewDTO interviewDTO = new InterviewDTO();
             BeanUtils.copyProperties(interview, interviewDTO);
+
             return interviewDTO;
         } catch (Exception e) {
             logger.error("Error in interviewToInterviewDTO: " + e.getMessage());
@@ -40,6 +41,7 @@ public class InterviewUtils {
         try {
             Interview interview = new Interview();
             BeanUtils.copyProperties(interviewDTO, interview);
+
             return interview;
         } catch (Exception e) {
             logger.error("Error in interviewDTOToInterview: " + e.getMessage());

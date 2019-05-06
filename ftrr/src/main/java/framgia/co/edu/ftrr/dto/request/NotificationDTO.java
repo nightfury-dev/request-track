@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 public class NotificationDTO {
     private Integer id;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User user;
@@ -17,6 +18,7 @@ public class NotificationDTO {
     private Date createdAt;
     private Date updatedAt;
     private Date readedAt;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User userRequest;

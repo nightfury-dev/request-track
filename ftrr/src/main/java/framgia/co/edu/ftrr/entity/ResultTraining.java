@@ -20,23 +20,30 @@ public class ResultTraining implements java.io.Serializable {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainee_id", unique = true)
     private Trainee trainee;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
     @LastModifiedBy
     private User updatedBy;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     @CreatedBy
     private User createdBy;
+
     @Column(name = "point")
     private Integer point;
+
     @Column(name = "content")
     private String content;
+
     @Column(name = "result")
     private String result;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
     @CreatedDate

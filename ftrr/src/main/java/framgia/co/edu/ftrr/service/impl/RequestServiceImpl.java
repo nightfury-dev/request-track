@@ -62,6 +62,7 @@ public class RequestServiceImpl implements RequestService {
                         .requestToRequestDTO(requestRepository.save(RequestUtils.requestDTOToRequest(request))));
                 row++;
             }
+
             return requestDTOs;
         } catch (Exception e) {
             logger.error("Error in insertListRequest at row " + row + ": " + e.getMessage());
@@ -86,12 +87,14 @@ public class RequestServiceImpl implements RequestService {
     public RequestDTO editRequest(int id, RequestDTO requestDTO) {
         try {
             Request request = requestRepository.findById(id).get();
+
             if (request == null || !request.getStatus().equals(RequestStatus.WAITING.getValue()))
                 return null;
 
             request.setQuantity(requestDTO.getQuantity());
             request.setLanguage(requestDTO.getLanguage());
             request.setDeadline(requestDTO.getDeadline());
+
             return RequestUtils.requestToRequestDTO(requestRepository.save(request));
         } catch (Exception e) {
             logger.error("Error in editRequest: " + e.getMessage());
@@ -108,6 +111,7 @@ public class RequestServiceImpl implements RequestService {
                 return null;
 
             request.setStatus(RequestStatus.CONFIRMED.getCode());
+
             return RequestUtils.requestToRequestDTO(requestRepository.save(request));
         } catch (Exception e) {
             logger.error("Error in confirmRequest: " + e.getMessage());
@@ -186,6 +190,7 @@ public class RequestServiceImpl implements RequestService {
                     .stream().flatMap(t -> t.getInterviews().stream()).collect(Collectors.toList());
 
             requestDTO.setInterviews(InterviewUtils.listInterviewToListInterviewDTO(interviews));
+
             return requestDTO;
         } catch (Exception e) {
             logger.error("Error in findById: " +
@@ -200,6 +205,7 @@ public class RequestServiceImpl implements RequestService {
             Integer division = userService.loadCurrentLoginUser().getDivision();
             Page<Request> requestPage =
                     requestRepository.getRequestsByStatusAndDivision(requestStatus.getCode(), division, pageable);
+
             Page<RequestDTO> dtoPage = requestPage.map(new Function<Request, RequestDTO>() {
                 @Override
                 public RequestDTO apply(Request request) {
@@ -208,12 +214,15 @@ public class RequestServiceImpl implements RequestService {
                             .stream().map(traineeForRequest -> {
                                 TraineeDTO traineeDTO = TraineeUtils.traineeToTraineeDTO(traineeForRequest.getTrainee());
                                 if (requestStatus == RequestStatus.WAITING_FINAL_RESULT) {
+
                                     if (traineeForRequest.getInterviews() != null) {
                                         traineeDTO.setInterviews(traineeForRequest.getInterviews());
                                     }
                                 }
+
                                 return traineeDTO;
                             }).collect(Collectors.toList()));
+
                     return requestDTO;
                 }
             });
@@ -312,6 +321,7 @@ public class RequestServiceImpl implements RequestService {
         });
         Integer[] rolesSmDm = {Roles.DM.getCode(), Roles.SM.getCode(), Roles.EC.getCode()};
         userRepository.findAllByDivisionAndRoleIn(request.getDivision(), rolesSmDm).stream().forEach(user -> userSet.add(user));
+
         return userSet;
     }
 }

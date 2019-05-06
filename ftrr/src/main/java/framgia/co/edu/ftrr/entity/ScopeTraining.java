@@ -17,15 +17,19 @@ public class ScopeTraining {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private int id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     @Column(name = "language")
     private String language;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
     @CreatedDate
     private Date createdAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", length = 19)
     @LastModifiedDate

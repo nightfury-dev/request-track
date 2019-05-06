@@ -44,34 +44,49 @@ import java.util.stream.Collectors;
 @PropertySource(value = "classpath:wsm.properties", encoding = "UTF-8")
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Value(value = "${check.role.ec.position.name}")
     private String ecPositionName;
+
     @Value("${check.role.ec.position.id}")
     private String ecPositionId;
+
     @Value("${check.role.ec.groups.name}")
     private String ecGroupsName;
+
     @Value("${check.role.sm.position.name}")
     private String smPositionName;
+
     @Value("${check.role.sm.position.id}")
     private Integer smPositionId;
+
     @Value("${check.role.dm.position.name}")
     private String dmPositionName;
+
     @Value("${check.role.dm.position.id}")
     private Integer dmPositionId;
+
     @Value("${check.role.hr.position.name}")
     private String hrPositionName;
+
     @Value("${check.role.hr.position.id}")
     private Integer hrPositionId;
+
     @Value("${check.role.trainer.position.name}")
     private String trainerPositionName;
+
     @Value("${check.role.trainer.position.id}")
     private Integer trainerPositionId;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ScopeTrainingRepository scopeTrainingRepository;
+
     @Autowired
     private GroupRepository groupRepository;
+
     @Autowired
     private PositionRepository positionRepository;
 
@@ -102,6 +117,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByEmail(String email) {
         try {
             User user = userRepository.findByEmail(email);
+
             return UserUtils.userToUserDTO(user);
         } catch (Exception e) {
             logger.error("Error in findByEmail: " + e.getMessage());
@@ -135,6 +151,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.getOneByEmail(userWsmResponse.getEmail()).orElse(new User());
             getValueFromWsmToUser(user, userWsmResponse);
             user = userRepository.save(user);
+
             return buildCustomPrincipal(user);
         } catch (Exception e) {
             logger.error("Error in loadOrUpdateUser: " + e.getMessage());
@@ -158,6 +175,7 @@ public class UserServiceImpl implements UserService {
                     return userDTO;
                 }
             });
+
             return dtoPage;
         } catch (Exception e) {
             logger.error("Error in searchInterviewers: " + e.getMessage());
@@ -174,18 +192,23 @@ public class UserServiceImpl implements UserService {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
+
                 if (StringUtils.isNotBlank(name)) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("name"), "%" + name + "%")));
                 }
+
                 if (StringUtils.isNotBlank(email)) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("email"), "%" + email + "%")));
                 }
+
                 if (positions.length > 0) {
                     predicates.add(criteriaBuilder.and(root.get("position").get("id").in(positions)));
                 }
+
                 if (workspaces.length > 0) {
                     predicates.add(criteriaBuilder.and(root.join("workspaces").get("id").in(workspaces)));
                 }
+
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }, pageable);
@@ -199,20 +222,24 @@ public class UserServiceImpl implements UserService {
                 Group g = new Group();
                 g.setId(group.getId());
                 g.setName(group.getName());
+
                 if (group.getGroups() != null) {
                     g.setParentPath(JSONArray.toJSONString(group.getGroups().stream()
                             .map(Group::getId).collect(Collectors.toList())));
                 }
 
                 Example<Group> groupExample = Example.of(g);
+
                 if (!groupRepository.exists(groupExample)) {
                     groupsAfterUpdate.add(groupRepository.save(g));
                 } else {
                     groupsAfterUpdate.add(groupRepository.getOne(group.getId()));
                 }
             });
+
             userWsmResponse.setGroups(groupsAfterUpdate);
         });
+
         if (isExistsPosition(userWsmResponse.getPosition())) {
             userWsmResponse.setPosition(positionRepository.getOne(userWsmResponse.getPosition().getId()));
         } else {
@@ -227,6 +254,7 @@ public class UserServiceImpl implements UserService {
         positionToSearch.setPositionType(position.getPositionType());
 
         Example<Position> positionExample = Example.of(positionToSearch);
+
         return positionRepository.exists(positionExample);
     }
 
@@ -249,6 +277,7 @@ public class UserServiceImpl implements UserService {
         customPrincipal.setPosition(user.getPosition());
         customPrincipal.setGroups(user.getGroups().stream().map(group -> {
             group.setUsers(null);
+
             return group;
         }).collect(Collectors.toList()));
 
@@ -258,14 +287,18 @@ public class UserServiceImpl implements UserService {
     private Integer getRoleFromGroupAndPosition(List<Group> groups, Position position) {
         if (position.getName().equalsIgnoreCase(dmPositionName) && position.getId().equals(dmPositionId))
             return Roles.DM.getCode();
+
         if (position.getName().equalsIgnoreCase(smPositionName) && position.getId().equals(smPositionId) &&
                 groups.stream().anyMatch(g -> g.getParentPath() != null || g.getParentPath().equals("[]")))
             return Roles.SM.getCode();
+
         if (position.getName().equalsIgnoreCase(trainerPositionName) && position.getId().equals(trainerPositionId))
             return Roles.TRAINER.getCode();
+
         if (position.getName().equalsIgnoreCase(ecPositionName) && position.getId().equals(ecPositionId) &&
                 groups.stream().anyMatch(g -> g.getName().contains(ecGroupsName)))
             return Roles.EC.getCode();
+
         if (position.getName().equalsIgnoreCase(hrPositionName) && position.getId().equals(hrPositionId))
             return Roles.HR.getCode();
         return Roles.OTHER.getCode();

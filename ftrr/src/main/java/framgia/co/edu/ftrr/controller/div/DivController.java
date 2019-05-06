@@ -34,6 +34,7 @@ public abstract class DivController {
         if (pageable.getPageSize() != 1) {
             pageSizeDefault = pageable.getPageSize();
         }
+
         return PageRequest.of(pageable.getPageNumber(), pageSizeDefault, pageable.getSort());
     }
 

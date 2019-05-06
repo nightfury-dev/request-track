@@ -6,6 +6,7 @@ public enum TitleInterview {
     HR_INTERVIEW(1, "HR Interview"),
     DIV_INTERVIEW(2, "DIV Interview"),
     EDU_INTERVIEW(2, "EDU Interview");
+
     private Integer code;
     private String value;
 

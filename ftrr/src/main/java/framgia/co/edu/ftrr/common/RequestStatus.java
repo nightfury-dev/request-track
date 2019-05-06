@@ -8,19 +8,29 @@ import java.util.Optional;
 public enum RequestStatus {
     // Request just created
     WAITING(1, "Waiting"),
+
     // Request confirmed between division and education
     CONFIRMED(2, "Confirmed"),
+
     // Scheduling for interview
     IN_PROGRESS(3, "In progress"),
+
     // Interviewing
     INTERVIEW(4, "Interview"),
+
     WAITING_FINAL_RESULT(5, "Waiting final result"),
+
     // Finished interview
     DONE(6, "Done"),
+
     // Education doesn't has trainees or division has no need
     PENDING(7, "Pending"),
+
     // Education reject request
-    REJECT(8, "Reject");
+    REJECT(8, "Reject"),
+
+    // EC pick trainees for request
+    EC_PICK_TRAINEES(10, "Pick trainees");
 
     private String value;
     private Integer code;

@@ -29,11 +29,11 @@ public class RequestController extends DivController {
         try {
             UserDTO userDTO = getUserService().findByEmail(authentication.getName());
 
-//             role SM of Human Development Division
+            // role SM of Human Development Division
             if (Division.HD.getValue().equals(userDTO.getDivision()))
                 return ResponseEntity.status(HttpStatus.OK).body(getRequestService().getAll());
 
-//             Role SM/DM of Division
+            // Role SM/DM of Division
             return ResponseEntity.status(HttpStatus.OK).body(getRequestService().findByDivision(userDTO.getDivision()));
 
         } catch (Exception ex) {
@@ -54,6 +54,7 @@ public class RequestController extends DivController {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errors);
 
             getRequestService().insertListRequest(getExcelUtils().listRequestFromExcel(multipartFile, uploadRootPath));
+
             return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK);
 
         } catch (Exception ex) {
@@ -95,9 +96,11 @@ public class RequestController extends DivController {
         try {
             Page<RequestDTO> requestPage = getRequestService()
                     .findRequestsWaitingConfirmPaginated(RequestStatus.CONFIRMED, PageRequest.of(page, size));
+
             if (page > requestPage.getTotalPages()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
             return new ResponseEntity<>(requestPage, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -110,9 +113,11 @@ public class RequestController extends DivController {
         try {
             Page<RequestDTO> requestPage = getRequestService()
                     .findRequestsWaitingConfirmPaginated(RequestStatus.WAITING_FINAL_RESULT, PageRequest.of(page, size));
+
             if (page > requestPage.getTotalPages()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
             return new ResponseEntity<>(requestPage, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

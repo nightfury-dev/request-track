@@ -20,6 +20,7 @@ public class InterviewController extends EduController {
     public ResponseEntity createInterviewForDiv(@RequestBody Map<Integer, InterviewDTO> mapInterviewDTO) {
         try {
             List<InterviewDTO> interviews = getInterviewService().saveInterviews(mapInterviewDTO);
+
             return interviews == null || interviews.isEmpty() ? new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY)
                     : new ResponseEntity<>(interviews, HttpStatus.CREATED);
         } catch (DateTimeException e){

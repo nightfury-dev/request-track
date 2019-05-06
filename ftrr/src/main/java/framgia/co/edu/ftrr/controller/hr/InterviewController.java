@@ -24,6 +24,7 @@ public class InterviewController extends EduController {
     public ResponseEntity createInterviewForHr(@RequestParam("multipartFile") MultipartFile multipartFile) {
         try {
             List<InterviewDTO> interviews = getInterviewService().importFromExcel(multipartFile);
+
             return interviews == null || interviews.isEmpty() ? new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY)
                     : new ResponseEntity<>(interviews, HttpStatus.OK);
         } catch (Exception ex) {

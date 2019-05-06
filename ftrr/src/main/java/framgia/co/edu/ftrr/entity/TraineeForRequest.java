@@ -20,27 +20,35 @@ public class TraineeForRequest implements java.io.Serializable {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private Request request;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainee_id")
     private Trainee trainee;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
     private User updatedBy;
+
     @Column(name = "status")
     private Integer status;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", length = 19)
     @CreatedDate
     private Date createdAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", length = 19)
     @UpdateTimestamp
     private Date updatedAt;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "traineeForRequest")
     private List<Interview> interviews;
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "traineeForRequest")
     private FinalResult finalResult;
 }

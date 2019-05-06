@@ -45,6 +45,7 @@ public class StepServiceImpl implements StepService {
         try {
             ObjectMapper mapper = new ObjectMapper();
             List<Integer> ids = mapper.readValue(jsonIds, List.class);
+
             return StepUtils.listStepToListStepDTO(stepRepository.getListByIds(ids));
         } catch (Exception e) {
             logger.error("Error in getListStepByIds" + e.getMessage());

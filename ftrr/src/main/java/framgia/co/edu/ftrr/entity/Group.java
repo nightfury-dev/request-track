@@ -18,13 +18,17 @@ public class Group implements java.io.Serializable {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+
     @Column(name = "name", length = 100)
     private String name;
+
     @Column(name = "parent_path", length = 100)
     private String parentPath;
+
     @ManyToMany(mappedBy = "groups")
     @JsonIgnore
     private List<User> users;
+
     @JsonProperty("parent_path")
     @Transient
     private List<Group> groups;

@@ -48,13 +48,17 @@ public class WorkfollowServiceImpl implements WorkfollowService {
         try {
             List<WorkfollowDTO> workfollowDTOs = new ArrayList<>();
             List<Workfollow> workfollows = workfollowRepository.findAll();
+
             for (Workfollow workfollow : workfollows) {
                 WorkfollowDTO workfollowDTO = WorkfollowUtils.workfollowToWorkfollowDTO(workfollow);
+
                 if (StringUtils.isNotBlank(workfollow.getSteps())) {
                     workfollowDTO.setListStep(stepService.getListStepByIds(workfollow.getSteps()));
                 }
+
                 workfollowDTOs.add(workfollowDTO);
             }
+
             return workfollowDTOs;
         } catch (Exception e) {
             logger.error("Error in findById " + e.getMessage());
@@ -67,9 +71,11 @@ public class WorkfollowServiceImpl implements WorkfollowService {
             try {
                 WorkfollowDTO workfollowDTO = WorkfollowUtils.workfollowToWorkfollowDTO(
                         workfollowRepository.save(WorkfollowUtils.workfollowDTOToWorkfollow(workfollow)));
+
                 if (StringUtils.isNotBlank(workfollowDTO.getSteps())) {
                     workfollowDTO.setListStep(stepService.getListStepByIds(workfollow.getSteps()));
                 }
+
                 return workfollowDTO;
             } catch (Exception e) {
                 logger.error("Error in saveStep" + e.getMessage());
@@ -81,6 +87,7 @@ public class WorkfollowServiceImpl implements WorkfollowService {
     @Override
     public WorkfollowDTO updateWorkfollow(Integer id, WorkfollowDTO workfollow){
         workfollow.setId(id);
+
         return saveWorkfollow(workfollow);
     }
 }

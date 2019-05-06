@@ -23,8 +23,10 @@ public class DashboardController {
                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fromDate) {
         try {
             ByteArrayInputStream in = excelExportUtils.exportExcel(fromDate);
+
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Disposition", "attachment; filename=divstatistic.xlsx");
+
             return ResponseEntity
                     .ok()
                     .headers(headers)

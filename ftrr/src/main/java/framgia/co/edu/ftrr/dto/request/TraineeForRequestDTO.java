@@ -14,14 +14,17 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TraineeForRequestDTO implements Serializable {
     private Integer id;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "updatedBy", "createdBy", "traineeForRequests"})
     private Request request;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user", "traineeForRequests", "resultTrainings",
             "trainer", "level"})
     private Trainee trainee;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
     @JsonIgnore
     private FinalResult finalResult;
 }

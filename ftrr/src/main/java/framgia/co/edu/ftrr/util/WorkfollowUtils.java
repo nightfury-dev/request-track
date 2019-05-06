@@ -18,6 +18,7 @@ public class WorkfollowUtils {
         try {
             WorkfollowDTO workfollowDTO = new WorkfollowDTO();
             BeanUtils.copyProperties(workfollow, workfollowDTO);
+
             return workfollowDTO;
         } catch (Exception e) {
             logger.error("Error in workfollowToWorkfollowDTO: " + e.getMessage());
@@ -38,6 +39,7 @@ public class WorkfollowUtils {
         try {
             Workfollow workfollow = new Workfollow();
             BeanUtils.copyProperties(workfollowDTO, workfollow);
+
             return workfollow;
         } catch (Exception e) {
             logger.error("Error in workfollowDTOToWorkfollow: " + e.getMessage());

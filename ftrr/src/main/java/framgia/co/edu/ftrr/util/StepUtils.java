@@ -19,6 +19,7 @@ public class StepUtils {
         try {
             StepDTO stepDTO = new StepDTO();
             BeanUtils.copyProperties(step, stepDTO);
+
             return stepDTO;
         } catch (Exception e) {
             logger.error("Error in stepToStepDTO: " + e.getMessage());
@@ -40,6 +41,7 @@ public class StepUtils {
         try {
             Step step = new Step();
             BeanUtils.copyProperties(stepDTO, step);
+
             return step;
         } catch (Exception e) {
             logger.error("Error in stepDTOToStep: " + e.getMessage());

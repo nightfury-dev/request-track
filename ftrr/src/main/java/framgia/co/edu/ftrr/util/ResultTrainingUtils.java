@@ -18,6 +18,7 @@ public class ResultTrainingUtils {
         try {
             ResultTrainingDTO resultTrainingDTO = new ResultTrainingDTO();
             BeanUtils.copyProperties(resultTraining, resultTrainingDTO);
+
             return resultTrainingDTO;
         } catch (Exception e) {
             logger.error("Error in resultTrainingToResultTrainingDTO: " + e.getMessage());
@@ -39,6 +40,7 @@ public class ResultTrainingUtils {
         try {
             ResultTraining resultTraining = new ResultTraining();
             BeanUtils.copyProperties(resultTrainingDTO, resultTraining);
+
             return resultTraining;
         } catch (Exception e) {
             logger.error("Error in resultTrainingDTOToResultTraining: " + e.getMessage());

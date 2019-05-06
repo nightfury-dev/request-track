@@ -33,8 +33,10 @@ public class RequestController extends EduController {
     public ResponseEntity<List<NotificationDTO>> notifyByRequest(@PathVariable("id") Integer id) {
         if (getRequestService().isRequestConfirmed(id)) {
             List<NotificationDTO> list = getNotificationService().sendNotification(id);
+
             return new ResponseEntity<>(list, HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

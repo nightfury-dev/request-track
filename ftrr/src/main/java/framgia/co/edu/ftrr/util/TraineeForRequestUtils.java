@@ -18,6 +18,7 @@ public class TraineeForRequestUtils {
         try {
             TraineeForRequestDTO traineeForRequestDTO = new TraineeForRequestDTO();
             BeanUtils.copyProperties(traineeForRequest, traineeForRequestDTO);
+
             return traineeForRequestDTO;
         } catch (Exception e) {
             logger.error("Error in traineeForRequestToTraineeForRequestDTO: " + e.getMessage());
@@ -39,6 +40,7 @@ public class TraineeForRequestUtils {
         try {
             TraineeForRequest traineeForRequest = new TraineeForRequest();
             BeanUtils.copyProperties(traineeForRequestDTO, traineeForRequest);
+
             return traineeForRequest;
         } catch (Exception e) {
             logger.error("Error in traineeForRequestDTOToTraineeForRequest: " + e.getMessage());

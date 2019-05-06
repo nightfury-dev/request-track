@@ -41,6 +41,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
+
         //init user service
         if (userRepository == null) {
             ServletContext servletContext = request.getServletContext();

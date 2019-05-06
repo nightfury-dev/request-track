@@ -44,6 +44,7 @@ public class ResultTrainingController extends EduController {
 
             List<ResultTrainingDTO> trainingDTOs = getResultTrainingService().insertListResultTraining(
                     getExcelUtils().listResultTraingFromExcel(multipartFile, uploadRootPath));
+            
             return ResponseEntity.status(HttpStatus.OK).body(trainingDTOs);
 
         } catch (Exception ex) {

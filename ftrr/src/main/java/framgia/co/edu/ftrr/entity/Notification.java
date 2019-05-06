@@ -20,30 +20,39 @@ public class Notification implements java.io.Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
+
 	@Column(name = "content")
 	private String content;
+
 	@Column(name = "status", length = 45)
 	private Integer status;
+
 	@Column(name = "url_id")
 	private Integer urlId;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", length = 19)
 	@CreatedDate
 	private Date createdAt;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at", length = 19)
 	@LastModifiedDate
 	private Date updatedAt;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "read_at", length = 19)
 	private Date readAt;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_request")
 	@CreatedBy
 	private User userRequest;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "deleted_at", length = 19)
 	private Date deletedAt;

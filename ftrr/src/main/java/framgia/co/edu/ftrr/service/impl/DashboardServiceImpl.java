@@ -84,7 +84,9 @@ public class DashboardServiceImpl implements DashboardService {
 
     private Boolean checkRequestForStatistic(Request request) {
         if (request.getStatus() == null) return false;
+
         RequestStatus requestStatus = RequestStatus.valueOf(request.getStatus()).orElse(null);
+
         return requestStatus != RequestStatus.WAITING && requestStatus != RequestStatus.CONFIRMED;
     }
 }

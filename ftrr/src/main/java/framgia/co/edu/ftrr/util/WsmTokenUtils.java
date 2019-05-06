@@ -33,9 +33,9 @@ public class WsmTokenUtils {
 
             ObjectMapper mapper = new ObjectMapper();
             UserWsmResponse userWsmResponse = mapper.readValue(response.body().string(), UserWsmResponse.class);
+
             return userWsmResponse;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }

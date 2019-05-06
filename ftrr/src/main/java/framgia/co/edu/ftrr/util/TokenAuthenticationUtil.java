@@ -38,9 +38,11 @@ public class TokenAuthenticationUtil {
 
     public static Authentication getAuthentication(HttpServletRequest request) throws IOException {
         String token = request.getHeader(HEADER_STRING);
+
         if (token == null) {
             return null;
         }
+
         String userName = Jwts.parser()
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
@@ -51,6 +53,7 @@ public class TokenAuthenticationUtil {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+
         return user == null
                 ? null : new UsernamePasswordAuthenticationToken(user.getEmail(), null, grantedAuthorities);
     }

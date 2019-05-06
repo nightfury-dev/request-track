@@ -21,6 +21,7 @@ public class NotificationController {
     @GetMapping
     public ResponseEntity<List<NotificationDTO>> loadNotificationByCurrentUser(Authentication authentication) {
         List<NotificationDTO> notifications = notificationService.getListNotificationByUser(authentication.getName());
+
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 }

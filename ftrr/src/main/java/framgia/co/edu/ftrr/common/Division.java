@@ -13,6 +13,7 @@ public enum Division {
     HD(5, "Human Development Division"),
     NONE(6, "None"),
     HR(7, "Human Resource");
+
     private Integer code;
     private String value;
 

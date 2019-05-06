@@ -32,21 +32,28 @@ import java.util.*;
 public class ExcelUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ExcelUtils.class);
+
     @Autowired
     LevelService levelService;
+
     @Autowired
     UserService userService;
 
     @Value("${error.division.blank}")
     private String divisionBlankError;
+
     @Value("${error.language.blank}")
     private String languageBlankError;
+
     @Value("${error.quantity.numeric}")
     private String quantityNumericError;
+
     @Value("${error.deadline.date_format}")
     private String deadlineFormatError;
+
     @Value("${error.format}")
     private String formatError;
+
     @Value("${error.notfound}")
     private String notFoundError;
 
@@ -76,6 +83,7 @@ public class ExcelUtils {
             Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
 
             iterator.next(); // Ignore title of file Excel
+
             while (iterator.hasNext()) {
                 requests.add(mapRowExcelToRequest(iterator.next()));
             }
@@ -93,6 +101,7 @@ public class ExcelUtils {
             Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
             iterator.next();
             iterator.next(); // Ignore title of file Excel
+
             while (iterator.hasNext()) {
                 resultTrainings.add(mapRowExcelToTrainee(iterator.next()));
             }
@@ -136,6 +145,7 @@ public class ExcelUtils {
             resultTraining.setPoint((int) row.getCell(7).getNumericCellValue());
             resultTraining.setResult(row.getCell(8).getStringCellValue());
             resultTraining.setTrainee(TraineeUtils.traineeDTOToTrainee(trainee));
+
             return resultTraining;
         } catch (Exception e) {
             logger.error("Error in mapRowExcelToRequest: " + e.getMessage());
@@ -147,12 +157,15 @@ public class ExcelUtils {
         JSONObject results = new JSONObject();
         Map<Integer, JSONObject> mapError = new HashMap<>();
         int rowNum = 0; // Row number without title's sheet
+
         try {
             Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
 
             iterator.next(); // Ignore title of file Excel
+
             while (iterator.hasNext()) {
                 JSONObject errors = checkRowRequestTrainees(iterator.next());
+
                 if (!errors.isEmpty()) {
                     JSONObject cols = new JSONObject(); // All error in row across each column
                     cols.put("cols", errors);
@@ -162,18 +175,21 @@ public class ExcelUtils {
             }
 
             JSONObject rows = new JSONObject();// All error in sheet across each row
+
             // If file import hasn't errors
             if (mapError.isEmpty())
                 return null;
 
             rows.put("rows", mapError);
             results.put("errors", rows);
+
             return results;
         } catch (Exception e) {
             logger.error("Error in checkImportRequestTrainees: " + e.getMessage());
             Map<Integer, String> mapException = new HashMap<>();
             mapException.put(rowNum, e.getMessage());
             results.put("exception", mapException);
+
             return results;
         }
     }
@@ -183,13 +199,16 @@ public class ExcelUtils {
         Map<Integer, JSONObject> mapError = new HashMap<>();
         int rowNum = 1; // Row number without title's sheet
         Map<String, Level> levelMap = levelService.getMapLevel();
+
         try {
             Iterator<Row> iterator = getRows(multipartFile, uploadRootPath);
 
             iterator.next(); // Ignore title of file Excel
             iterator.next();
+
             while (iterator.hasNext()) {
                 JSONObject errors = checkRowTrainee(iterator.next(), levelMap);
+
                 if (!errors.isEmpty()) {
                     JSONObject cols = new JSONObject();// All error in row across each column
                     cols.put("cols", errors);
@@ -221,10 +240,12 @@ public class ExcelUtils {
     private Iterator<Row> getRows(MultipartFile multipartFile, String uploadRootPath) {
         FileInputStream fis = null;
         Workbook workbook = null;
+
         try {
             fis = new FileInputStream(convertMultipartFileToFile(multipartFile, uploadRootPath));
             workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(0);
+
             return sheet.iterator();
         } catch (Exception e) {
             logger.error("Error in getRows: " + e.getMessage());
@@ -242,6 +263,7 @@ public class ExcelUtils {
     private JSONObject checkRowRequestTrainees(Row row) {
         JSONObject errors = new JSONObject();
         int cell = 0;
+
         try {
             // Check field division
             if (isNull(row, cell++))

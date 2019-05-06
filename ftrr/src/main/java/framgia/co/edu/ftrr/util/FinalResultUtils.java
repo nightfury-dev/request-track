@@ -19,6 +19,7 @@ public class FinalResultUtils {
         try {
             FinalResultDTO finalResultDTO = new FinalResultDTO();
             BeanUtils.copyProperties(finalResult, finalResultDTO);
+
             return finalResultDTO;
         } catch (Exception e) {
             logger.error("Error in finalResultToFinalResultDTO: " + e.getMessage());
@@ -40,6 +41,7 @@ public class FinalResultUtils {
         try {
             FinalResult finalResult = new FinalResult();
             BeanUtils.copyProperties(finalResultDTO, finalResult);
+
             return finalResult;
         } catch (Exception e) {
             logger.error("Error in finalResultDTOToFinalResult: " + e.getMessage());

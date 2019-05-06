@@ -12,11 +12,14 @@ public class InterviewDTO {
     private Integer id;
     private Integer resultType;
     private Integer titleInterview;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "request", "trainee", "updatedBy", "interviews", "finalResult"})
     private TraineeForRequest traineeForRequest;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User createdBy;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User updatedBy;
@@ -24,6 +27,7 @@ public class InterviewDTO {
     private String result;
     private Date createdAt;
     private Date updatedAt;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "encryptedPassword", "resetPasswordToken",
             "resetPasswordSentAt", "rememberCreatedAt", "confirmationToken", "confirmationAt", "confirmationSentAt"})
     private User reviewer;

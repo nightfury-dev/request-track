@@ -24,6 +24,7 @@ public class InterviewController extends DivController {
     public ResponseEntity createInterviewForDiv(@RequestParam("multipartFile") MultipartFile multipartFile) {
         try {
             List<InterviewDTO> interviews = getInterviewService().importFromExcel(multipartFile);
+
             return interviews == null || interviews.isEmpty() ? new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY)
                     : new ResponseEntity<>(interviews, HttpStatus.OK);
         } catch (Exception ex) {
@@ -44,6 +45,7 @@ public class InterviewController extends DivController {
             if (pageable.getPageNumber() > requestPage.getTotalPages()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
             return new ResponseEntity<>(requestPage, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getMessage());

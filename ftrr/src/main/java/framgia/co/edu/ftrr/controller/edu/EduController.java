@@ -44,6 +44,7 @@ public abstract class EduController {
         if (pageable.getPageSize() != 1) {
             pageSizeDefault = pageable.getPageSize();
         }
+
         return PageRequest.of(pageable.getPageNumber(), pageSizeDefault, pageable.getSort());
     }
 

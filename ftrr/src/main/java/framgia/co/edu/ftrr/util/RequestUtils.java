@@ -22,6 +22,7 @@ public class RequestUtils {
             requestDTO.setStatus(getRequestStatus(request.getStatus()).getValue());
             requestDTO.setCreatedAt(request.getCreatedAt());
             requestDTO.setUpdatedAt(request.getUpdatedAt());
+
             return requestDTO;
         } catch (Exception e) {
             logger.error("Error in requestToRequestDTO: " + e.getMessage());
@@ -45,6 +46,7 @@ public class RequestUtils {
             request.setStatus(getRequestStatus(requestDTO.getStatus()).getCode());
             request.setCreatedAt(requestDTO.getCreatedAt());
             request.setCreatedAt(requestDTO.getUpdatedAt());
+
             return request;
         } catch (Exception e) {
             logger.error("Error in requestDTOToRequest: " + e.getMessage());
@@ -64,9 +66,11 @@ public class RequestUtils {
     private static RequestStatus getRequestStatus(Integer source) {
         try {
             for (RequestStatus requestStatus: RequestStatus.values()) {
+
                 if (requestStatus.getCode().equals(source))
                     return requestStatus;
             }
+
             return null;
         } catch (Exception e) {
             logger.error("Error in getRequestStatus: " + e.getMessage());
@@ -77,9 +81,11 @@ public class RequestUtils {
     private static RequestStatus getRequestStatus(String value) {
         try {
             for (RequestStatus requestStatus: RequestStatus.values()) {
+
                 if (requestStatus.getValue().equals(value))
                     return requestStatus;
             }
+
             return null;
         } catch (Exception e) {
             logger.error("Error in getRequestStatus: " + e.getMessage());

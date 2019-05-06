@@ -22,6 +22,7 @@ public enum Language {
     public String getValue() {
         return this.value;
     }
+
     @JsonValue
     public Integer getCode() {
         return this.code;

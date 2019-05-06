@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class HrController {
     @Autowired
     private RequestService requestService;
+
     @Autowired
     private TraineeForRequestService traineeForRequestService;
+
     @Autowired
     private InterviewService interviewService;
 }

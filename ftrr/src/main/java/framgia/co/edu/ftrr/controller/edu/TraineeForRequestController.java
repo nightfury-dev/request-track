@@ -21,6 +21,7 @@ public class TraineeForRequestController extends EduController {
     public ResponseEntity<TraineeForRequestDTO> createTraineeForRequest(@RequestBody TraineeForRequestDTO traineeForRequest) {
         try {
             TraineeForRequestDTO traineeForRequestDTO = getTraineeForRequestService().saveTraineeForRequest(traineeForRequest);
+
             return traineeForRequestDTO == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                     : new ResponseEntity<>(traineeForRequestDTO, HttpStatus.CREATED);
         } catch (Exception ex) {

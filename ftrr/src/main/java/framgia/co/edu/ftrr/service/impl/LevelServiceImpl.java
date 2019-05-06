@@ -21,6 +21,7 @@ public class LevelServiceImpl implements LevelService {
         List<Level> levels = levelRepository.findAll();
         Map<String, Level> levelMap = levels.stream()
                 .collect(Collectors.toMap(Level::getName, Level -> Level, (oldValue, newValue) -> oldValue));
+
         return levelMap;
     }
 }

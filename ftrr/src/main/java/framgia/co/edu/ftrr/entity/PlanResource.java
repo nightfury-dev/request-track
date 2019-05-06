@@ -16,14 +16,18 @@ public class PlanResource implements java.io.Serializable {
 	@GeneratedValue(generator = "generator")
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	private FinalResult finalResult;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date", length = 10)
 	private Date date;
+
 	@Column(name = "mentor")
 	private String mentor;
+
 	@Column(name = "trainee_id")
 	private Integer traineeId;
 }

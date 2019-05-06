@@ -33,6 +33,7 @@ public class TraineeServiceImpl implements TraineeService {
     public List<TraineeDTO> loadTrainees() {
         try {
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
             return TraineeUtils.listTraineeToListTraineeDTO(traineeRepository.findTraineesByTrainer(email));
         } catch (Exception e) {
             logger.error(e.getMessage());

@@ -76,6 +76,7 @@ public class WsmLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+
         //Thêm token khi login sucess vào response header khi login thành công
         TokenAuthenticationUtil.addAuthentication(response, authResult.getName());
 

@@ -17,7 +17,7 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
     /**
      * Filter này sẽ lọc tất cả các request không phải login đi qua sever và check xem
      request này có kèm theo jwt token phù hợp
-     Nếu jwt token hợp lệ nó sẽ add thêm authentication vào vào security contex
+     Nếu jwt token hợp lệ nó sẽ add thêm authentication vào vào security context
      * @param servletRequest
      * @param servletResponse
      * @param filterChain

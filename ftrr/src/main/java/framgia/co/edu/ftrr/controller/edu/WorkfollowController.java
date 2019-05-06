@@ -33,6 +33,7 @@ public class WorkfollowController extends EduController {
     public ResponseEntity<List<StepDTO>> getListStep() {
         try {
             List<StepDTO> steps = getStepService().getListStep();
+
             return steps == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                     : new ResponseEntity<>(steps, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -45,6 +46,7 @@ public class WorkfollowController extends EduController {
     public ResponseEntity<WorkfollowDTO> getWorkfollow(@PathVariable Integer id) {
         try {
             WorkfollowDTO workfollow = getWorkfollowService().findById(id);
+
             return workfollow == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                     : new ResponseEntity<>(workfollow, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -57,6 +59,7 @@ public class WorkfollowController extends EduController {
     public ResponseEntity<List<WorkfollowDTO>> getWorkfollows() {
         try {
             List<WorkfollowDTO> workfollows = getWorkfollowService().findAll();
+
             return workfollows == null || workfollows.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                     : new ResponseEntity<>(workfollows, HttpStatus.OK);
         } catch (Exception e) {
@@ -69,6 +72,7 @@ public class WorkfollowController extends EduController {
     public ResponseEntity<WorkfollowDTO> createWorkfollow(@RequestBody WorkfollowDTO workfollowDTO) {
         try {
             if (workfollowDTO.getId() != null) return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+
             WorkfollowDTO workfollow = getWorkfollowService().saveWorkfollow(workfollowDTO);
 
             return workfollow == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
@@ -83,6 +87,7 @@ public class WorkfollowController extends EduController {
     public ResponseEntity<WorkfollowDTO> editWorkfollow(@PathVariable Integer id) {
         try {
             WorkfollowDTO workfollow = getWorkfollowService().findById(id);
+
             return workfollow == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                     : new ResponseEntity<>(workfollow, HttpStatus.OK);
         } catch (Exception e) {

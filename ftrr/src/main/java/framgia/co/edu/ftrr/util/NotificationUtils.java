@@ -21,6 +21,7 @@ public class NotificationUtils {
             BeanUtils.copyProperties(notification, notificationDTO);
             notificationDTO.setUser(notification.getUser());
             notificationDTO.setUserRequest(notification.getUserRequest());
+
             return notificationDTO;
         } catch (Exception e) {
             logger.error("Error in NotificationToNotificationDTO: " + e.getMessage());
@@ -42,6 +43,7 @@ public class NotificationUtils {
         try {
             Notification Notification = new Notification();
             BeanUtils.copyProperties(NotificationDTO, Notification);
+
             return Notification;
         } catch (Exception e) {
             logger.error("Error in NotificationDTOToNotification: " + e.getMessage());

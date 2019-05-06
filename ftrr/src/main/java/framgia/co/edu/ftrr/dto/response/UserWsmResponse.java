@@ -17,17 +17,21 @@ public class UserWsmResponse implements Serializable {
     private Integer id;
     private String email;
     private String name;
+
     @JsonProperty("oauth_token")
     private String oauthToken;
     private String gender;
     private String role;
     private Date birthday;
+
     @JsonProperty("employee_code")
     private String employeeCode;
+
     @JsonProperty("card_number")
     private String cardNumber;
     private String status;
     private Position position;
+
     @JsonProperty("staff_type")
     private String staffType;
     private List<Workspace> workspaces;

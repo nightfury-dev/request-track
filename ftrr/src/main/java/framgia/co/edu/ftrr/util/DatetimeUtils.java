@@ -41,16 +41,19 @@ public class DatetimeUtils {
         } else {
             month++;
         }
+
         return year + "-" + month;
     }
 
     public static boolean isNotValidMonths(Integer... months) {
         boolean result = false;
+
         for (Integer month : months) {
             if (month == null) {
                 result = result || false;
                 continue;
             }
+
             result = result || month < 1 || month > 12;
         }
         return result;
@@ -59,6 +62,7 @@ public class DatetimeUtils {
     public static Date getCurrentMonth() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DATE, 1);
+
         return calendar.getTime();
     }
 

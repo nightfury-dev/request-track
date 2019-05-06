@@ -18,6 +18,7 @@ public class TraineeUtils {
         try {
             TraineeDTO traineeDTO = new TraineeDTO();
             BeanUtils.copyProperties(trainee, traineeDTO);
+
             return traineeDTO;
         } catch (Exception e) {
             logger.error("Error in traineeToTraineeDTO: " + e.getMessage());
@@ -39,6 +40,7 @@ public class TraineeUtils {
         try {
             Trainee trainee = new Trainee();
             BeanUtils.copyProperties(traineeDTO, trainee);
+
             return trainee;
         } catch (Exception e) {
             logger.error("Error in traineeDTOToTrainee: " + e.getMessage());
