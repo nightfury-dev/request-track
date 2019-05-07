@@ -35,7 +35,7 @@ class MenuHeader extends React.Component {
                 </a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                   <div className="dropdown-item"><FormattedMessage {...messages.info}/></div>
-                  <div className="dropdown-item"><FormattedMessage {...messages.info}/></div>
+                  <button onClick={(e)=>this.props.logout()} className="dropdown-item"><FormattedMessage {...messages.logout}/></button>
                 </div>
               </div>
             </div>
