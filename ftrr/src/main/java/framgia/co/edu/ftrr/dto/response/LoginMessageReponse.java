@@ -10,4 +10,5 @@ import lombok.ToString;
 public class LoginMessageReponse {
     String code;
     String message;
+    String authorization;
 }

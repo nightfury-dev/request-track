@@ -27,14 +27,30 @@ public class TokenAuthenticationUtil {
     static final String HEADER_STRING = "Authorization";
     private static UserRepository userRepository;
 
-    public static void addAuthentication(HttpServletResponse res, String username) throws JsonProcessingException {
-        String JWT = Jwts.builder()
+//    public static void addAuthentication(HttpServletResponse res, String username) throws IOException {
+//        String JWT = Jwts.builder()
+//                .setSubject(username)
+//                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
+//                .signWith(SignatureAlgorithm.HS512, SECRET)
+//                .compact();
+//        res.setContentType("application/json");
+//        res.setCharacterEncoding("UTF-8");
+//        // settign giá trị ở body
+//        res.getWriter().write(
+//                "{\"" + HEADER_STRING + "\":\"" +TOKEN_PREFIX+ " " + JWT + "\"}"
+//        );
+//        settign giá trị ở header
+//        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+//    }
+
+    public static String generateAuthentication(String username) {
+        return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
     }
+
 
     public static Authentication getAuthentication(HttpServletRequest request) throws IOException {
         String token = request.getHeader(HEADER_STRING);

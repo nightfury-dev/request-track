@@ -78,9 +78,9 @@ public class WsmLoginFilter extends AbstractAuthenticationProcessingFilter {
                                             Authentication authResult) throws IOException, ServletException {
 
         //Thêm token khi login sucess vào response header khi login thành công
-        TokenAuthenticationUtil.addAuthentication(response, authResult.getName());
+        String jwt = TokenAuthenticationUtil.generateAuthentication(authResult.getName());
 
-        LoginMessageReponse messageReponse = new LoginMessageReponse("200", StringsCommon.LOGINSUCESS);
+        LoginMessageReponse messageReponse = new LoginMessageReponse("200", StringsCommon.LOGINSUCESS, jwt);
         builtResponse(response, messageReponse);
     }
 
@@ -88,7 +88,7 @@ public class WsmLoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response, AuthenticationException failed)
             throws IOException, ServletException {
-        LoginMessageReponse messageReponse = new LoginMessageReponse("404", StringsCommon.LOGINFAIL);
+        LoginMessageReponse messageReponse = new LoginMessageReponse("404", StringsCommon.LOGINFAIL, null);
         builtResponse(response, messageReponse);
     }
 
