@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController("DivInterviewController")
 @RequestMapping("/div/interview")
 public class InterviewController extends DivController {

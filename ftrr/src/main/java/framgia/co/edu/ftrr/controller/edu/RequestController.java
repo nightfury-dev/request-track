@@ -9,6 +9,7 @@ import framgia.co.edu.ftrr.dto.request.NotificationDTO;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+@CrossOrigin
 @RestController("EcRequestController")
 @RequestMapping("/edu/requests")
 public class RequestController extends EduController {

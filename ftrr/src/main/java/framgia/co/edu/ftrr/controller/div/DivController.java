@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin
 @Getter
 @PropertySource(value = "classpath:page.properties", encoding = "UTF-8")
 public abstract class DivController {

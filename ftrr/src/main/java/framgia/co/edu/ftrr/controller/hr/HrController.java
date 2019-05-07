@@ -5,7 +5,9 @@ import framgia.co.edu.ftrr.service.RequestService;
 import framgia.co.edu.ftrr.service.TraineeForRequestService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin
 @Getter
 public abstract class HrController {
     @Autowired

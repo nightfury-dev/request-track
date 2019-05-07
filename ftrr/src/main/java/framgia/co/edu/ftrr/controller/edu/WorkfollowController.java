@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController("WorkfollowController")
 @RequestMapping("/edu/workfollows")
 public class WorkfollowController extends EduController {

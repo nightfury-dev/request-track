@@ -11,6 +11,7 @@ import java.time.DateTimeException;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController("EcInterviewController")
 @RequestMapping("/edu/interview")
 public class InterviewController extends EduController {

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin
 @RestController("EcResultTrainingController")
 @RequestMapping("/edu/resulttraining")
 public class ResultTrainingController extends EduController {

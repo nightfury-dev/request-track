@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin
 @RestController("DivisionRequestController")
 @RequestMapping("/div/requests")
 public class RequestController extends DivController {

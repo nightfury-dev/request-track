@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayInputStream;
 import java.util.Date;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/dashboard")
 public class DashboardController {
