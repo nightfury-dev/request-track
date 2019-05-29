@@ -17,7 +17,7 @@ public class TraineeController extends EduController {
     private static final Logger logger = LoggerFactory.getLogger(TraineeController.class);
 
     @GetMapping
-    @PreAuthorize("@roleServiceImpl.isTrainer()")
+//    @PreAuthorize("@roleServiceImpl.isTrainer()")
     public ResponseEntity<List<TraineeDTO>> index() {
         try {
             return new ResponseEntity<>(getTraineeService().loadTrainees(), HttpStatus.OK);

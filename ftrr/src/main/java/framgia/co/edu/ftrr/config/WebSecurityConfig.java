@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/div/**").hasAnyRole(ROLE_DM, ROLE_SM)
                 .and()
-                .authorizeRequests().antMatchers("/edu/**").hasAnyRole(ROLE_EC, ROLE_TRAINER)
+                .authorizeRequests().antMatchers("/edu/**").hasAnyRole(ROLE_EC, ROLE_TRAINER, ROLE_SM)
                 .and()
                 .authorizeRequests().antMatchers("/hr/**").hasRole(ROLE_HR)
                 .anyRequest().authenticated()
